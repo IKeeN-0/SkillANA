@@ -1,0 +1,130 @@
+.mainBg{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 4em;
+}
+
+.mainBox{
+    width: 70%;
+    height: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.imgBox{
+    display: flex;
+    justify-content: center;
+}
+
+.contentBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.resultBox{
+    margin-top: 1em;
+    background-color: #5F28CD;
+    width: 70%;
+    height: 40%;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: .3fr 1fr;
+}
+
+.btn{
+    margin-top: 1em;
+    background-color: #5F28CD;
+    width: 70%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: medium;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.descriptionSection{
+    width: 70%;
+    overflow-wrap: break-word;
+}
+.imgContainer{
+    background-color: white;
+    width: 80%;
+    height: 50%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.badgePass{
+    width: 50%;
+    height: 80%;
+    position: absolute;
+    top: 70%;
+    left: 65%;
+
+}
+.imgFrame{
+    width: 45%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.imgNotPass{
+    filter: grayscale(100%) opacity(0.6); 
+    width: 45%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.resultInfoContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.diagram{
+    background-color: red;
+    margin: 0 auto;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    padding-top: 10%;
+    gap: 2em;
+    font-size: medium;
+}
+
+.diagram {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.diagram::before {
+    content: "";
+    position: absolute;
+    width: 105px; /* ปรับขนาดความหนาของเส้นวงกลมที่นี่ */
+    height: 105px;
+    background-color: #4A148C; /* สีพื้นหลังกล่อง result ของคุณ */
+    border-radius: 50%;
+}
+
+.percentageText {
+    position: relative; /* ให้อยู่เหนือ ::before */
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+}
+

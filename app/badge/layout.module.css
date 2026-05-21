@@ -1,0 +1,7 @@
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* บังคับความสูงเฉพาะหน้านี้ */
+  width: 100%;
+  overflow: hidden;
+}

@@ -1,0 +1,18 @@
+.spinner {
+  width: 1.5em;
+  height: 1.5em;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff; /* สีของเส้นที่หมุน */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* แถม: ทำให้ปุ่มดูจางลงตอน disabled */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -1,0 +1,31 @@
+.ResumeSmall{
+  width: 210mm; /*150mm*/
+  height: 297mm; /*187mm*/
+  box-sizing: border-box;
+  background: white;
+  position: absolute; 
+  transform: scale(0.7);
+  transform-origin: top left;
+}
+
+.Resume{
+    width: 150mm;
+    height: 187mm;
+    box-sizing: border-box;
+    background: white;
+
+    outline: 2px solid black;
+}
+
+.page {
+  display: block; /* ❌ อย่า flex center */
+  padding: 0;
+}
+
+.ResumeFull{
+  width: 210mm;
+  height: 297mm;
+  box-sizing: border-box;
+  background: white;
+  outline: 2px solid black;
+}

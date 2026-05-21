@@ -1,0 +1,171 @@
+.thisResume{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+}
+
+.leftSideContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 1em;
+    padding-top: 1em;
+}
+
+.imgBox{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileImg{
+    width: 70%;
+    height: 90%;
+    border-radius: 50%;
+    border: 4px solid white;
+}
+
+.aboutMeBox{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.aboutMeContent{
+    width: 90%;
+    font-size: x-small;
+}
+.iconStyle{
+    width : 15%;
+    height : 80%;
+    filter : invert(1);
+}
+
+.contactBox{
+    width: 80%;
+    height: 17%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+.contactContentBoxTitle{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.contactContentBox{
+    display: flex;
+    gap: .5em;
+    align-items: center;
+    p{
+        font-size: x-small;
+    }
+}
+
+.skillBox{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
+
+.skillList{
+    font-size: x-small;
+    padding-left: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+}
+
+.languageBox{
+    width: 80%;
+}
+
+.languageBoxTitle{
+    display: flex;
+    gap: 1em;
+}
+
+.languageList{
+    font-size: x-small;
+    padding-left: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+}
+
+.rightSideContainer{
+    display: grid;
+    grid-template-rows: 25% 75%;
+    padding-left: 3em;
+}
+
+.nameContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: x-large;
+    color: #374151;
+}
+
+.rightSideContent{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.rightSideContentTitle{
+    color: #374151;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    font-size: large;
+    img{
+        filter: invert(21%) sepia(13%) saturate(1065%) hue-rotate(182deg) brightness(94%) contrast(92%);
+    }
+}
+
+.educationBox{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    gap: 1em;
+    align-items: center;
+}
+.educationContent{
+    display: flex;
+    flex-direction: column;
+    color: #374151;
+    gap: .25em;
+}
+.timeLine{
+    position: relative;
+    width: 4px;
+    height: 85%;
+    background-color: #374151;
+}
+.dot1{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #374151;
+    left: -3px;
+    top: 0;
+}
+.dot2{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #374151;
+    left: -3px;
+    top: 100%;
+}
