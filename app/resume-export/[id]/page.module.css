@@ -1,0 +1,14 @@
+.mainSection{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: .6fr 1fr .6fr;
+}
+
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /*บังคับความสูงเฉพาะหน้านี้*/
+  width: 100%;
+  overflow: hidden;
+}

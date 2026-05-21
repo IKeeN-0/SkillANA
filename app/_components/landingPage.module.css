@@ -1,0 +1,36 @@
+.menu_item {
+  list-style: none;
+  width: 8.12rem;
+  height: 3.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.menu_item_special {
+  list-style: none;
+  width: 10.31rem;
+  height: 3.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.menu_item::after, .menu_item_special::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0.375rem;
+  background-color: #5F28CD;
+  border-radius: 0.62rem;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.menu_item:hover::after, .menu_item_special:hover::after {
+  width: 100%;
+}

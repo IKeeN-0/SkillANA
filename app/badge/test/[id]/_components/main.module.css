@@ -1,0 +1,108 @@
+.mainBg{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding-top: 3em;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.mainBox{
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 70%;
+    height: 85%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.timer{
+    font-size: x-large;
+    font-weight: 500;
+}
+.timerBox{
+    border: 2px solid white;
+    width: 15%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+.questionBox{
+    width: 70%;
+    max-height: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.quesiton{
+    display: flex;
+    gap: .2em;
+}
+.dotBox{
+    margin: 0 auto;
+    display: flex;
+    gap: 1.5em;
+}
+
+.btnContainer{
+    align-self: self-end;
+    display: flex;
+    gap: .5em;
+    margin-right: 1em;
+}
+
+.btnCnt{
+    text-decoration: none;
+    background-color: #4C10C5;
+    padding: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-weight: bold;
+    font-size: small;
+    border-radius: 10px;
+    opacity: 40%;
+    transition: all .2s;
+}
+
+.btnNext{
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #4C10C5;
+    padding: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-weight: bold;
+    font-size: small;
+    border-radius: 10px;
+    transition: all .2s;
+}
+.btnNext:hover{
+    background-color: #3b0d98;
+}
+.btnBlock{
+    opacity: 40%;
+    cursor: none;
+}
+
+.submit{
+    background-color: #5F28CD;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: .75em;
+    padding-bottom: .75em;
+    font-size: medium;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.submit:hover{
+    background-color: #3b0d98;
+}

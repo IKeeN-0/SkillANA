@@ -1,0 +1,13 @@
+.dot{
+    width: .75em;
+    height: .75em;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.done{
+    background-color: #6C00D0;
+}
+.dotFocus{
+    background-color: black !important;  
+}

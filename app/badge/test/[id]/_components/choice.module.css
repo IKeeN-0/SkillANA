@@ -1,0 +1,11 @@
+.choice{
+    background-color: #A57CFF;
+    border-radius: 5px;
+    padding: .75em;
+    padding-left: 2em;
+    cursor: pointer;
+}
+
+.selected{
+    background-color: #6C00D0;
+}

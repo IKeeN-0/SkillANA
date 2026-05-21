@@ -1,0 +1,27 @@
+.aboutMe{
+    margin-bottom : 0.125rem;
+    color : white;
+    font-size : 16px;
+    margin-top: 0.3125rem;
+    padding-top: 0.625rem;
+    padding-right : 1.25rem;
+    padding-left : 1.25rem;
+    background-color: #3A1C63;
+    width: 98%;
+    height: 11.3125rem;
+    border-radius: 0.625rem;
+    resize: none;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.aboutMeBox{
+    display : block;
+    width : 80.0625rem;
+    height: 14.625rem;
+    background-color: #552597;
+    border-radius: 1rem;
+    border: 1px solid #ffffff99;
+}

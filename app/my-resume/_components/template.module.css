@@ -1,0 +1,225 @@
+.container {
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.2);
+  height: auto; 
+  min-height: 20rem;
+  margin: 0 auto 10rem auto;
+  border-radius: 15px;
+  border: solid 1px white;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  
+  padding: 3%;
+  column-gap: 3rem;
+  row-gap: 2.5rem;
+}
+
+.itemWrapper {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  border: 1.5px solid transparent;
+}
+
+.item {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.itemWrapper:hover {
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.4), 
+              0 0 5px 2px rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+.zoomButton {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.06rem;
+  width: 40px;
+  height: 40px;
+  background-color: #5F28CD;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.zoomButton img {
+  width: 47%;
+}
+
+.itemWrapper:hover .zoomButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.652);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* animation: fadeIn 0.4s ease-out; */
+}
+
+.popup {
+  background-color: #3A1C63;
+  border-radius: 10px;
+  width: 40%;
+  height: auto;
+  margin: 1.8% auto;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.previewContent {
+  position: relative;
+  width: 95%;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.previewContent h2 {
+  margin-left: 1.5rem;
+}
+
+.closeBtn {
+  width: 5%;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.closeBtn:hover {
+  transform: scale(1.2);
+}
+
+.previewTemplate {
+  width: auto;
+  height: auto;
+  max-height: 75vh;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+  margin-bottom: 0.5rem ;
+}
+
+.selectedBtn {
+  background-color: #5F28CD;
+  border: none;
+  color: white;
+  padding: 1rem 2.5rem;
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 40px;
+  transition: all 0.18s ease-in;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.selectedBtn:hover {
+  background-color: #4716a9;
+}
+
+.fadeOut {
+    animation: fadeOut 0.3s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: scale(0.95); 
+  }
+}
+
+.showIncomplete {
+  position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.incompleteBox {
+  background-color: #3A1C63;
+    padding: 2.25rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 28rem;
+    height: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.incompleteBox img {
+  width: 22%;
+  margin-bottom: 1rem;
+}
+
+.incompleteBox h3 {
+  margin-bottom: 0.75rem;
+}
+
+.incompleteBox p {
+  margin-bottom: 0.7rem;
+}
+
+.goBtn {
+  background: none;
+  border: none;
+  color: white;
+  font-family: inherit;
+  background-color: #5F28CD;
+  padding: 1rem 3.25rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: all 0.18s ease-in;
+  cursor: pointer;
+}
+
+.goBtn:hover {
+  background-color: #4716a9;
+}
