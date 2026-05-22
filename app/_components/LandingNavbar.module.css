@@ -8,17 +8,7 @@
   position: relative;
 }
 
-.menu_item_special {
-  list-style: none;
-  width: 10.31rem;
-  height: 3.75rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.menu_item::after, .menu_item_special::after {
+.menu_item::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -31,6 +21,6 @@
   transform: translateX(-50%);
 }
 
-.menu_item:hover::after, .menu_item_special:hover::after {
+.menu_item:hover::after {
   width: 100%;
 }
