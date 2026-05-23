@@ -3,12 +3,14 @@ import {ResumeData} from "./type/resume"
 import mainstyles from "./main_style.module.css"
 import styles from "./template3.module.css"
 import { useEffect,useState } from "react"
+
+
 type Props = {
   data: ResumeData;
   size: "full" | "small";
 };
 
-export default function Template4({ data, size }: Props) {
+export default function Template5({ data, size }: Props) {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
         setIsMounted(true);
@@ -23,28 +25,37 @@ export default function Template4({ data, size }: Props) {
   }
   return (
     <>
-        <div className ={size == "full" ? mainstyles.ResumeFull :mainstyles.ResumeSmall } >
-        <div className={styles.resume}>
-      {/* HEADER */}
-      <header className={styles.header}>
-        <div className={styles.avatarWrapper}>
-          <img src={data.profileImg} alt="Profile"  className={styles.avatar}/>
-        </div>
-
-        <div className={styles.headerText}>
-          <h1 style={{color :"white" }}>{data.firstName} {data.lastName}</h1>
+       <div className ={size == "full" ? mainstyles.ResumeFull :mainstyles.ResumeSmall } >
+      <div className={styles.resume}>
+    
+      <div className={styles.leftPanel}>
+        <div className={styles.header}>
+          <h3>{data.firstName} {data.lastName}</h3>
          
         </div>
-      </header>
+        <div className={styles.profileWrapper}>
+          <div className={styles.profileCircle}>
+            <img src={data.profileImg} alt="Profile" />
+          </div>
+        </div>
+         
+        <div className={styles.aboutCard}>
+          <div className={styles.sectionTitle}>
+          
+            <h2>About Me</h2>
+          </div>
 
-      {/* BODY */}
-      <div className={styles.body}>
-        {/* LEFT SIDEBAR */}
-        <aside className={styles.sidebar}>
-          <section className={styles.sidebarSection}>
-            <h2>CONTACT</h2>
+          <p>
+            {data.aboutMe}
+          </p>
+        </div>
 
-            <div className={styles.contactItem}>
+        <div className={styles.contactSection}>
+          <div className={styles.contactHeader}>
+            <h3>Contact me</h3>
+          </div>
+
+          <div className={styles.contactItem}>
             
               <img src={"/icon/phone.png"} alt="Phone" />
           
@@ -62,103 +73,91 @@ export default function Template4({ data, size }: Props) {
           
             <span>{data.contact.address}</span>
           </div>
-          </section>
+        </div>
+      </div>
 
-          <section className={styles.sidebarSection}>
-            <h2>SKILLS</h2>
-      <ul className={styles.skillList}>
-            {data.badges?.map((badge, idx) => (
-              <div key={idx} className={styles.skillItem}>
-                
-                <li>{badge.badgeName}</li>
-              </div>
-            ))} </ul>
-          </section>
-        </aside>
+      {/* RIGHT SIDE */}
+      <div className={styles.rightPanel}>
+          {/* HEADER */}
+         
 
-        {/* RIGHT CONTENT */}
-        <main className={styles.content}>
-          {/* PROFILE */}
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <div className={styles.iconCircle}>
+        {/* EDUCATION */}
+        <section className={styles.section}>
+          <div className={styles.headingRow}>
+            <div className={styles.smallCircle}></div>
+            <h2>EDUCATION</h2>
+          </div>
+
+          <div className={styles.timeline}>
+            <div className={styles.timelineItem}>
+              <h4>Education Level</h4>
+              <h3>{data.education.level}</h3>
+
+              <h4>Institution</h4>
+              <h3>{data.education.university}</h3>
+
+              <h4> Major</h4>
+              <h3>{data.education.major}</h3>
+             
+            </div>
+
             
-              </div>
+          </div>
+        </section>
 
-              <h2>PROFILE</h2>
-            </div>
+        {/* EXPERIENCE */}
+        <section className={styles.section}>
+          <div className={styles.headingRow}>
+            <div className={styles.smallCircle}></div>
+            <h2>WORK EXPERIENCE</h2>
+          </div>
 
-            <div className={styles.timeline}>
-              <p>
-                {data.aboutMe}
-              </p>
-            </div>
-          </section>
+          <div className={styles.experience}>
+            <div className={styles.job}>
+            {data.experience?.map((experience,idx)=>(
 
-          {/* EXPERIENCE */}
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <div className={styles.iconCircle}>
-               
-              </div>
-
-              <h2>WORK EXPERIENCE</h2>
-            </div>
-
-            <div className={styles.timeline}>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineDot}></div>
-
-                <div className={styles.timelineContent}>
-                   {data.experience?.map((experience,idx)=>(
-
-              <div key={idx} >
-                <h3 style={{fontSize: '18px', color: '#1d2436'}}>{experience.title}            {`(${experience.startDate.slice(0,4)}-${experience.endDate.slice(0,4)})`}</h3>
+              <div key={idx} className={styles.timeline}>
+                <h4 style={{fontSize: '20px', color: '#1d2436'}}>{experience.title} {`(${experience.startDate.slice(0,4)}-${experience.endDate.slice(0,4)})`}</h4>
                 <div className={styles.jobDescription}>
                   <p>{experience.description}</p>
                 </div>
               </div>
-            ))}</div>
-              </div>
+            ))}
+         
 
-             
-            </div>
-          </section>
-
-          {/* EDUCATION */}
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <div className={styles.iconCircle}>
               
-              </div>
-
-              <h2>EDUCATION</h2>
             </div>
 
-            <div className={styles.timeline}>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineDot}></div>
+            
+          </div>
+        </section>
 
-                <div className={styles.timelineContent}>
-                 
-                    <h3>Education Level</h3>
-                    <h4>{data.education.level}</h4>
+        {/* SKILLS */}
+        <section className={styles.section}>
+          <div className={styles.headingRow}>
+            <div className={styles.smallCircle}></div>
+            <h2>SKILLS</h2>
+          </div>
 
-                    <h3>Institution</h3>
-                    <h4>{data.education.university}</h4>
-
-                    <h3> Major</h3>
-                    <h4>{data.education.major}</h4>
-          
-                 
-                </div>
+          <div className={styles.skills}>
+           {data.badges?.map((badge, idx) => (
+              <div key={idx} className={styles.skillItem}>
+                
+                <p>{badge.badgeName}</p>
               </div>
-            </div>
-          </section>
-        </main>
+            ))}
+          </div>
+        </section>
       </div>
+
+      {/* BOTTOM SHAPE */}
+      <div className={styles.bottomShape}></div>
     </div>
-        </div>
+  
+
+      
+ 
+            </div>
     </>
   );
 }
