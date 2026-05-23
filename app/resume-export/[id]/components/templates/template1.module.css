@@ -1,154 +1,89 @@
-.bg {
-    color: #194785;
+.container {
+    color: black;
+    padding: 3.5em;
+}
+
+.horizonLine{
     width: 100%;
-    height: 100%;
-    position: relative;
-    background-image: url('/resumes/resume_bg1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-}
-
-.leftSideContainer {
-    display: flex;
-    flex-direction: column;
-    padding-top: 5rem;
-    padding-left: 2.25rem;
-    width: 360px;
-}
-
-.profile {
-    background-color: #194785;
-    width: 220px;
-    height: 220px;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0 0 30px;
-}
-
-.profileImg {
-    width: 200px;
-    height: 200px;
-    border-radius: 100%;
-}
-
-.contact {
-    display: flex;
-    flex-direction: column;
-    margin-top: 3.75rem;
-    margin-left: 1.55rem;
-}
-
-.contact h2, .education h2, .skill h2,
-.aboutme h2, .exp h2 {
-    margin-bottom: 0.75rem;
-    font-size: 28px;
-}
-
-.contact div {
-    display: flex;
-    font-size: 12.5px;
-    font-weight: 500;
-    align-items: center;
-}
-
-.contact svg {
-    color: white;
-    background-color: #194785;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    padding: 4px;
-    overflow: visible;
-    margin-right: 0.4rem;
-}
-.phone, .email {
-    padding-bottom: 5px;
-}
-
-.address p {
-    line-height: 1.2;
-}
-
-.lHorizonLine {
-    background-color: #194785;
-    width: 90%;
-    height: 0.15rem;
-    border-radius: 10px;
-    margin-top: 1.75rem;
-    margin-left: 1.55rem;
-}
-
-.education, .skill {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1.5rem;
-    margin-left: 1.55rem;
-}
-
-.university {
-    font-size: 16px;
-}
-
-.major, .level {
-    font-size: 12px;
-}
-
-.skill ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.verticalLine {
-    width: 4px;
-    height: 90%;
-    background-color: #194785;
-    border-radius: 10px;
-    margin: auto 1.5rem;
-}
-
-.rightSideContainer {
-    display: flex;
-    flex-direction: column;
-    padding-top: 7.5rem;
-    width: 350px;
+    height: 0.08em;
+    background-color: black;
+    margin: 1px 0 2.5px 0;
 }
 
 .name {
-    font-size: 32px;
-    line-height: 1.2;
+    font-size: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.rHorizonLine {
-    background-color: #194785;
-    width: 90%;
-    height: 0.15rem;
-    border-radius: 10px;
-    margin-top: 1rem;
+.name h2 {
+    font-weight: 600;
 }
 
-.aboutme, .exp{
+.contact {
+    font-size: 16px;
     display: flex;
     flex-direction: column;
-    margin-top: 1.5rem;
+    align-items: center;
+    gap: 4px;
 }
 
-.aboutme p {
-    font-size: 14px;
+.contact p {
+    line-height: 1.2;
+    text-align: center; 
 }
 
-.title {
+.aboutme {
+    font-size: 16px;
+    margin: 0.5em 0;
+}
+
+.education, .exp, .skill {
+    font-size: 16px;
+    margin-top: 0.6em;
+}
+
+.education h2, .exp h2, .skill h2 {
+    font-weight: 600;
+}
+
+.university, .title {
     font-size: 18px;
+    font-weight: 700;
 }
 
-.date, .description {
-    font-size: 14px;
+.university {
+    margin-top: 0.5em;
+}
+
+.major, .date {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.level, .description {
+    font-size: 16px;
+}
+
+.titleDate {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5em;
+}
+
+.date {
+    padding-top: 2px;
+}
+
+.expContent ul {
+    padding-left: 1.2em;
 }
 
 .description {
-    margin-bottom: 1rem;
+    margin-top: 0.2em;
+}
+
+.skillList {
+    padding-left: 1.2em;
 }

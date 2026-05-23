@@ -40,7 +40,6 @@ export function Navbar() {
   }, []);
 
   return (
-    // <div className="fixed top-0 left-0 right-0 z-1000 w-full ">
       <nav className="flex items-center justify-between text-[1rem] font-bold w-full px-8 h-15 bg-[#140b2e] sticky top-0 z-1000">
         
         <div className="flex-1 flex justify-start">
@@ -59,12 +58,16 @@ export function Navbar() {
             // ถัาอยู่หน้า /badge และ query ?from=... ตรงกับเมนูนี้ ให้ถือว่า Active
             const isTestOrResultRoute = pathname.startsWith('/badge/test') || pathname.includes('/result');
 
+            const isResumeExportRoute = pathname.includes('/resume-export');
+
             const isBadgeRouteActive = 
               (pathname.startsWith('/badge') && fromSource === linkNameForCheck) ||
               (isTestOrResultRoute && link.href === '/skills');
-            
-            // รวมเงื่อนไข: เป็นหน้าของเมนูนั้นๆ หรือ เป็นหน้า badge ที่มาจากเมนูนั้นๆ
-            const isActive = pathname.startsWith(link.href) || isBadgeRouteActive;
+
+            const isActive = 
+              pathname.startsWith(link.href) || 
+              isBadgeRouteActive || 
+              (isResumeExportRoute && link.href === '/my-resume'); // ถ้าเป็นหน้า export และเมนูคือ my-resume ให้ Active ทันที
             
             const liWidth = index === 0 || index === 1 ? 'w-[6.875rem]' : 'w-[8.75rem]';
             

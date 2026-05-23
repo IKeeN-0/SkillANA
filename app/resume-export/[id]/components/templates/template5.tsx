@@ -1,100 +1,141 @@
 "use client"
-import { ResumeData } from "./type/resume"
+import {ResumeData} from "./type/resume"
 import mainstyles from "./main_style.module.css"
 import styles from "./template5.module.css"
-import { useEffect, useState } from "react"
+import { useEffect,useState } from "react"
 
 type Props = {
   data: ResumeData;
   size: "full" | "small";
 };
 
-export default function Template4({ data, size }: Props) {
-  const [isMounted, setIsMounted] = useState(false);
-  
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+export default function Template2({ data, size }: Props) {
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+    console.log(data)
+  const containerClass = isMounted 
+    ? (size === "full" ? mainstyles.ResumeFull : mainstyles.ResumeSmall)
+    : mainstyles.Resume; 
 
-  if (!isMounted || !data) {
-    return <div>Loading...</div>;
+  if (!data) {
+    return <div>Loading...</div>; // หรือ return null; ถ้าไม่อยากให้แสดงอะไรเลย
   }
+  return (
+    <>
+        <div className ={size == "full" ? mainstyles.ResumeFull :mainstyles.ResumeSmall } >
+          <main className = {styles.thisResume}>
+              <section style={{backgroundColor : "#374151"}}>
+                  <section className={styles.leftSideContainer}>
+                      
+                      <div className={styles.imgBox}>
+                        <img className={styles.profileImg} src={data.profileImg}></img>
+                      </div>
+                      <div className = {styles.aboutMeBox}>
+                          <div style={{display : "flex", gap : "1em" , width : "100%", alignItems : "flex-end"}}>
+                              <img className={styles.iconStyle}  src={"/icon/user.png"}></img>
+                              <h3>About Me</h3>
+                          </div>
 
-  // แยกก้อนเนื้อหาออกมา จะได้ไม่ต้องเขียนซ้ำ
-  const ResumeContent = (
-    <div className={styles.container}>
-      <section className={styles.name}>
-        <h2>{data.firstName} {data.lastName}</h2>
-      </section>
-      
-      <div className={styles.horizonLine}></div>
+                          <div className={styles.aboutMeContent}>
+                            <p style={{ textAlign: "justify", textJustify : "inter-word",hyphens: "auto"}}>{data.aboutMe}</p>
+                          </div>
+                      </div>
 
-      <section className={styles.contact}>
-        {data.contact.address.length > 40 ? (
-          <>
-            <p>{data.contact.phoneNumber} | {data.email}</p>
-            <p>{data.contact.address}</p>
-          </>
-        ) : (
-          <p>{data.contact.phoneNumber} | {data.email} | {data.contact.address}</p>
-        )}
-      </section>
-      
-      <div className={styles.horizonLine}></div>
+                      <div className={styles.contactBox}>
+                          <div className = {styles.contactContentBoxTitle}>
+                              <img className={styles.iconStyle} src={"/icon/contact.png"}></img>
+                              <h3>Contact</h3>
+                          </div>
+                          <div className = {styles.contactContentBox}>
+                              <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/phone.png"}></img>
+                              <p>{data.contact.phoneNumber}</p>
+                          </div>
+                          <div className = {styles.contactContentBox}>
+                               <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/mail.png"}></img>
+                               <p>{data.email}</p>
+                          </div>
+                          <div className = {styles.contactContentBox}>
+                             <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/location.png"}></img>
+                             <p>{data.contact.address}</p>
+                          </div>
+                      </div>
 
-      <section className={styles.aboutme}>
-        <p>{data.aboutMe}</p>
-      </section>
+                      <div className={styles.skillBox}>
+                        <div className = {styles.contactContentBoxTitle}>
+                              <img style={{width : "12%", height : "75%" , filter : "invert(1)"}} src={"/icon/setting.png"}></img>
+                              <h3>Skills</h3>
+                          </div>
+                          <ul className={styles.skillList}>
+                              {data.badges?.map((badge,idx)=>(<li key={idx}>{badge.badgeName}</li>))}
+                          </ul>
+                      </div>
+                      <div className={styles.languageBox}>
+                         <div className = {styles.languageBoxTitle}>
+                              <img style={{width : "12%", height : "12%" , filter : "invert(1)"}} src={"/icon/language.png"}></img>
+                              <h3>Languages</h3>
+                          </div>
 
-      <section className={styles.education}>
-        <h2>EDUCATION</h2>
-        <div className={styles.horizonLine}></div>
-        <h5 className={styles.university}>{data.education.university}</h5>
-        <h6 className={styles.major}>{data.education.major}</h6>
-        <p className={styles.level}>{data.education.level}</p>
-      </section>
+                          <ul className={styles.languageList}>
+                              <li>{"English B2"}</li>
+                              <li>{"Thai Native"}</li>
+                          </ul>
+                      </div>
 
-      <section className={styles.exp}>
-        <h2>EXPERIENCE</h2>
-        <div className={styles.horizonLine}></div>
-        {data.experience?.map((experience, idx) => (
-          <div key={idx} className={styles.expBox}>
-            <section className={styles.expContent}>
-              <div className={styles.titleDate}>
-                <h6 className={styles.title}>{experience.title}</h6>
-                <h6 className={styles.date}>{`${experience.startDate.slice(0, 4)} - ${experience.endDate.slice(0, 4)}`}</h6>  
-              </div>
-              <ul>
-                <li className={styles.description}>{experience.description}</li>
-              </ul>
-              
-            </section>
-          </div>
-        ))}
-      </section>
+                  </section>
+              </section>
+              <section className={styles.rightSideContainer}>
+                  
+                  <div className={styles.nameContainer}>
+                      <h2>{data.firstName}</h2>
+                      <h2>{data.lastName}</h2>
+                  </div>
+                  
+                  <div className={styles.rightSideContent}>
+                      <div className = {styles.rightSideContentTitle}>
+                              <img style={{width : "12%", height : "90%" }} src={"/icon/education.png"}></img>
+                              <h3>Education</h3>
+                      </div>
 
-      <section className={styles.skill}>
-        <h2>SKILLS</h2>
-        <div className={styles.horizonLine}></div>
-        <ul className={styles.skillList}>
-          {data.badges?.map((badge, idx) => (<li key={idx}>{badge.badgeName}</li>))}
-        </ul>
-      </section>
+                      <div className={styles.educationBox}>
+                          <div className={styles.timeLine}>
+                              <div className={styles.dot1}></div>
+                              <div className={styles.dot2}></div>
+                          </div>
 
-        
-    </div>
-  );
+                          <section className={styles.educationContent}>
+                            <h6 style={{fontSize : "small"}}>{data.education.university}</h6>
+                            <h6 style={{fontSize : "small"}}>{data.education.major}</h6>
+                            <p style={{fontSize : "x-small"}}>{data.education.level}</p>
+                          </section>
+                      </div>
+                       <div className = {styles.rightSideContentTitle}>
+                              <img style={{width : "12%", height : "75%" }} src={"/icon/suitcase.png"}></img>
+                              <h3>Experience</h3>
+                      </div>
+                      {data.experience?.map((experience, idx) =>(
+                            <div key={idx} className={styles.educationBox}>
+                            <div key={idx} className={styles.timeLine}>
+                                <div className={styles.dot1}></div>
+                                <div className={styles.dot2}></div>
+                            </div>
 
-  // เลือกว่าจะเรนเดอร์ขนาดเล็ก (มีกล่องครอบ) หรือขนาดเต็ม
-  return size === "full" ? (
-    <div className={mainstyles.ResumeFull}>
-      {ResumeContent}
-    </div>
-  ) : (
-    <div className={mainstyles.previewWrapper}>
-      <div className={mainstyles.ResumeSmall}>
-        {ResumeContent}
-      </div>
-    </div>
+                            <section className={styles.educationContent}>
+                                <h6 style={{fontSize : "small"}}>{`(${experience.startDate.slice(0,4)}-${experience.endDate.slice(0,4)})`}</h6>
+                                <h6 style={{fontSize : "small"}}>{experience.title}</h6>
+                                <p style={{fontSize : "x-small"}}>{experience.description}</p>
+                            </section>
+                        </div>
+                      ))}
+
+
+
+                  </div>
+              </section>
+
+          </main>
+        </div>
+    </>
   );
 }
