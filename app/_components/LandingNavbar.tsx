@@ -5,9 +5,9 @@ import Link from 'next/link';
 export function LandingPageNavbar() {
     return (
         <div className="fixed top-0 left-0 right-0 z-1000 w-full ">
-            <nav className="flex h-15 w-full items-center justify-between bg-[#1b103d] text-[1rem] text-white px-8 md:px-8">
+            <nav className="flex h-15 w-full items-center justify-between bg-[#240f65] text-[1rem] text-white px-8 md:px-8">
                 
-                <Link href="/" className="relative w-[10em] h-full ">
+                <Link href="/" className="relative w-[9em] h-full ">
                     <Image 
                         src="/SkillAna.png" 
                         alt="SkillANA Logo" 

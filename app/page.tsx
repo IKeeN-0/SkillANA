@@ -4,11 +4,11 @@ import { SkillSection } from "./_components/LandingSkill";
 import { ResumeSection } from "./_components/LandingResume";
 import { CloseSection } from "./_components/LandingClose";
 import { Footer } from "./_components/LandingFooter";
-import Bg from "@/app/_global_components/background"
+import Bg from "@/app/_global_components/background/landingBackground"
 
 export default function LandingPage() {
     return(
-         <div className="relative w-full text-white flex flex-col overflow-hidden"> 
+        <div className="relative w-full text-white flex flex-col overflow-hidden"> 
             
             <div className="absolute inset-0 -z-10">
                 <Bg />

@@ -3,10 +3,16 @@ import { Hero_section, ResumeSection } from "@/app/_global_components/home_page/
 import { Show_badge } from "@/app/home/_components/show_badge";
 import { Help } from "@/app/home/_components/help";
 import  Footer  from "@/app/_global_components/footer/footer"
+import Bg from "@/app/_global_components/background/pageBackground"
 
 export default function Home() {
     return(
-        <div className="bg-gradient-to-r from-[#2F2155] from-20% to-[#833FC2] to-100% text-white">
+        <div className="relative w-full text-white flex flex-col overflow-hidden"> 
+
+            <div className="absolute inset-0 -z-10">
+                <Bg />
+            </div>
+
             <Navbar />
             <main>
                 <Hero_section />

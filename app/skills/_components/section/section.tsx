@@ -97,6 +97,12 @@ export default function Section({ category, badges, user, mode }: Prop) {
     // 🚨 2. ดึง ID ของหมวดหมู่แรกสุดออกมา (ในที่นี้คือ Website Development)
     const firstCategoryId = sortedGroups[0]?.[0];
 
+    const fromQuery = mode === "collections" ? "collections" : "skills";
+
+    if (badges.length === 0 && Object.keys(group).length === 0) {
+        return <div>No badges found.</div>;
+    }
+
     useEffect(() => {
         const container = document.getElementById('scrollable-section');
         if (!container) return;
@@ -119,7 +125,6 @@ export default function Section({ category, badges, user, mode }: Prop) {
    
     return (
         <>
-            {/* 🚨 4. เปลี่ยนมา map จาก sortedGroups ที่เรียงลำดับไว้แล้วได้เลย */}
             {sortedGroups.map(([id, groupItem]) => {
     
                     const displayBadges =
@@ -129,25 +134,33 @@ export default function Section({ category, badges, user, mode }: Prop) {
     
                     return (
                         <div key={id} id={`category-${id}`} className="w-full scroll-mt-4">
-                            <h1 className="text-[1.7em] font-bold mb-[0.7rem] tracking-wide text-white">
-                                {groupItem.categoryName}
-                            </h1>
+                            <div className="flex justify-between items-center mb-[0.7rem]">
+                                <h1 className="text-[1.7em] font-bold tracking-wide text-white">
+                                    {groupItem.categoryName}
+                                </h1>
+                                
+                                {mode === "collections" && (
+                                    <span className="text-[1em] font-medium text-white/90 bg-white/15 px-3 py-1 rounded-full border border-white/20">
+                                        {displayBadges.length} / {groupItem.badge.length} Earned
+                                    </span>
+                                )}
+                            </div>
 
-                            <div className="relative px-4 py-5 rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] mb-[2.2em] w-full transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
+                            <div className="relative px-4 py-5 rounded-4xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] mb-[2.2em] w-full transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
     
                                     {mode === "collections" && displayBadges.length === 0 ? (
-                                        <h2 className="w-full text-center p-[40px] text-white/70 flex items-center justify-center min-h-[200px]">
+                                        <h2 className="w-full text-center p-10 text-white/70 flex items-center justify-center min-h-50">
                                             You don't have any badges in this category yet
                                         </h2>
                                     ) : (
-                                        <div className="grid grid-cols-[repeat(auto-fill,minmax(7.5rem,1fr))] gap-x-[1.5rem] gap-y-[2.5rem] justify-center justify-items-center">
+                                        <div className="grid grid-cols-[repeat(auto-fill,minmax(7.5rem,1fr))] gap-x-6 gap-y-10 justify-center justify-items-center">
                                             {displayBadges.map((b) => (
                                                 <div
                                                     key={b._id}
                                                     className="group relative cursor-pointer text-center flex flex-col items-center w-full transition-all duration-300"
                                                 >
                                                     <div className="relative w-[6em] h-[6em] mb-[0.7em] z-10 transition-transform duration-300 group-hover:scale-105">
-                                                        <Link href={`/badge/${b._id}`}>
+                                                        <Link href={`/badge/${b._id}?from=${fromQuery}`}>
                                                             <Image
                                                                 src={`/${b.imgUrl}`}
                                                                 alt={b.badgeName}
@@ -171,7 +184,7 @@ export default function Section({ category, badges, user, mode }: Prop) {
                                                     </div>
     
                                                     <div className="flex flex-col items-center justify-center w-full mt-1">
-                                                        <h3 className="text-[14px] font-semibold text-white/90 group-hover:text-white transition-colors duration-300 leading-tight break-words max-w-full px-1">
+                                                        <h3 className="text-[14px] font-semibold text-white/90 group-hover:text-white transition-colors duration-300 leading-tight wrap-break-word max-w-full px-1">
                                                             {b.badgeName}
                                                         </h3>
                                                     </div>
