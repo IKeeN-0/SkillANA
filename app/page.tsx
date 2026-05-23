@@ -1,9 +1,22 @@
-import { LandingPageNavbar, Hero_section, SkillSection, ResumeSection, CloseSection, Footer } from "./_components/landingPage";
+import { LandingPageNavbar } from "./_components/LandingNavbar";
+import { Hero_section } from "./_components/LandingHero";
+import { SkillSection } from "./_components/LandingSkill";
+import { ResumeSection } from "./_components/LandingResume";
+import { CloseSection } from "./_components/LandingClose";
+import { Footer } from "./_components/LandingFooter";
+import Bg from "@/app/_global_components/background/landingBackground"
 
 export default function LandingPage() {
     return(
-        <div className="bg-gradient-to-r from-[#2F2155] from-20% to-[#833FC2] to-100% text-white">
-            <LandingPageNavbar />
+        <div className="relative w-full text-white flex flex-col overflow-hidden"> 
+            
+            <div className="absolute inset-0 -z-10">
+                <Bg />
+            </div>
+            
+            <nav>
+                <LandingPageNavbar />
+            </nav>
             
             <main >
                 <Hero_section />

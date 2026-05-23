@@ -1,5 +1,5 @@
 'use client'
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,8 @@ export function Navbar() {
   const [img, setImg] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null)
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const fromSource = searchParams.get('from');
 
   const navLinks = [
     { name: 'Home', href: '/home' },
@@ -38,19 +40,31 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between text-[1rem] font-bold w-full px-[2rem] h-[3.75rem] bg-gradient-to-r from-[#2f2155] from-20% to-[#833fc2] to-100% border-b border-solid border-[#7050B3] sticky top-0 z-[1000]">
+    // <div className="fixed top-0 left-0 right-0 z-1000 w-full ">
+      <nav className="flex items-center justify-between text-[1rem] font-bold w-full px-8 h-15 bg-[#140b2e] sticky top-0 z-1000">
         
-        {/* ส่วนซ้าย: Logo ให้กินพื้นที่ flex-1 และชิดซ้าย */}
         <div className="flex-1 flex justify-start">
-            <Link href="/home" className="w-[8.75rem]">
+            <Link href="/home" className="w-35">
                 <img src="/SkillAna.png" alt="SkillANA Logo" className="block w-full" />
             </Link>
         </div>
 
-        {/* ส่วนกลาง: Menu จะอยู่กึ่งกลางพอดีเพราะซ้ายกับขวาดันเท่ากัน */}
         <ul className="flex gap-[3.437rem] group/menu justify-center">
           {navLinks.map((link, index) => {
-            const isActive = pathname.startsWith(link.href);
+            
+            // 3. แก้ไขเงื่อนไข isActive ตรงนี้!
+            // ตัดเครื่องหมาย '/' ด้านหน้าออกเพื่อเอาไปเทียบกับ fromSource (เช่น '/skills' กลายเป็น 'skills')
+            const linkNameForCheck = link.href.replace('/', ''); 
+            
+            // ถัาอยู่หน้า /badge และ query ?from=... ตรงกับเมนูนี้ ให้ถือว่า Active
+            const isTestOrResultRoute = pathname.startsWith('/badge/test') || pathname.includes('/result');
+
+            const isBadgeRouteActive = 
+              (pathname.startsWith('/badge') && fromSource === linkNameForCheck) ||
+              (isTestOrResultRoute && link.href === '/skills');
+            
+            // รวมเงื่อนไข: เป็นหน้าของเมนูนั้นๆ หรือ เป็นหน้า badge ที่มาจากเมนูนั้นๆ
+            const isActive = pathname.startsWith(link.href) || isBadgeRouteActive;
             
             const liWidth = index === 0 || index === 1 ? 'w-[6.875rem]' : 'w-[8.75rem]';
             
@@ -74,9 +88,9 @@ export function Navbar() {
         </ul>
 
         <div className="flex-1 flex justify-end">
-            <Link href="/profile" className="flex items-center justify-start w-[12rem] h-[2.5rem] overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+            <Link href="/profile" className="flex items-center justify-start w-48 h-10 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
                 
-                <div className="w-[40px] h-[40px] flex-shrink-0 rounded-full overflow-hidden flex items-center justify-center border-[1px] border-solid border-[#ffffff99]">
+                <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden flex items-center justify-center border border-solid border-[#ffffff99]">
                     <img 
                         src={img || "user.png"} 
                         alt="profile navbar"
@@ -84,7 +98,7 @@ export function Navbar() {
                     />
                 </div>
                 
-                <span className="ml-[1rem] flex-1 whitespace-nowrap overflow-hidden text-ellipsis text-left" title={name || ""}>
+                <span className="ml-4 flex-1 whitespace-nowrap overflow-hidden text-ellipsis text-left" title={name || ""}>
                     {name}
                 </span>
                 
@@ -92,5 +106,7 @@ export function Navbar() {
         </div>
 
     </nav>
+    // </div>
+    
   );
 }

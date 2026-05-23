@@ -3,7 +3,7 @@ import { Navbar } from "@/app/_global_components/navbar/navbar"
 import Footer from "@/app/_global_components/footer/footer"
 import Sidebar from "./sidebar/sidebar"
 import Section from "./section/section"
-import Bg from "@/app/_global_components/background"
+import Bg from "@/app/_global_components/background/pageBackground"
 import { useState, useEffect, useMemo } from "react"
 import { jwtDecode } from "jwt-decode"
 import { BadgeData } from "./section/section"
@@ -80,8 +80,6 @@ const filteredBadges = badges;
 
     if (loading) return <div></div>;
     return (
-        // 🚨 1. เปลี่ยนจาก min-h-screen เป็น h-screen และเพิ่ม flex flex-col 
-        // เพื่อให้ Navbar อยู่บนสุด Footer อยู่ล่างสุด และบังคับไม่ให้ทั้งหน้าเลื่อนได้ (overflow-hidden)
         <div className="relative w-full h-screen text-white flex flex-col overflow-hidden"> 
 
             <div className="absolute inset-0 -z-10">
@@ -92,19 +90,16 @@ const filteredBadges = badges;
                 <Navbar />
             </nav>
 
-            {/* 🚨 2. เปลี่ยนเป็น flex-1 เพื่อให้กินพื้นที่ตรงกลางทั้งหมด และใช้ overflow-hidden ป้องกันหน้าหลักเกิด Scroll */}
             <main className="flex flex-row flex-1 overflow-hidden">
                 
-                {/* 🚨 3. กำหนดความสูง h-full ให้ Sidebar (ถ้าข้อมูล Sidebar ยาว ก็สามารถใส่ overflow-y-auto เพิ่มตรงนี้ได้) */}
-                <aside className="shrink-0 h-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <aside className="shrink-0 h-full overflow-y-auto scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     <Sidebar
                         onSelect={setCategory}
                         categories={categories}  
                     />
                 </aside>
 
-                {/* 🚨 4. Section ใช้ h-full และ overflow-y-auto เพื่อให้ Scroll เกิดขึ้นแค่เฉพาะในกล่องนี้ */}
-                <section id="scrollable-section" className="flex-1 p-[2rem] h-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth">
+                <section id="scrollable-section" className="flex-1 p-8 h-full overflow-y-auto scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]: scroll-smooth">
                     <Section
                         category={category}
                         badges={filteredBadges}
@@ -114,7 +109,6 @@ const filteredBadges = badges;
                 </section>
             </main>
 
-            {/* 🚨 5. Footer จะถูกดันมาอยู่ด้านล่างสุดเสมอจากผลของ flex-1 ใน <main> */}
             <footer className="shrink-0">
                 <Footer />
             </footer>

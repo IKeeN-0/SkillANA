@@ -118,7 +118,7 @@ export default function OtpForm(){
     
     return (
         <>
-            <div className="flex flex-col h-auto mt-[5em] relative">
+            <div className="flex flex-col mt-[5em]">
                 <section className="flex gap-[1em]">
                     {[0, 1, 2, 3, 4, 5].map((index) => (
                         <OtpInput
@@ -155,7 +155,7 @@ export default function OtpForm(){
 
             <div className="mt-[2.7em]">
                 <p className="text-[0.9em]">
-                    Don’t received the verification codes? &nbsp;
+                    Don’t received the verification codes?
                     <button 
                         className="relative inline-block self-start mb-[1em] cursor-pointer text-[#dfa8ff] font-semibold ml-[0.7em] hover:text-[#ba44ff] transition-all duration-300 
                                 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-gray-300 

@@ -136,10 +136,10 @@ export default function CreateAccountForm(){
 
     return (
         <>
-            <section className="box-border my-[1em] flex h-full flex-col">
+            <section className="box-border my-[2em] flex h-full flex-col">
                 <Link 
                     href='/' 
-                    className="relative inline-block self-start text-[0.9em] mb-[1em] text-gray-300 hover:text-white transition-all duration-300 
+                    className="relative inline-block self-start text-[0.9em] mb-[2.7em] text-gray-300 hover:text-white transition-all duration-300 
                                 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-white 
                                 after:opacity-0 after:translate-y-[2px] hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                 >
@@ -150,7 +150,7 @@ export default function CreateAccountForm(){
                     <p className="text-large pt-[0.2em] ">Create an account so you can explore the website</p>
                 </div>
                 
-                <div className="flex gap-[1em] mt-[2.2em] ">
+                <div className="flex gap-[1em] mt-[2em] ">
                     <InputComponent ref={firstNameRef} label="First Name" size="small" placeholder="Somsri" 
                     isError={errors.firstName[0]} message={errors.firstName[1] } onChange={(value: string) => handleOnchange("firstName", value)}
                     />

@@ -1,6 +1,3 @@
-import { Slabo_13px } from "next/font/google"
-import styles from "./dot.module.css"
-
 interface InputProps{
     focus : boolean,
     done : boolean
@@ -9,7 +6,11 @@ interface InputProps{
 
 export default function Dot({focus, done, onClick} : InputProps){
     return (
-        <div onClick={onClick}
-        className= {`${styles.dot} ${focus ? styles.dotFocus : " "} ${done ? styles.done : ""}`}></div>
+        <div 
+            onClick={onClick}
+            className={`mt-5 w-[.8em] h-[.8em] rounded-full cursor-pointer transition-colors duration-200 ${
+                focus ? "!bg-black" : done ? "bg-[#5F28CD]" : "bg-white"
+            }`}
+        ></div>
     )
 }
