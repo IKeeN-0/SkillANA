@@ -1,6 +1,5 @@
 'use client'
 import { useEditContext } from "../edit";
-import style from "./popup.module.css"
 
 export default function Popup() {  
     const { isEdit, setEditing, saveData, reset, tempData } = useEditContext();
@@ -11,13 +10,23 @@ export default function Popup() {
 
     return (
         <>
-            <div className={style.popupBar} onClick={() => setEditing(false)}>
-                <div className={style.popupContent}>
-                    <button className={style.resetButton} onClick={() => { setEditing(false); reset(); }}>
+            <div 
+                className="fixed bottom-10 left-1/2 -translate-x-1/2 w-300 h-20 bg-[#ffffff] flex justify-end items-center rounded-[0.625rem]" 
+                onClick={() => setEditing(false)}
+            >
+                <div className="inline-flex gap-2.5">
+                    
+                    <button 
+                        className="mr-5 w-30 h-12 text-[1.1em] font-bold bg-transparent text-[rgb(243,9,9)] border-none rounded-[0.9375rem] cursor-pointer transition-all duration-300 hover:bg-[#ffcfcf]" 
+                        onClick={() => { setEditing(false); reset(); }}
+                    >
                         Cancel
                     </button>
+                    
                     <button 
-                        className={`${style.saveButton} ${!isValid ? style.saveDisabled : ""}`}
+                        className={`mr-5 w-63 h-12 text-[1.1em] font-bold bg-[rgb(54,136,54)] text-white border-none rounded-[0.625rem] cursor-pointer transition-colors duration-200 hover:bg-[rgb(14,93,14)] ${
+                            !isValid ? "opacity-40 cursor-not-allowed" : ""
+                        }`}
                         onClick={() => { if (isValid) { setEditing(false); saveData(); } }}
                         disabled={!isValid}
                     >
