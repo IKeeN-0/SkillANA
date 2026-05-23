@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import styles from "./resultMain.module.css"
 import { useRouter } from 'next/navigation'
+import Image from "next/image"
+
 export default function ResultMain(){
     const [data, setData] = useState({
         score: 0,
@@ -24,10 +25,9 @@ export default function ResultMain(){
         })
     }, [])
 
-
     const { score, total, timeRemain, pass, badgeImgUrl } = data
 
-    // Logic คำนวณเปอร์เซ็นต์สำหรับวงกลม
+    // เปอร์เซ็นต์วงกลม
     const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
     const redPart = 100 - percentage;
 
@@ -38,46 +38,81 @@ export default function ResultMain(){
     const desPass = "Outstanding! You’ve proven your expertise through exceptional performance. This badge of achievement is now officially part of your badges page."
     const desNotPass = "So close! Although you didn't earn the badge this time, remember that every mistake is a valuable lesson. Review the materials a bit more, and we'll see you back here for your next attempt!"
 
-    return (<>
-        <div className={styles.mainBg}>
-            <main className={styles.mainBox}>
-                <aside className={styles.imgBox}>
-                    <div className={styles.imgContainer}>
-                        <img className={pass ? styles.imgFrame : styles.imgNotPass} src={`/${badgeImgUrl}`} alt="" />
-                        {pass ? <img className={styles.badgePass} src="/badgePass.png" alt="badge" /> : ""}
-                    </div>
-                </aside>
-                
-                <article className={styles.contentBox}>
-                    <h2 style={{fontSize : "xx-large"}}>{pass ? titlePass : titleNotPass}</h2>
-                    <h3 style={{fontWeight : "500", fontSize: "x-large"}}>{pass ? subTitlePass : subTitleNotPass}</h3>
-                    <div className={styles.descriptionSection}>
-                        <p style={{fontSize : "medium"}}>{pass ? desPass : desNotPass}</p>
-                    </div>
-
-                    <div className={styles.resultBox}>
-                        <div style={{display : "flex", alignItems : "center", paddingLeft : "1em"}}>
-                            <p style={{fontSize : "large" , fontWeight: "500"}}>Result :</p>
-                        </div>
-                        <div className={styles.resultInfoContainer}>
-                            {/* แก้ไข Syntax ตรง diagram ให้ใส่ style ได้ถูกต้อง */}
-                            <div 
-                                className={styles.diagram} 
-                                style={{ background: `conic-gradient(#FF0000 0% ${redPart}%, #00D100 ${redPart}% 100%)` }}
-                            >
-                                <span className={styles.percentageText}>{percentage}%</span>
-                            </div>
+    return (
+        <>
+            <div className="w-full flex justify-center items-center pt-[2em]">
+                <main className="w-[70%] h-[80%] grid grid-cols-2">
+                    
+                    <aside className="flex justify-center items-center">
+                        <div className={`bg-white w-[65%] h-[38%] rounded-[10px] flex justify-center items-center relative transition-all duration-1000 ${
+                            pass 
+                                    ? "drop-shadow-[0_0_25px_rgba(255,215,0,0.8)]" // ผ่าน: แสงเรืองสีทอง (Gold)
+                                    : "drop-shadow-[0_0_20px_rgba(255,0,0,0.7)]"     // ไม่ผ่าน: แสงเรืองสีแดง
+                        }`}>
                             
-                            <div className={styles.info}>
-                                <p style={{fontSize : "large" , fontWeight: "500"}}>Score : {score} / {total}</p>
-                                <p style={{fontSize : "large" , fontWeight: "500"}}>Time Remain : {timeRemain}</p>
+                            {/* .imgFrame / .imgNotPass 
+                                เนื่องจากใช้หน่วยเป็น % การใช้ next/image (fill) จึงต้องสร้าง div มาครอบไว้ 
+                            */}
+                            <div className="relative w-[45%] h-[70%]">
+                                {badgeImgUrl && (
+                                    <Image 
+                                        src={`/${badgeImgUrl}`} 
+                                        alt="Badge Image" 
+                                        fill
+                                        className={`object-cover rounded-full ${pass ? "" : "grayscale opacity-60"}`}
+                                    />
+                                )}
+                            </div>
+
+                            {pass ? (
+                                <div className="absolute top-[70%] left-[65%] w-[50%] h-[70%] z-10">
+                                    <Image 
+                                        src="/badgePass.png" 
+                                        alt="badge pass icon" 
+                                        fill 
+                                        className="object-contain" 
+                                    />
+                                </div>
+                            ) : ""}
+
+                        </div>
+                    </aside>
+                    
+                    <article className="flex flex-col mt-10 backdrop-blur bg-white/10 border-white/20 border p-5 w-[75%] rounded-[15px] shadow-2xl">
+                        <h2 className="text-[2em] font-bold text-center mt-4">{pass ? titlePass : titleNotPass}</h2>
+                        <h3 className="font-medium text-[1.1em] mt-3 text-center">{pass ? subTitlePass : subTitleNotPass}</h3>
+                        
+                        <div className="w-full wrap-break-word leading-loose mt-6">
+                            <p className="text-[1em]">{pass ? desPass : desNotPass}</p>
+                        </div>
+
+                        <div className="mt-6 px-6 py-9 bg-[#5f28cd] w-full h-auto rounded-[10px] ">
+                            
+                            <div className="flex justify-between">
+                                <div 
+                                    // จัดการ::before ผ่านคลาส before: ของ Tailwind ได้เลย ไม่ต้องเขียน CSS แยก
+                                    className="w-43 h-43 rounded-full flex justify-center items-center relative before:content-[''] before:absolute before:w-35 before:h-35 before:bg-[#4A148C] before:rounded-full" 
+                                    style={{ background: `conic-gradient(#ff0000 0% ${redPart}%, #66d855 ${redPart}% 100%)` }}
+                                >
+                                    <span className="relative text-white text-2xl font-bold z-10">{percentage}%</span>
+                                </div>
+                                
+                                <div className="flex flex-col items-center justify-center gap-[2em] w-[50%]">
+                                    <p className="text-3xl font-semibold">Score : {score} / {total}</p>
+                                    <p className="text-[large] font-medium text-white/80">Time Remain : {timeRemain}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className={styles.btn} onClick={()=> router.push("/home")}>Go to home page</div>
-                </article>
-            </main>
-        </div>
-    </>)
+                        <div 
+                            className="mt-6 bg-[#ffffff] text-[#5f28cd] w-full text-[1em] py-3 flex justify-center rounded-[10px] font-semibold cursor-pointer transition-all duration-200 hover:bg-[#4a148c] hover:text-white" 
+                            onClick={()=> router.push("/skills")}
+                        >
+                            Back to skills page
+                        </div>
+                    </article>
+                </main>
+            </div>
+        </>
+    )
 }

@@ -84,15 +84,15 @@ export default function Sidebar({ onSelect, categories }: Prop) {
     }
 
     return (
-        <div className="w-[18em] h-screen bg-[#23103d] flex items-start text-white border-r border-[#ffffff1a]">
+        <div className="w-[16em] h-screen bg-[#23103d] flex items-start text-white border-r border-[#ffffff1a]">
             
             <div className="flex flex-col mt-[15%] text-[1em] w-full px-2">
 
-                <h2 className='text-[1.2em] font-semibold tracking-wide pl-[1.5rem] mb-[1.5em] text-gray-400 uppercase text-xs'>Category</h2>
+                <h2 className='text-[1.2em] font-semibold tracking-wide pl-6 mb-[1.5em] text-gray-400 uppercase text-xs'>Category</h2>
                 
                 <ul className="list-none w-full h-full p-0 m-0 flex flex-col gap-1">
                     
-                    {/* All Skills เมนูหลัก */}
+                    {/* เมนูหลัก */}
                     <li
                         className={`${liBaseClass} ${getStatusClass(select === 'all')}`}
                         onClick={() => handler('all')}
@@ -101,7 +101,6 @@ export default function Sidebar({ onSelect, categories }: Prop) {
                         <span className="font-medium">All Skills</span>
                     </li>
 
-                    {/* วนลูปหมวดหมู่ไดนามิก */}
                     {[...categories]
                     .sort((a,b) => (categoryOrderMap[a.name] ?? 999) - (categoryOrderMap[b.name] ?? 999))
                     .map((cate) => {

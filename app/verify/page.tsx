@@ -2,27 +2,29 @@
 import Link from "next/link"
 import LeftBox from "../_global_components/authen_pages/left_box"
 import OtpForm from "./_components/otp_form"
-import Bg from "../_global_components/background"
+import Bg from "../_global_components/background/pageBackground"
 
 export default function Login(){
     const userEmail = sessionStorage.getItem("pending_email")
     
     return(
-        <div className="relative w-full min-h-screen text-white"> 
-           <main className="w-full h-[90vh] flex ">
-                <div className="absolute inset-0 -z-10">
-                    <Bg />
-                </div>
+        <div className="relative w-full min-h-screen text-white">
+
+            <div className="absolute inset-0 -z-10">
+                <Bg />
+            </div>
+
+            <main className="relative z-10 w-full h-screen flex justify-center">
                 
                 <LeftBox></LeftBox>
                 
-                <section className="flex flex-col items-center w-[55%] h-full pt-[2em] pb-[3em]">
+                <section className="flex flex-col items-center w-[50%]">
 
                     <Link 
                         href='/' 
-                        className="relative inline-block self-start text-[0.9em] ml-[15em] mb-[1em] text-gray-300 hover:text-white transition-all duration-300 
-                                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-white 
-                                    after:opacity-0 after:translate-y-[2px] hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                        className="relative inline-block self-start text-[0.9em] mb-[2.7em] text-gray-300 hover:text-white transition-all duration-300 
+                                    after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
+                                    after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                     >
                         &lt; Back
                     </Link>

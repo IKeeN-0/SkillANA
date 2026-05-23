@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
-import Image from "next/image"; // นำเข้า next/image
+import Image from "next/image";
 
 interface InputProps {
     id: string
@@ -19,6 +19,7 @@ interface Badge {
 export default function BadgePage({ id }: InputProps) {
     const router = useRouter()
     const [badgeTitle, setBadgeTitle] = useState("");
+    const [badgeCategory, setBadgeCategory] = useState("");
     const [badgeDescription, setBadgeDescription] = useState("")
     const [tLimit, setTLimit] = useState("");
     const [pScore, setPScore] = useState(0);
@@ -49,6 +50,7 @@ export default function BadgePage({ id }: InputProps) {
                     const data = result.badge;
                     if (data) {
                         setBadgeTitle(data.badgeName);
+                        setBadgeCategory(data.category?.name || "General");
                         setBadgeDescription(data.description);
                         setImgUrl(data.imgUrl);
                         setTLimit(data.criteria.timeLimit.slice(0, 2));
@@ -85,14 +87,10 @@ export default function BadgePage({ id }: InputProps) {
     if (isLoading) {
         return (
             <>
-                {/* .frame */}
-                <section className="grow flex justify-center pt-[4em]">
-                    {/* .mainBoxLoad */}
-                    <div className="bg-[rgba(255,255,255,0.5)] w-[85%] h-[80%] rounded-[10px] flex justify-center items-center">
-                        {/* .loadingWrapper */}
-                        <div className="flex justify-center items-center w-full h-full min-h-[200px]">
-                            {/* .spinner */}
-                            <div className="w-[80%] aspect-square max-w-[300px] border-[15px] border-solid border-[rgba(255,255,255,0.1)] border-l-white rounded-full animate-spin drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+                <section className="grow flex justify-center mt-13">
+                    <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-[75%] rounded-[10px] flex justify-center items-center">
+                        <div className="flex justify-center items-center w-80 h-80 min-h-50">
+                            <div className="w-[50%] aspect-square max-w-75 border-15 border-solid border-[rgba(255,255,255,0.1)] border-l-white rounded-full animate-spin drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
                         </div>
                     </div>
                 </section>
@@ -101,18 +99,13 @@ export default function BadgePage({ id }: InputProps) {
     }
 
     return (
-        <section className="grow flex justify-center pt-[4em]">
-            {/* .mainBox */}
-            <div className="bg-[rgba(255,255,255,0.5)] w-[85%] h-[80%] rounded-[10px] grid grid-cols-[1.25fr_2fr]">
-
-                {/* .boxLeft */}
-                <section className="flex justify-center pt-[2.5em]">
-                    {/* .imgContainer */}
-                    <div className="bg-white w-[80%] h-[50%] rounded-[10px] flex justify-center items-center">
-                        {/* การใช้ next/image (fill) เราจำเป็นต้องสร้าง div ครอบที่มีขนาดเท่ากับขนาดรูปที่เราต้องการ 
-                          ซึ่งในที่นี้คือ .imgFrame (w: 45%, h: 70%) 
-                        */}
-                        <div className="relative w-[45%] h-[70%]">
+        <section className="flex justify-center mt-13 h-fit">
+            <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-full p-8.5 rounded-[10px] grid grid-cols-[2fr_4.18fr]">
+                
+                {/* รูป */}
+                <section className="flex ">
+                    <div className="bg-white w-[90%] h-70 my-auto rounded-[10px] flex justify-center items-center">
+                        <div className="relative w-[35%] h-[55%]">
                             {imgUrl && (
                                 <Image 
                                     src={`/${imgUrl}`} 
@@ -125,54 +118,66 @@ export default function BadgePage({ id }: InputProps) {
                         </div>
                     </div>
                 </section>
+                
+                {/* ข้อความ */}
+                <section className="flex flex-col ">
 
-                {/* .boxRight */}
-                <section className="flex flex-col justify-evenly">
-
-                    {/* .titleSection */}
-                    <div className="flex w-[95%] justify-between">
-                        <h1 className="text-[x-large]">{badgeTitle}</h1>
-                        
-                        {/* .ownBar vs .notOwnBar */}
-                        <div className={isOwn 
-                            ? "bg-[rgb(0,255,110)] w-[10%] h-[70%] rounded-[25px] flex justify-center items-center gap-[.5em]" 
-                            : "bg-[#CD5F61] w-[13%] h-[70%] rounded-[25px] flex justify-center items-center gap-[.5em]"
-                        }>
-                            {/* .circleOwn vs .circleNotOwn */}
-                            <div className={isOwn 
-                                ? "w-[15%] h-[45%] rounded-full bg-white" 
-                                : "bg-[#FFBEBF] w-[13%] h-[45%] rounded-full"
-                            }></div>
-                            <p className={isOwn ? "text-[smaller] font-bold" : "text-[smaller] font-bold text-[#840C0E]"}>
-                                {isOwn ? "Own" : "Not own"}
-                            </p>
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col gap-1">
+                            <h1 className="text-3xl font-bold">{badgeTitle}</h1>
+                            {badgeCategory && (
+                                <span className="mt-1 text-[0.9em] font-medium text-gray-500 bg-gray-200 px-2.5 py-1 rounded-md w-fit">
+                                    {badgeCategory}
+                                </span>
+                            )}
                         </div>
+
+                        {isOwn ? (
+                            <div className="flex bg-[#ceefc8] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
+                                <div className="w-3 h-3 rounded-full bg-[#aee0a5] ml-1 "></div>
+                                <p className="text-[small] font-semibold text-[#8cce80] px-2">Earned</p>
+                            </div>
+                        ) : (
+                            <div className="flex bg-[#f3cece] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
+                                <div className="bg-[#eba6a6] w-3 h-3 rounded-full ml-1"></div>
+                                <p className="text-[small] font-semibold text-[#ec5353] px-2 ">Not Earned</p>
+                            </div>
+                        )}
                     </div>
 
-                    {/* .descriptionSection */}
-                    <div className="w-[40em] break-words">
+                    {/* .description */}
+                    <div className="max-w-[90%] text-[1.1em] leading-9 wrap-break-word mt-3.5">
                         <p className="text-[smaller]">{badgeDescription}</p>
                     </div>
 
-                    <hr className="text-white w-[85%] border-t-[1px] border-solid" />
+                    <section className="bg-[#ffffff96] text-[#4c1156] rounded-2xl mt-3 mb-5 p-5">
+                        <p className="text-[1em] font-bold mb-1.5">To earn the badge, you must pass the test based on the following criteria :</p>
 
-                    <p className="text-[smaller] font-bold">To earn the badge, you must pass the test based on the following criteria :</p>
+                        <div className="grid grid-cols-[160px_auto] gap-2.5 mt-2.5">
+                            <p className="text-sm font-medium">Number of Questions:</p>
+                            <p className="text-sm font-bold">10 <span className="font-normal">Questions</span></p>
 
-                    <div>
-                        <p className="text-[smaller]">Number of Questions: {nQuestion} Questions</p>
-                        <p className="text-[smaller]">Time Limit: {tLimit} Minutes</p>
-                        <p className="text-[smaller]">Passing Score: {pScore} or more correct answers to earn the badge</p>
-                    </div>
+                            <p className="text-sm font-medium">Time Limit:</p>
+                            <p className="text-sm font-bold">10 <span className="font-normal">Minutes</span></p>
 
-                    {/* .btnAlready vs .btnClaim */}
+                            <p className="text-sm font-medium">Passing Score:</p>
+                            <p className="text-sm font-bold">7 <span className="font-normal">or more correct answers</span></p>
+                        </div>
+                    </section>
+
                     <div 
                         className={isOwn 
-                            ? "text-white bg-[rgb(91,90,90)] w-[30%] h-[7%] rounded-[10px] flex justify-center items-center" 
-                            : "text-white bg-[#5F28CD] font-[600] w-[30%] h-[7%] rounded-[10px] flex justify-center items-center cursor-pointer transition-all duration-300 hover:bg-[#441f8d]"
+                            ? `text-white bg-[#5e5d5d] text-[1.2em] font-semibold w-full py-3 rounded-[10px] 
+                                flex justify-center items-center shadow-md cursor-not-allowed 
+                                hover:bg-[#4d4d4d] hover:text-[#bdbdbd] transition-all duration-300`
+
+                            : `text-[#5F28CD] bg-[#ffffff] text-[1.2em] font-semibold w-full py-3 rounded-[10px] flex 
+                                justify-center items-center cursor-pointer shadow-md
+                                hover:scale-[1.01] transition-all duration-300 hover:bg-[#5F28CD] hover:text-white`
                         } 
                         onClick={handleClick}
                     >
-                        {isOwn ? "Already claimed" : "Claim"}
+                        {isOwn ? "Already claimed" : "Start Assessment"}
                     </div>
                 </section>
 
