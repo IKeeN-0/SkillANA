@@ -1,97 +1,103 @@
-import imgstyle from './profile-img.module.css';
-import style from "../../profile.module.css"
 import { useEditContext } from '../edit';
 import { UploadButton } from "./upload";
 import { useState } from 'react';
-
+import Image from 'next/image';
 
 export default function ProfileImg() {
-
     const {isEdit, updateTempField, tempData} = useEditContext();
     const [isUploading, setIsUploading] = useState(false);
     const [errors, setErrors] = useState({ firstName: false, lastName: false });
     
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>, field: "firstName" | "lastName") => {
-    const val = e.target.value;
-    updateTempField(field, val);
-    setErrors(prev => ({ ...prev, [field]: val.trim() === "" }));
+        const val = e.target.value;
+        updateTempField(field, val);
+        setErrors(prev => ({ ...prev, [field]: val.trim() === "" }));
     };
-
 
     return (
         <>
-        
-        <div id="profile-container" className={imgstyle.profileContainer}>
+            <div id="profile-container" className="relative w-137.5 h-50 flex items-center gap-4">
 
-                <div id="profile-img-wrapper" className={imgstyle.imgWrapper}>
-                    <img src={tempData.profileImg || "user.png"} alt="Profile Picture" id="profile-img" className={imgstyle.img} />
-                    <UploadButton 
-                    endpoint="profileImg"
-                    onUploadBegin={() => {
-                        setIsUploading(true);
-                    }}
-                    headers={{
-                            authorization: `Bearer ${localStorage.getItem("token")}`,
-                    }}
-                    appearance={{
-                        button : imgstyle.uploadBtn,
-                        allowedContent : style.hidden,
-                    }}
-                    content={{
-                       button : <img src="edit.png" alt="upload" className={imgstyle.overlay}></img>
-                    }}
-                    onClientUploadComplete={(res) => {
-                        const url = res?.[0]?.ufsUrl;
-                        updateTempField("profileImg", url);
-                        setIsUploading(false);
-                    }}
-                    onUploadError={() => {
-                        setIsUploading(false);
-                    }}
-                     />
-                </div>
-
-
-
-    <div className={imgstyle.nameWrapper}> 
-    {!isEdit ? (
-        <>
-        <div className={imgstyle.nameRow}>
-            <p className={imgstyle.firstName}>
-                {tempData.firstName || "First Name"}
-            </p>
-            <p className={imgstyle.lastName}>
-                {tempData.lastName || "Last Name"}
-            </p>
-            </div>
-        </>
-    ) : (
-        <>
-           <div className={imgstyle.nameWrapper}>
-                <div className={imgstyle.inputGroup}>
-                    <input
-                        className={`${imgstyle.inputName} ${errors.firstName ? imgstyle.inputError : ""}`}
-                        value={tempData.firstName || ""}
-                        onChange={(e) => handleNameChange(e, "firstName")}
-                        onBlur={() => setErrors(prev => ({ ...prev, firstName: !tempData.firstName?.trim() }))}
+                <div 
+                    id="profile-img-wrapper" 
+                    className="group relative shrink-0 w-40 h-40 rounded-full overflow-hidden flex items-center justify-center border-2 border-solid border-[#ffffff99] [&>div]:absolute [&>div]:top-0 [&>div]:left-0 [&>div]:w-full [&>div]:h-full [&>div]:rounded-full [&>form]:absolute [&>form]:top-0 [&>form]:left-0 [&>form]:w-full [&>form]:h-full [&>form]:rounded-full"
+                >
+                    <Image 
+                        src={tempData.profileImg || "/user.png"} 
+                        alt="Profile Picture" 
+                        fill
+                        className="object-cover object-center" 
+                        sizes="(max-width: 768px) 100vw, 200px"
                     />
-                    {errors.firstName && <p className={imgstyle.errorText}>Please enter your first name</p>}
+                    
+                    {isEdit && (
+                        <UploadButton 
+                            endpoint="profileImg"
+                            onUploadBegin={() => {
+                                setIsUploading(true);
+                            }}
+                            headers={{
+                                    authorization: `Bearer ${localStorage.getItem("token")}`,
+                            }}
+                            appearance={{
+                                button: "w-full h-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 [&_input]:hidden m-0 p-0 rounded-full border-none",
+                                allowedContent: "hidden",
+                                container: "w-full h-full absolute inset-0 rounded-full",
+                            }}
+                            content={{
+                            button: <Image src="/edit.png" alt="upload" width={50} height={50} className="w-12 h-12" />
+                            }}
+                            onClientUploadComplete={(res) => {
+                                const url = res?.[0]?.ufsUrl;
+                                updateTempField("profileImg", url);
+                                setIsUploading(false);
+                            }}
+                            onUploadError={() => {
+                                setIsUploading(false);
+                            }}
+                        />
+                    )}
                 </div>
 
-                <div className={imgstyle.inputGroup}>
-                    <input
-                        className={`${imgstyle.inputName} ${errors.lastName ? imgstyle.inputError : ""}`}
-                        value={tempData.lastName || ""}
-                        onChange={(e) => handleNameChange(e, "lastName")}
-                        onBlur={() => setErrors(prev => ({ ...prev, lastName: !tempData.lastName?.trim() }))}
-                    />
-                    {errors.lastName && <p className={imgstyle.errorText}>Please enter your last name</p>}
+                <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5"> 
+                    {!isEdit ? (
+                        <>
+                            <div className="inline-flex flex-row gap-3 items-center w-200">
+                                <p className="text-[1.6em] font-bold">
+                                    {tempData.firstName || "First Name"}
+                                </p>
+                                <p className="text-[1.6em] font-bold ">
+                                    {tempData.lastName || "Last Name"}
+                                </p>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                           <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5">
+                                <div className="flex flex-col min-h-17.5">
+                                    <input
+                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.firstName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
+                                        value={tempData.firstName || ""}
+                                        onChange={(e) => handleNameChange(e, "firstName")}
+                                        onBlur={() => setErrors(prev => ({ ...prev, firstName: !tempData.firstName?.trim() }))}
+                                    />
+                                    {errors.firstName && <p className="text-[#ef4444] text-[12px] mt-1 ml-10">Please enter your first name</p>}
+                                </div>
+
+                                <div className="flex flex-col min-h-17.5">
+                                    <input
+                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.lastName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
+                                        value={tempData.lastName || ""}
+                                        onChange={(e) => handleNameChange(e, "lastName")}
+                                        onBlur={() => setErrors(prev => ({ ...prev, lastName: !tempData.lastName?.trim() }))}
+                                    />
+                                    {errors.lastName && <p className="text-[#ef4444] text-[12px] mt-1 ml-10">Please enter your last name</p>}
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
-                    </>
-                )}
-            </div>
-                        </div>
         </>
     )
 }
