@@ -1,14 +1,15 @@
 "use client"
-import styles from "./main.module.css"
 import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { ResumeData } from "./templates/type/resume"
-import Template4 from "./templates/template4"
 import Template1 from "./templates/template1"
 import Template2 from "./templates/template2"
 import Template3 from "./templates/template3"
+import Template4 from "./templates/template4"
 import Template5 from "./templates/template5"
+
 export interface IUserProfile {
     _id: string;
     firstName: string;
@@ -79,7 +80,6 @@ interface IBadgeWithCat {
     imgUrl: string;
 }
 
-
 export default function ResumeExport({id} : {id : number}) {
     const [user, setUser] = useState<IUserProfile | null>(null);
     const [badgeInfo, setBadgeInfo] = useState<IBadgeDetail[] | null>(null);
@@ -91,13 +91,58 @@ export default function ResumeExport({id} : {id : number}) {
     const [myResumeData , setMyResumeData] = useState<ResumeData | null>(null)
     const router = useRouter();
 
+    const iconClass = "w-[1.2em] h-[1.2em] shrink-0";
+
     const categories = [
-        { name: "All", icon: "/icon/grid.png" },
-        { name: "Website Development", icon: "/icon/web.png" },
-        { name: "Programming Language", icon: "/icon/programming.png" },
-        { name: "Data Science", icon: "/icon/data.png" },
-        { name: "Database", icon: "/icon/database.png" },
-        { name: "Cloud & DevOps", icon: "/icon/cloud.png" }
+        { 
+            name: "All Badge", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V16zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V16z" />
+                </svg>
+            ) 
+        },
+        { 
+            name: "Website Development", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+            ) 
+        },
+        { 
+            name: "Programming Language", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            ) 
+        },
+        { 
+            name: "Data Science", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                </svg>
+            ) 
+        },
+        { 
+            name: "Database", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                </svg>
+            ) 
+        },
+        { 
+            name: "Cloud & DevOps", 
+            icon: (
+                <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                </svg>
+            ) 
+        }
     ];
 
     useEffect(() => {
@@ -226,54 +271,68 @@ export default function ResumeExport({id} : {id : number}) {
     if (!mounted) return null;
     return (
         <>
-            <section className={styles.AddSkillBox}>
-                <div className={styles.titleContainer}>
-                    <h3>Add your skills</h3>
-                    <p>Select badges to display {`(${numSelectedBadge}/6)`}</p>
-                    <hr />
+            <section className="flex flex-col p-10 pt-20 w-180 overflow-hidden bg-[#23103d] border-r border-[#ffffff1a]">
+                
+                <div className="flex flex-col gap-[0.5em]">
+                    <h3 className="text-[1.5em] font-bold">Add your skills</h3>
+                    <p className="text-[1.1em]">Select badges to display in resume {`(${numSelectedBadge}/6)`}</p>
                 </div>
 
-                <div className={styles.categoryContainer}>
-                    <ul className={styles.categoryList}>
+                <div className="w-full mt-[2em]">
+                    <ul className="flex gap-5 w-full overflow-x-auto pb-3 touch-pan-x 
+                        [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:block [&::-webkit-scrollbar-track]:bg-[#e0e0e0] 
+                        [&::-webkit-scrollbar-track]:rounded-[10px] [&::-webkit-scrollbar-thumb]:bg-[#7050B3] 
+                        [&::-webkit-scrollbar-thumb]:rounded-[10px]"
+                    >
                         {categories.map((cat) => (
                             <li
                                 key={cat.name}
                                 onClick={() => setCurrCat(cat.name)}
-                                className={currCat === cat.name ? styles.active : ""}
+                                className={`shrink-0 flex items-center gap-[.5em] py-[.5em] px-[1em] text-[1.3em] rounded-[50px] cursor-pointer transition-all duration-500 ease-in-out ${currCat === cat.name ? "bg-[#300783] text-[#efe0ff]" : "bg-[#efe0ff] text-[#300783]"}`}
                             >
-                                <img src={cat.icon} alt={cat.name} />
-                                <h5>{cat.name}</h5>
+                                {cat.icon}
+                                <h5 className="text-[smaller] font-semibold">{cat.name}</h5>
                             </li>
                         ))}
                     </ul>
                 </div>
 
-                <h3 className={styles.currentTitle}>{currCat}</h3>
+                <h3 className="text-[1.5em] font-semibold mt-10">{currCat}</h3>
 
-                <div className={styles.badgesDisplay}>
-                   
-                    {badgeWithCat.map((badge, idx) => {
-              
-                        if (currCat !== "All" && badge.category !== currCat) return null;
+                <div className="w-full h-112.5 p-5 mt-[1em] mb-[2.2em] rounded-[15px] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
+                    
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(7em,1fr))] auto-rows-min gap-3 w-full h-full overflow-y-auto pr-2
+                        [&::-webkit-scrollbar]:w-1.5 
+                        [&::-webkit-scrollbar-track]:bg-transparent 
+                        [&::-webkit-scrollbar-thumb]:bg-white/20 
+                        [&::-webkit-scrollbar-thumb]:rounded-full 
+                        hover:[&::-webkit-scrollbar-thumb]:bg-white/40"
+                    >
+                        {badgeWithCat.map((badge, idx) => {
+                            if (currCat !== "All Badge" && badge.category !== currCat) return null;
 
-                        return (
-                            <div
-                                key={badge._id}
-                                className={`${styles.badgeItem} ${isSelected[idx] ? styles.boxCheck : ""}`}
-                                onClick={() => handleClickBadge(idx)}
-                            >
-                                {isSelected[idx] && <img src="/check.png" className={styles.check} alt="checked" />}
-                                <img src={`/${badge.imgUrl}`} alt={badge.badgeName} />
-                                <p>{badge.badgeName}</p>
-                            </div>
-                        );
-                    })}
+                            return (
+                                <div
+                                    key={badge._id}
+                                    className={`text-[0.8em] font-semibold flex flex-col items-center cursor-pointer relative ${isSelected[idx] ? "opacity-50" : ""}`}
+                                    onClick={() => handleClickBadge(idx)}
+                                >
+                                    {isSelected[idx] && (
+                                        <Image src="/check.png" alt="checked" width={80} height={80} className="absolute w-full h-[50%] z-10 object-contain" />
+                                    )}
+                                    
+                                    <Image src={`/${badge.imgUrl}`} alt={badge.badgeName} width={100} height={100} className="w-[60%] h-[70%] object-contain" />
+                                    <p className="mt-2 text-center">{badge.badgeName}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            <section className={styles.resumeBox}>
+            <section className="flex justify-center items-center w-full h-full py-5 overflow-hidden">
                 {myResumeData ? (
-                    <div className={styles.previewWrapper}>
+                    <div className="w-[147mm] h-[207.9mm] relative shrink-0 flex overflow-hidden bg-white shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
                         {
                             id === 1 ? <Template1 data={myResumeData} size="small" /> :
                             id === 2 ? <Template2 data={myResumeData} size="small" /> :
@@ -287,9 +346,12 @@ export default function ResumeExport({id} : {id : number}) {
                 )}
             </section>
 
-            <section className={styles.downloadBox}>
-                <div className = {styles.downloadBtn} onClick={handleDownloadClick}>
-                        <img src="/icon/pdf-file.png" alt="pdf-icon" />
+            <section className="pt-8 h-22 w-110 flex">
+                <div 
+                    className="flex text-[1em] font-semibold items-center justify-center gap-[.5em] w-[80%] p-[3%] bg-[#5F28CD] rounded-[40px] cursor-pointer transition-all duration-200 ease-in hover:bg-[#533d8b]" 
+                    onClick={handleDownloadClick}
+                >
+                        <Image src="/icon/pdf-file.png" alt="pdf-icon" width={40} height={40} className="w-[1.8em] h-[1.8em] invert" />
                         Download PDF
                 </div>
             </section>

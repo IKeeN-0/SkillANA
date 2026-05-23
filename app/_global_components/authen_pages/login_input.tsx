@@ -24,7 +24,6 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
         }
     };
 
-    // จำลอง style[size] ในรูปแบบคลาสของ Tailwind
     const sizeClasses = {
         small: "w-[15em] h-[2.4em]",
         medium: "w-[31em] h-[2.4em]"

@@ -20,8 +20,8 @@ export function Hero(){
     return(
         <div className={styles.containner}>
             <div className={styles.text}>
-                <h1>Instant resume, powered by your skills</h1>
-                <div>Choose a template below to generate your professional resume.</div>
+                <h1 className="text-[2em] font-bold ">Instant resume, powered by your skills</h1>
+                <p className="w-[80%] text-[1.1em] pt-2 ">Choose a template below to generate your professional resume.</p>
             </div>
             <div className={styles.show}>
                 <div className={styles.lineWrapperBack}>
