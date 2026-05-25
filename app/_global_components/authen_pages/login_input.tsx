@@ -32,7 +32,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
     return (
         <div className="flex flex-col mb-[1.4em] ">
             
-            <label className="text-[0.95em] font-[400]">{label}</label>
+            <label className="text-[0.95em] font-normal">{label}</label>
             
             <div className={`relative ${sizeClasses[size]}`}>
                 <input 
@@ -46,13 +46,13 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
                 />
                 
                 <p
-                    className={`absolute left-[10px] top-[115%] z-50 rounded-[4px] bg-[#e71c1c] px-[12px] py-[6px] text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
-                        isError 
+                    className={`absolute left-2.5 top-[115%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
+                        isError && message
                         ? "opacity-100 translate-y-0 scale-100 visible" 
                         : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
                     }`}
                 >
-                    <span className="absolute -top-[6px] left-[15px] h-0 w-0 border-b-[6px] border-b-[#dc2626] border-x-[6px] border-x-transparent" />
+                    <span className="absolute -top-1.5 left-3.75 h-0 w-0 border-b-[6px] border-b-[#dc2626] border-x-[6px] border-x-transparent" />
                     
                     {message}
                 </p>

@@ -83,7 +83,7 @@ interface IBadgeWithCat {
 export default function ResumeExport({id} : {id : number}) {
     const [user, setUser] = useState<IUserProfile | null>(null);
     const [badgeInfo, setBadgeInfo] = useState<IBadgeDetail[] | null>(null);
-    const [currCat, setCurrCat] = useState("All");
+    const [currCat, setCurrCat] = useState("All Badge");
     const [badgeWithCat, setBadgeWithCat] = useState<IBadgeWithCat[]>([]);
     const [numSelectedBadge, setNumSelectedBadge] = useState(0);
     const [isSelected, setIsSelected] = useState<boolean[]>([]); 

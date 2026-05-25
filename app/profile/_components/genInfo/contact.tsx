@@ -20,7 +20,7 @@ export default function Contact() {
                         type="email" 
                         id="email" 
                         className={`${inputBaseClass} h-12.5 text-[14px] font-medium`} 
-                        placeholder="example@gmail.com"
+                        placeholder="e.g., example@gmail.com"
                         readOnly={!isEdit}
                         value={isEdit ? (tempData.email || "") : (liveData.email || "")}
                         onChange={(e) => updateTempField('email', e.target.value)}
@@ -35,7 +35,7 @@ export default function Contact() {
                         type="tel" 
                         id="phone" 
                         className={`${inputBaseClass} h-12.5 font-medium`} 
-                        placeholder="123-456-7890"
+                        placeholder="e.g., 123-456-7890"
                         readOnly={!isEdit}
                         value={data?.phoneNumber || ""}
                         onChange={(e) => updateNestedField('contact', 'phoneNumber', e.target.value)}
@@ -50,7 +50,7 @@ export default function Contact() {
                         id="address" 
                         rows={2}
                         className={`${inputBaseClass} py-3 resize-none font-medium`} 
-                        placeholder="123 Main St, City, State 12345" 
+                        placeholder="e.g., 123 Main St, City, State 12345" 
                         readOnly={!isEdit}
                         value={data?.address || ""}
                         onChange={(e) => updateNestedField('contact', 'address', e.target.value)}
