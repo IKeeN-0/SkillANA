@@ -13,7 +13,7 @@ const OtpInput = forwardRef<HTMLInputElement, OtpInputProps>(
         ref={ref} 
         type="text" 
         className={`w-[1.3em] h-[1.8em] border-none rounded-[5px] text-[xx-large] flex text-center bg-white text-black focus:outline-none ${
-          isError ? "outline outline-[2px] outline-[red]" : ""
+          isError ? "outline outline-[red]" : ""
         }`}
         maxLength={1} 
         inputMode="numeric" 

@@ -38,15 +38,17 @@ export default function Exp() {
                 <h1>Experience {expList.length}/5</h1> 
                 
                 {isEdit && (
-                    <div className="flex justify-end! cursor-pointer text-[32px]">
-                        <h1 
+                    <div className="flex justify-end! cursor-pointer text-[1.1em]">
+                        <button 
                             id="exp-add" 
                             onClick={addNewExp} 
-                            className={`inline-block transition-all duration-200 ease-in-out active:scale-90 ${limitExp ? "opacity-30 cursor-not-allowed! pointer-events-none" : ""}`}
+                            className={`px-2 rounded-lg bg-transparent border-none
+                                transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white/10 active:scale-90 
+                                ${limitExp ? "opacity-30 cursor-not-allowed! pointer-events-none" : ""}`}
                             style={{ cursor: limitExp ? 'not-allowed' : 'pointer' }}
                         >
                             +
-                        </h1>
+                        </button>
                     </div>
                 )}
             </div>
@@ -60,7 +62,7 @@ export default function Exp() {
                         
                         {isEdit && expList.length > 1 && (
                             <button 
-                                className="absolute top-3 right-3 flex items-center justify-center p-2 rounded-lg bg-transparent text-[#ff4d4f] border-none transition-all hover:bg-white/10 hover:scale-110 z-10" 
+                                className="absolute top-3 right-3 flex items-center cursor-pointer justify-center p-2 rounded-lg bg-transparent text-[#ff4d4f] border-none transition-all hover:bg-white/10 hover:scale-110 z-10" 
                                 onClick={() => removeExperience(currentId)}
                                 title="Remove Experience"
                             >
@@ -78,7 +80,7 @@ export default function Exp() {
                                     <input 
                                         type="text" 
                                         className={`${inputBaseClass} h-12.5`} 
-                                        placeholder="Software Engineer" 
+                                        placeholder="e.g., Software Engineer" 
                                         readOnly={!isEdit}
                                         value={exp.title || ""} 
                                         onChange={(e) => updateExperience(currentId, "title", e.target.value)}
@@ -94,7 +96,7 @@ export default function Exp() {
                                         onChange={(date: Date | null) => updateExperience(currentId, "startDate", date)}
                                         className={`${inputBaseClass} h-12.5 ${styles.customDatePicker}`}
                                         wrapperClassName="w-full"   
-                                        placeholderText="Jan 2023"
+                                        placeholderText="e.g., Jan 2023"
                                         readOnly={!isEdit}
                                         dateFormat="MMM yyyy"
                                         showMonthYearPicker
@@ -116,7 +118,7 @@ export default function Exp() {
                                         onChange={(date: Date | null) => updateExperience(currentId, "endDate", date)}
                                         className={`${inputBaseClass} h-12.5 ${styles.customDatePicker}`}
                                         wrapperClassName="w-full"   
-                                        placeholderText="Jan 2026"
+                                        placeholderText="e.g., Jan 2026"
                                         readOnly={!isEdit}
                                         dateFormat="MMM yyyy"
                                         showMonthYearPicker
@@ -136,7 +138,7 @@ export default function Exp() {
                             <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Description</h2>
                             <div className="relative flex w-full items-center">
                                 <textarea 
-                                    // ✅ แก้ไข: กำหนด maxLength และปรับสไตล์ scrollbar
+                                    // กำหนด maxLength และปรับสไตล์ scrollbar
                                     maxLength={300}
                                     className={`${inputBaseClass} py-3 h-30 resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent`} 
                                     placeholder="Describe your responsibilities..." 
@@ -145,7 +147,7 @@ export default function Exp() {
                                     onChange={(e) => updateExperience(currentId, "description", e.target.value)}
                                 />
                             </div>
-                            {/* ✅ แก้ไข: แสดงตัวนับตัวอักษรตอน Edit */}
+                            {/* แสดงตัวนับตัวอักษรตอน Edit */}
                             {isEdit && (
                                 <div className="text-right text-sm text-white/50 mt-1 pr-1 font-medium">
                                     {descLength} / 300

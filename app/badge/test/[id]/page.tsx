@@ -18,8 +18,8 @@ export default async function TestMain({params} : {params : Promise<{ id : strin
             <MainBox id={id}></MainBox>
 
             <footer className="shrink-0 mt-auto">
-                            <Footer />
-                        </footer>
+                <Footer />
+            </footer>
         </div>
     )
 }

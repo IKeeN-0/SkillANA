@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function ProfileImg() {
     const {isEdit, updateTempField, tempData} = useEditContext();
-    const [isUploading, setIsUploading] = useState(false);
+    const [, setIsUploading] = useState(false);
     const [errors, setErrors] = useState({ firstName: false, lastName: false });
     
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>, field: "firstName" | "lastName") => {
@@ -14,13 +14,16 @@ export default function ProfileImg() {
         setErrors(prev => ({ ...prev, [field]: val.trim() === "" }));
     };
 
+    const inputBaseClass = "w-full h-11 text-[1em] text-white font-medium bg-white/5 border border-white/20 rounded-[8px] px-4 focus:bg-white/10 focus:border-white/40 focus:outline-none transition-all duration-300 placeholder-white/40";
+    const labelClass = "block font-semibold mb-1 text-[1.5em] text-white";
+
     return (
         <>
-            <div id="profile-container" className="relative w-137.5 h-50 flex items-center gap-4">
+            <div id="profile-container" className="relative w-[31%] h-50 flex items-center gap-10">
 
                 <div 
                     id="profile-img-wrapper" 
-                    className="group relative shrink-0 w-40 h-40 rounded-full overflow-hidden flex items-center justify-center border-2 border-solid border-[#ffffff99] [&>div]:absolute [&>div]:top-0 [&>div]:left-0 [&>div]:w-full [&>div]:h-full [&>div]:rounded-full [&>form]:absolute [&>form]:top-0 [&>form]:left-0 [&>form]:w-full [&>form]:h-full [&>form]:rounded-full"
+                    className="group relative shrink-0 w-36 h-36 rounded-full overflow-hidden flex items-center justify-center border-2 border-solid border-[#ffffff99] [&>div]:absolute [&>div]:top-0 [&>div]:left-0 [&>div]:w-full [&>div]:h-full [&>div]:rounded-full [&>form]:absolute [&>form]:top-0 [&>form]:left-0 [&>form]:w-full [&>form]:h-full [&>form]:rounded-full"
                 >
                     <Image 
                         src={tempData.profileImg || "/user.png"} 
@@ -59,42 +62,60 @@ export default function ProfileImg() {
                     )}
                 </div>
 
-                <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5"> 
+                <div className="flex flex-row items-center"> 
                     {!isEdit ? (
-                        <>
-                            <div className="inline-flex flex-row gap-3 items-center w-200">
-                                <p className="text-[1.6em] font-bold">
-                                    {tempData.firstName || "First Name"}
-                                </p>
-                                <p className="text-[1.6em] font-bold ">
-                                    {tempData.lastName || "Last Name"}
-                                </p>
-                            </div>
-                        </>
+                        <div className="inline-flex flex-row gap-3 items-center w-200">
+                            <p className="text-[1.6em] font-bold">
+                                {tempData.firstName || "First Name"}
+                            </p>
+                            <p className="text-[1.6em] font-bold">
+                                {tempData.lastName || "Last Name"}
+                            </p>
+                        </div>
                     ) : (
-                        <>
-                           <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5">
-                                <div className="flex flex-col min-h-17.5">
-                                    <input
-                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.firstName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
-                                        value={tempData.firstName || ""}
-                                        onChange={(e) => handleNameChange(e, "firstName")}
-                                        onBlur={() => setErrors(prev => ({ ...prev, firstName: !tempData.firstName?.trim() }))}
-                                    />
-                                    {errors.firstName && <p className="text-[#ef4444] text-[12px] mt-1 ml-10">Please enter your first name</p>}
-                                </div>
-
-                                <div className="flex flex-col min-h-17.5">
-                                    <input
-                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.lastName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
-                                        value={tempData.lastName || ""}
-                                        onChange={(e) => handleNameChange(e, "lastName")}
-                                        onBlur={() => setErrors(prev => ({ ...prev, lastName: !tempData.lastName?.trim() }))}
-                                    />
-                                    {errors.lastName && <p className="text-[#ef4444] text-[12px] mt-1 ml-10">Please enter your last name</p>}
+                        <div className="flex flex-row items-start gap-6">
+                            
+                            <div className="flex flex-col h-28 w-72">
+                                <label className={labelClass}>First Name <span className='text-red-500'>*</span></label>
+                                <input
+                                    maxLength={25}
+                                    className={`${inputBaseClass} ${errors.firstName ? "border-[#ef4444]! bg-[#ef4444]/10!" : ""}`}
+                                    placeholder="e.g., John"
+                                    value={tempData.firstName || ""}
+                                    onChange={(e) => handleNameChange(e, "firstName")}
+                                    onBlur={() => setErrors(prev => ({ ...prev, firstName: !tempData.firstName?.trim() }))}
+                                />
+                                <div className="flex justify-between items-start mt-1 px-1">
+                                    <div className="w-full">
+                                        {errors.firstName && <p className="text-[#ef4444] text-[12px]">Please enter your first name</p>}
+                                    </div>
+                                    <p className="text-white/50 text-[12px] whitespace-nowrap">
+                                        {(tempData.firstName || "").length} / 25
+                                    </p>
                                 </div>
                             </div>
-                        </>
+
+                            <div className="flex flex-col h-28 w-72">
+                                <label className={labelClass}>Last Name <span className='text-red-500'>*</span></label>
+                                <input
+                                    maxLength={25}
+                                    className={`${inputBaseClass} ${errors.lastName ? "border-[#ef4444]! bg-[#ef4444]/10!" : ""}`}
+                                    placeholder="e.g., Doe"
+                                    value={tempData.lastName || ""}
+                                    onChange={(e) => handleNameChange(e, "lastName")}
+                                    onBlur={() => setErrors(prev => ({ ...prev, lastName: !tempData.lastName?.trim() }))}
+                                />
+                                <div className="flex justify-between items-start mt-1 px-1">
+                                    <div className="w-full">
+                                        {errors.lastName && <p className="text-[#ef4444] text-[12px]">Please enter your last name</p>}
+                                    </div>
+                                    <p className="text-white/50 text-[12px] whitespace-nowrap">
+                                        {(tempData.lastName || "").length} / 25
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
                     )}
                 </div>
             </div>

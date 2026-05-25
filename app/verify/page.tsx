@@ -8,23 +8,21 @@ export default function Login(){
     const userEmail = sessionStorage.getItem("pending_email")
     
     return(
-        <div className="relative w-full min-h-screen text-white">
+        <div className="relative w-full text-white">
 
             <div className="absolute inset-0 -z-10">
                 <Bg />
             </div>
 
-            <main className="relative z-10 w-full h-screen flex justify-center">
+            <main className="relative z-10 w-full h-full flex justify-center">
                 
                 <LeftBox></LeftBox>
                 
-                <section className="flex flex-col items-center w-[50%]">
+                <section className="flex flex-col items-center w-[50%] mt-20 ">
 
                     <Link 
                         href='/' 
-                        className="relative inline-block self-start text-[0.9em] mb-[2.7em] text-gray-300 hover:text-white transition-all duration-300 
-                                    after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
-                                    after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                        className="elative inline-block self-start text-[0.9em] ml-[9em] mb-[2em] text-gray-300 hover:text-white transition-all duration-300 ..."
                     >
                         &lt; Back
                     </Link>
