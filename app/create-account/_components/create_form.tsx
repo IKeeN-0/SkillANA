@@ -3,7 +3,6 @@
 import Link from "next/link"
 import InputComponent from "@/app/_global_components/authen_pages/login_input"
 import { useRef, useState } from "react"
-import { json } from "stream/consumers"
 import { useRouter } from "next/navigation";
 import Spinner from "@/app/_global_components/authen_pages/spinner"
 
@@ -136,12 +135,12 @@ export default function CreateAccountForm(){
 
     return (
         <>
-            <section className="box-border my-[2em] flex h-full flex-col">
+            <section className="box-border my-18 flex h-full flex-col">
                 <Link 
                     href='/' 
-                    className="relative inline-block self-start text-[0.9em] mb-[2.7em] text-gray-300 hover:text-white transition-all duration-300 
-                                after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-white 
-                                after:opacity-0 after:translate-y-[2px] hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                    className="relative inline-block self-start text-[0.9em] mb-10 text-gray-300 hover:text-white transition-all duration-300 
+                                after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
+                                after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                 >
                     &lt; Back
                 </Link>
@@ -183,8 +182,8 @@ export default function CreateAccountForm(){
                         <Link 
                             href="/login" 
                             className="relative inline-block self-start mb-[1em] text-[#dfa8ff] font-semibold ml-[0.7em] hover:text-[#ba44ff] transition-all duration-300 
-                                after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-gray-300 
-                                after:opacity-0 after:translate-y-[2px] hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                                after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-gray-300 
+                                after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                         >
                             Login
                         </Link> 

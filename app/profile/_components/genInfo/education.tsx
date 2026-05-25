@@ -20,7 +20,7 @@ export default function Education() {
                         type="text" 
                         id="education" 
                         className={`${inputBaseClass} h-12.5 text-[14px] font-medium`} 
-                        placeholder="Bachelor's Degree"
+                        placeholder="e.g., Bachelor's Degree"
                         readOnly={!isEdit}
                         value={data?.level || ""}
                         onChange={(e) => updateNestedField('education', 'level', e.target.value)}
@@ -35,7 +35,7 @@ export default function Education() {
                         type="text" 
                         id="major" 
                         className={`${inputBaseClass} h-12.5 text-[14px] font-medium`} 
-                        placeholder="Computer Science"
+                        placeholder="e.g., Computer Science"
                         readOnly={!isEdit}
                         value={data?.major || ""}
                         onChange={(e) => updateNestedField('education', 'major', e.target.value)}
@@ -50,7 +50,7 @@ export default function Education() {
                         type="text" 
                         id="school" 
                         className={`${inputBaseClass} h-12.5 text-[14px] font-medium`} 
-                        placeholder="Kmutt"
+                        placeholder="e.g., Kmutt"
                         readOnly={!isEdit}
                         value={data?.university || ""}
                         onChange={(e) => updateNestedField('education', 'university', e.target.value)}

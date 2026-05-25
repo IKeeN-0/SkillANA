@@ -104,7 +104,7 @@ export default function BadgePage({ id }: InputProps) {
                 
                 {/* รูป */}
                 <section className="flex ">
-                    <div className="bg-white w-[90%] h-70 my-auto rounded-[10px] flex justify-center items-center">
+                    <div className="bg-white w-[90%] h-65 rounded-[10px] flex justify-center items-center">
                         <div className="relative w-[35%] h-[55%]">
                             {imgUrl && (
                                 <Image 
@@ -145,23 +145,22 @@ export default function BadgePage({ id }: InputProps) {
                         )}
                     </div>
 
-                    {/* .description */}
-                    <div className="max-w-[90%] text-[1.1em] leading-9 wrap-break-word mt-3.5">
+                    <div className="max-w-[90%] text-[1.1em] leading-7 wrap-break-word mt-3.5">
                         <p className="text-[smaller]">{badgeDescription}</p>
                     </div>
 
                     <section className="bg-[#ffffff96] text-[#4c1156] rounded-2xl mt-3 mb-5 p-5">
-                        <p className="text-[1em] font-bold mb-1.5">To earn the badge, you must pass the test based on the following criteria :</p>
+                        <p className="text-[1.1em] font-bold mb-1.5">To earn the badge, you must pass the test based on the following criteria :</p>
 
                         <div className="grid grid-cols-[160px_auto] gap-2.5 mt-2.5">
-                            <p className="text-sm font-medium">Number of Questions:</p>
-                            <p className="text-sm font-bold">10 <span className="font-normal">Questions</span></p>
+                            <p className="text-[0.9em] font-medium">Number of Questions:</p>
+                            <p className="text-[0.9em] font-bold">{nQuestion} <span className="font-normal">Questions</span></p>
 
-                            <p className="text-sm font-medium">Time Limit:</p>
-                            <p className="text-sm font-bold">10 <span className="font-normal">Minutes</span></p>
+                            <p className="text-[0.9em] font-medium">Time Limit:</p>
+                            <p className="text-[0.9em] font-bold">{tLimit} <span className="font-normal">Minutes</span></p>
 
-                            <p className="text-sm font-medium">Passing Score:</p>
-                            <p className="text-sm font-bold">7 <span className="font-normal">or more correct answers</span></p>
+                            <p className="text-[0.9em] font-medium">Passing Score:</p>
+                            <p className="text-[0.9em] font-bold">{pScore} <span className="font-normal">or more correct answers</span></p>
                         </div>
                     </section>
 
@@ -171,9 +170,9 @@ export default function BadgePage({ id }: InputProps) {
                                 flex justify-center items-center shadow-md cursor-not-allowed 
                                 hover:bg-[#4d4d4d] hover:text-[#bdbdbd] transition-all duration-300`
 
-                            : `text-[#5F28CD] bg-[#ffffff] text-[1.2em] font-semibold w-full py-3 rounded-[10px] flex 
+                            : `text- bg-[#5F28CD] text-[1.2em] font-semibold w-full py-3 rounded-[10px] flex 
                                 justify-center items-center cursor-pointer shadow-md
-                                hover:scale-[1.01] transition-all duration-300 hover:bg-[#5F28CD] hover:text-white`
+                                hover:scale-[1.01] transition-all duration-300 hover:bg-[#3e1394] hover:text-white`
                         } 
                         onClick={handleClick}
                     >

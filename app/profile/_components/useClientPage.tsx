@@ -20,7 +20,7 @@ const ProfileHeader = () => {
       <div className={`flex justify-center items-center ${isEdit ? "invisible" : "visible"}`}>
         
         <button 
-          className="w-35 py-3 text-[1.2em] font-bold bg-[rgb(85,142,85)] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgba(54,136,54,0.8)] active:scale-[0.98]" 
+          className="w-40 py-3 text-[1.2em] font-bold bg-[#5F28CD] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[#3e1394] active:scale-[0.98]" 
           onClick={() => setEditing(true)}
         >
           Edit Profile

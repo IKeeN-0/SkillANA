@@ -24,8 +24,8 @@ export default function Popup() {
                     </button>
                     
                     <button 
-                        className={`mr-5 w-63 h-12 text-[1.1em] font-bold bg-[rgb(54,136,54)] text-white border-none rounded-[0.625rem] cursor-pointer transition-colors duration-200 hover:bg-[rgb(14,93,14)] ${
-                            !isValid ? "opacity-40 cursor-not-allowed" : ""
+                        className={`mr-5 w-63 h-12 text-[1.1em] font-bold bg-[#5F28CD] text-white border-none rounded-[0.625rem]  transition-colors duration-200 hover:bg-[#3e1394] ${
+                            !isValid ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
                         }`}
                         onClick={() => { if (isValid) { setEditing(false); saveData(); } }}
                         disabled={!isValid}
