@@ -12,7 +12,6 @@ export default function Popup() {
         <>
             <div 
                 className="fixed bottom-10 left-1/2 -translate-x-1/2 w-300 h-20 bg-[#ffffff] flex justify-end items-center rounded-[0.625rem]" 
-                onClick={() => setEditing(false)}
             >
                 <div className="inline-flex gap-2.5">
                     

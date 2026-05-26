@@ -51,11 +51,10 @@ export function Navbar() {
         <ul className="flex gap-[3.437rem] group/menu justify-center">
           {navLinks.map((link, index) => {
             
-            // 3. แก้ไขเงื่อนไข isActive ตรงนี้!
-            // ตัดเครื่องหมาย '/' ด้านหน้าออกเพื่อเอาไปเทียบกับ fromSource (เช่น '/skills' กลายเป็น 'skills')
+            // แก้ไขเงื่อนไข isActive
             const linkNameForCheck = link.href.replace('/', ''); 
             
-            // ถัาอยู่หน้า /badge และ query ?from=... ตรงกับเมนูนี้ ให้ถือว่า Active
+            // ถัาอยู่หน้า /badge และ query ?from=... ตรงกับเมนูนี้ ให้ Active
             const isTestOrResultRoute = pathname.startsWith('/badge/test') || pathname.includes('/result');
 
             const isResumeExportRoute = pathname.includes('/resume-export');
@@ -67,7 +66,7 @@ export function Navbar() {
             const isActive = 
               pathname.startsWith(link.href) || 
               isBadgeRouteActive || 
-              (isResumeExportRoute && link.href === '/my-resume'); // ถ้าเป็นหน้า export และเมนูคือ my-resume ให้ Active ทันที
+              (isResumeExportRoute && link.href === '/my-resume'); // ถ้าเป็นหน้า export และเมนูคือ my-resume ให้ Active
             
             const liWidth = index === 0 || index === 1 ? 'w-[6.875rem]' : 'w-[8.75rem]';
             

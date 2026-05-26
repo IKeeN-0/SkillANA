@@ -89,12 +89,10 @@ export default function Section({ category, badges, user, mode }: Prop) {
 
     }, [badges, user]);
 
-    // 🚨 1. ปรับมาเรียงลำดับหมวดหมู่ (Sort) ตรงนี้ก่อน เพื่อให้รู้ว่าหมวดไหนอยู่บนสุด
     const sortedGroups = useMemo(() => {
         return Object.entries(group).sort((a, b) => a[1].order - b[1].order);
     }, [group]);
 
-    // 🚨 2. ดึง ID ของหมวดหมู่แรกสุดออกมา (ในที่นี้คือ Website Development)
     const firstCategoryId = sortedGroups[0]?.[0];
 
     const fromQuery = mode === "collections" ? "collections" : "skills";
@@ -107,11 +105,9 @@ export default function Section({ category, badges, user, mode }: Prop) {
         const container = document.getElementById('scrollable-section');
         if (!container) return;
 
-        // 🚨 3. เงื่อนไขเคล็ดลับ: ถ้ากด 'all' หรือกดหมวดหมู่แรกสุด (Web) ให้เลื่อนไปที่ top: 0 เหมือนกันเป๊ะ
         if (category === 'all' || category === firstCategoryId) {
             container.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            // หมวดหมู่อื่นๆ (ลำดับ 2 เป็นต้นไป) ให้เลื่อนไปหา ID ตามปกติ
             const targetElement = document.getElementById(`category-${category}`);
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -161,30 +157,37 @@ export default function Section({ category, badges, user, mode }: Prop) {
                                                 >
                                                     <div className="relative w-[6em] h-[6em] mb-[0.7em] z-10 transition-transform duration-300 group-hover:scale-105">
                                                         <Link href={`/badge/${b._id}?from=${fromQuery}`}>
-                                                            <Image
-                                                                src={`/${b.imgUrl}`}
-                                                                alt={b.badgeName}
-                                                                width={100}
-                                                                height={100}
-                                                                className={`w-full h-full object-contain transition-all ${
-                                                                    b.owned ? 'border-[0.15em] border-solid border-[#00B87A] rounded-full opacity-85' : ''
-                                                                }`}
-                                                            />
+                                                            
+                                                            <div className={`w-full h-full rounded-full flex items-center justify-center transition-all duration-500 ${
+                                                                b.owned 
+                                                                ? "drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]" // ถ้ามีแล้ว: เรืองแสงสีเขียวอ่อนๆ
+                                                                : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100" // ถ้ายังไม่มี: ขาวดำและจางลง (แต่พอเอาเมาส์ชี้จะสว่างขึ้นมา)
+                                                            }`}>
+                                                                <Image
+                                                                    src={`/${b.imgUrl}`}
+                                                                    alt={b.badgeName}
+                                                                    width={100}
+                                                                    height={100}
+                                                                    className="w-full h-full object-contain"
+                                                                />
+                                                            </div>
                                                             
                                                             {b.owned && (
                                                                 <Image
                                                                     src="/badgePass.png"
                                                                     alt="owned"
-                                                                    width={45}
-                                                                    height={45}
-                                                                    className="absolute top-0 left-16 rounded-full z-20"
+                                                                    width={35}
+                                                                    height={35}
+                                                                    className="absolute -top-1 -right-1 z-20 drop-shadow-md" 
                                                                 />
                                                             )}
                                                         </Link>
                                                     </div>
     
                                                     <div className="flex flex-col items-center justify-center w-full mt-1">
-                                                        <h3 className="text-[14px] font-semibold text-white/90 group-hover:text-white transition-colors duration-300 leading-tight wrap-break-word max-w-full px-1">
+                                                        <h3 className={`text-[14px] font-semibold transition-colors duration-300 leading-tight wrap-break-word max-w-full px-1 ${
+                                                            b.owned ? "text-white" : "text-white/40 group-hover:text-white/90"
+                                                        }`}>
                                                             {b.badgeName}
                                                         </h3>
                                                     </div>
