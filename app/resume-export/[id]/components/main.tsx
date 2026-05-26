@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import Link from "next/link"
 import { ResumeData } from "./templates/type/resume"
 import Template1 from "./templates/template1"
 import Template2 from "./templates/template2"
@@ -271,15 +272,25 @@ export default function ResumeExport({id} : {id : number}) {
     if (!mounted) return null;
     return (
         <>
-            <section className="flex flex-col p-10 pt-20 w-180 overflow-hidden bg-[#23103d] border-r border-[#ffffff1a]">
+            <section className="flex flex-col p-8 py-10 shrink-0 w-[30%] min-w-87.5 max-w-112.5 h-full max-h-screen overflow-y-auto bg-[#23103d] border-r border-[#ffffff1a] 
+                [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40">
                 
+                    <Link 
+                        href='/my-resume' 
+                        className="relative inline-block self-start text-[0.95em] mb-3 text-gray-300 hover:text-white transition-all duration-300 
+                                    after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
+                                    after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                    >
+                        &lt; Go Back
+                    </Link>
+
                 <div className="flex flex-col gap-[0.5em]">
                     <h3 className="text-[1.5em] font-bold">Add your skills</h3>
                     <p className="text-[1.1em]">Select badges to display in resume {`(${numSelectedBadge}/6)`}</p>
                 </div>
 
                 <div className="w-full mt-[2em]">
-                    <ul className="flex gap-5 w-full overflow-x-auto pb-3 touch-pan-x 
+                    <ul className="flex gap-5 w-full overflow-x-auto pb-3 touch-pan-x
                         [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:block [&::-webkit-scrollbar-track]:bg-[#e0e0e0] 
                         [&::-webkit-scrollbar-track]:rounded-[10px] [&::-webkit-scrollbar-thumb]:bg-[#7050B3] 
                         [&::-webkit-scrollbar-thumb]:rounded-[10px]"
@@ -288,7 +299,10 @@ export default function ResumeExport({id} : {id : number}) {
                             <li
                                 key={cat.name}
                                 onClick={() => setCurrCat(cat.name)}
-                                className={`shrink-0 flex items-center gap-[.5em] py-[.5em] px-[1em] text-[1.3em] rounded-[50px] cursor-pointer transition-all duration-500 ease-in-out ${currCat === cat.name ? "bg-[#300783] text-[#efe0ff]" : "bg-[#efe0ff] text-[#300783]"}`}
+                                className={`shrink-0 flex items-center gap-[.5em] py-[.5em] px-[1em] text-[1.3em] rounded-[50px] cursor-pointer 
+                                    transition-all duration-500 ease-in-out 
+                                    ${currCat === cat.name ? "bg-[#300783] text-[#efe0ff]"
+                                    : "bg-[#efe0ff] text-[#300783] hover:bg-[#5F28CD] hover:text-white"}`}
                             >
                                 {cat.icon}
                                 <h5 className="text-[smaller] font-semibold">{cat.name}</h5>
@@ -299,9 +313,9 @@ export default function ResumeExport({id} : {id : number}) {
 
                 <h3 className="text-[1.5em] font-semibold mt-10">{currCat}</h3>
 
-                <div className="w-full h-112.5 p-5 mt-[1em] mb-[2.2em] rounded-[15px] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
+                <div className="w-full flex-1 min-h-75 p-5 mt-[1em] mb-[2.2em] rounded-[15px] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)] flex flex-col">
                     
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(7em,1fr))] auto-rows-min gap-3 w-full h-full overflow-y-auto pr-2
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(6em,1fr))] auto-rows-min gap-4 w-full h-full overflow-y-auto p-2 pr-3
                         [&::-webkit-scrollbar]:w-1.5 
                         [&::-webkit-scrollbar-track]:bg-transparent 
                         [&::-webkit-scrollbar-thumb]:bg-white/20 
@@ -311,18 +325,39 @@ export default function ResumeExport({id} : {id : number}) {
                         {badgeWithCat.map((badge, idx) => {
                             if (currCat !== "All Badge" && badge.category !== currCat) return null;
 
+                            const selected = isSelected[idx];
+
                             return (
                                 <div
                                     key={badge._id}
-                                    className={`text-[0.8em] font-semibold flex flex-col items-center cursor-pointer relative ${isSelected[idx] ? "opacity-50" : ""}`}
+                                    className={`relative p-2 text-[0.8em] font-semibold flex flex-col items-center justify-between cursor-pointer rounded-xl transition-all duration-300 ease-in-out ${
+                                        selected 
+                                        ? "bg-[#5F28CD]/40 border border-[#dfa8ff]/60 shadow-[0_0_15px_rgba(155,81,224,0.5)] scale-105 z-10" 
+                                        : "border border-transparent hover:bg-white/5 hover:scale-105 z-0"
+                                    }`}
                                     onClick={() => handleClickBadge(idx)}
                                 >
-                                    {isSelected[idx] && (
-                                        <Image src="/check.png" alt="checked" width={80} height={80} className="absolute w-full h-[50%] z-10 object-contain" />
+                                    {selected && (
+                                        <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-[#10b981] rounded-full flex items-center justify-center shadow-[0_0_8px_rgba(16,185,129,0.8)] z-10">
+                                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
                                     )}
                                     
-                                    <Image src={`/${badge.imgUrl}`} alt={badge.badgeName} width={100} height={100} className="w-[60%] h-[70%] object-contain" />
-                                    <p className="mt-2 text-center">{badge.badgeName}</p>
+                                    <div className="w-full flex justify-center items-center aspect-square">
+                                        <Image 
+                                            src={`/${badge.imgUrl}`} 
+                                            alt={badge.badgeName} 
+                                            width={100} 
+                                            height={100} 
+                                            className={`w-[70%] h-[70%] object-contain transition-all duration-300 ${selected ? "drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" : ""}`} 
+                                        />
+                                    </div>
+                                    
+                                    <p className={`mt-1 text-center w-full transition-colors duration-300 leading-tight ${selected ? "text-[#dfa8ff]" : "text-white"}`}>
+                                        {badge.badgeName}
+                                    </p>
                                 </div>
                             );
                         })}
@@ -338,7 +373,7 @@ export default function ResumeExport({id} : {id : number}) {
                             id === 2 ? <Template2 data={myResumeData} size="small" /> :
                             id === 3 ? <Template3 data={myResumeData} size="small" /> :
                             id === 5 ? <Template5 data={myResumeData} size="small" /> :
-                            <Template4 data={myResumeData} size="small" /> // default
+                            <Template4 data={myResumeData} size="small" /> 
                         }
                     </div>
                 ) : (
