@@ -277,7 +277,7 @@ export default function ResumeExport({id} : {id : number}) {
                 
                     <Link 
                         href='/my-resume' 
-                        className="relative inline-block self-start text-[0.95em] mb-3 text-gray-300 hover:text-white transition-all duration-300 
+                        className="relative inline-block self-start text-[1.1em] mb-4 text-gray-300 hover:text-white transition-all duration-300 
                                     after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
                                     after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                     >
@@ -355,7 +355,7 @@ export default function ResumeExport({id} : {id : number}) {
                                         />
                                     </div>
                                     
-                                    <p className={`mt-1 text-center w-full transition-colors duration-300 leading-tight ${selected ? "text-[#dfa8ff]" : "text-white"}`}>
+                                    <p className={`text-[1.1em] text-center w-full transition-colors duration-300 leading-tight ${selected ? "text-[#dfa8ff]" : "text-white"}`}>
                                         {badge.badgeName}
                                     </p>
                                 </div>
@@ -381,7 +381,7 @@ export default function ResumeExport({id} : {id : number}) {
                 )}
             </section>
 
-            <section className="pt-8 h-22 w-110 flex">
+            <section className="pt-12 h-27 w-110 flex">
                 <div 
                     className="flex text-[1em] font-semibold items-center justify-center gap-[.5em] w-[80%] p-[3%] bg-[#5F28CD] rounded-[40px] cursor-pointer transition-all duration-200 ease-in hover:bg-[#533d8b]" 
                     onClick={handleDownloadClick}

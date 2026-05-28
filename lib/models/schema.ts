@@ -11,6 +11,8 @@ interface IEducation {
   level: string;
   major: string;
   university: string;
+  startDate: string | Date;
+  endDate?: string | Date;
 }
 
 interface IExperience {
@@ -34,7 +36,7 @@ export interface IUser extends Document {
   password?: string;
   aboutMe?: string;
   contact: IContact;
-  education: IEducation[];
+  education: IEducation;
   experience: IExperience[];
   badges: IUserBadge[];
   createdAt: Date;
@@ -126,10 +128,12 @@ const UserSchema = new Schema<IUser>(
       address: { type: String, default: "" }
     },
     education: {
-    level: { type: String, default: "" },
-    major: { type: String, default: "" },
-    university: { type: String, default: "" }
-  },
+        level: { type: String, default: "" },
+        major: { type: String, default: "" },
+        university: { type: String, default: "" },
+        startDate: { type: Date },
+        endDate: { type: Date }
+      },
   profileImg : {
       type : String,
       default : "",

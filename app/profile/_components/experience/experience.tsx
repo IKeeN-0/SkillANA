@@ -3,7 +3,7 @@
 import { useEditContext } from "../edit";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import styles from "./experience.module.css" // นำเข้าสไตล์ CSS Module
+import styles from "./experience.module.css" 
 
 const getExpId = (exp : any) => String(exp._id ?? exp.id);
 
@@ -29,7 +29,18 @@ export default function Exp() {
         }
     }
     
-    const inputBaseClass = "text-white text-[16px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium";
+    const isPresentDate = (dateVal: any) => {
+        if (!dateVal) return false;
+        const selected = new Date(dateVal);
+        const now = new Date();
+        
+        return (
+            selected.getFullYear() > now.getFullYear() || 
+            (selected.getFullYear() === now.getFullYear() && selected.getMonth() >= now.getMonth())
+        );
+    };
+
+    const inputBaseClass = "text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium";
 
     return (
         <div id="experience-container" className="text-[1.6em] font-bold w-325">    
@@ -56,6 +67,12 @@ export default function Exp() {
             {expList.map((exp, index) => {
                 const currentId = getExpId(exp);
                 const descLength = exp.description?.length || 0;
+
+                // ====== 1. สร้างเงื่อนไขเช็คว่าวันที่ผิดพลาดหรือไม่ สำหรับแต่ละกล่อง ======
+                const startDateObj = exp.startDate ? new Date(exp.startDate) : null;
+                const endDateObj = exp.endDate ? new Date(exp.endDate) : null;
+                const isDateError = startDateObj && endDateObj && startDateObj > endDateObj;
+                // ==========================================================
 
                 return (
                     <div key={currentId} className="relative block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-full transition-all duration-300 rounded-2xl mb-5">
@@ -92,9 +109,10 @@ export default function Exp() {
                                 <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Start Date</h2>
                                 <div className="relative flex w-full items-center">
                                     <DatePicker
-                                        selected={exp.startDate ? new Date(exp.startDate) : null}
+                                        selected={startDateObj}
                                         onChange={(date: Date | null) => updateExperience(currentId, "startDate", date)}
-                                        className={`${inputBaseClass} h-12.5 ${styles.customDatePicker}`}
+                                        portalId="root-portal"
+                                        className={`${inputBaseClass} h-12.5 text-[14px] font-medium ${isDateError ? 'border-[#e71c1c]! !focus:border-[#e71c1c]' : ''} ${styles.customDatePicker || ""}`}
                                         wrapperClassName="w-full"   
                                         placeholderText="e.g., Jan 2023"
                                         readOnly={!isEdit}
@@ -114,9 +132,11 @@ export default function Exp() {
                                 <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">End Date</h2>
                                 <div className="relative flex w-full items-center">
                                     <DatePicker
-                                        selected={exp.endDate ? new Date(exp.endDate) : null}
+                                        selected={endDateObj}
                                         onChange={(date: Date | null) => updateExperience(currentId, "endDate", date)}
-                                        className={`${inputBaseClass} h-12.5 ${styles.customDatePicker}`}
+                                        value={exp.endDate && isPresentDate(exp.endDate) ? "Present" : undefined}
+                                        portalId="root-portal"
+                                        className={`${inputBaseClass} h-12.5 text-[14px] font-medium ${isDateError ? 'border-[#e71c1c]! !focus:border-[#e71c1c]' : ''} ${styles.customDatePicker || ""}`}
                                         wrapperClassName="w-full"   
                                         placeholderText="e.g., Jan 2026"
                                         readOnly={!isEdit}
@@ -129,16 +149,25 @@ export default function Exp() {
                                         scrollableYearDropdown
                                         yearDropdownItemNumber={10}
                                     />
+
+                                    <p
+                                        className={`absolute top-[125%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out whitespace-nowrap ${
+                                            isDateError && isEdit
+                                            ? "opacity-100 translate-y-0 scale-100 visible" 
+                                            : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
+                                        }`}
+                                    >
+                                        <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0 w-0 border-b-[6px] border-b-[#e71c1c] border-x-[6px] border-x-transparent" />
+                                        Incorrect date, please update.
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* แถวล่าง: Description */}
-                        <div className="block mt-5 px-2 w-full">
+                        <div className="block mt-4 px-2 w-full">
                             <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Description</h2>
                             <div className="relative flex w-full items-center">
                                 <textarea 
-                                    // กำหนด maxLength และปรับสไตล์ scrollbar
                                     maxLength={300}
                                     className={`${inputBaseClass} py-3 h-30 resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent`} 
                                     placeholder="Describe your responsibilities..." 
@@ -147,7 +176,6 @@ export default function Exp() {
                                     onChange={(e) => updateExperience(currentId, "description", e.target.value)}
                                 />
                             </div>
-                            {/* แสดงตัวนับตัวอักษรตอน Edit */}
                             {isEdit && (
                                 <div className="text-right text-sm text-white/50 mt-1 pr-1 font-medium">
                                     {descLength} / 300
@@ -156,10 +184,8 @@ export default function Exp() {
                         </div>
                         
                     </div>
-                    
                 );
             })}
-            
         </div>
     );
 }
