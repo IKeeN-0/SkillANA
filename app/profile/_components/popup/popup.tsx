@@ -21,8 +21,10 @@ export default function Popup() {
         return expStart && expEnd && expStart > expEnd;
     });
 
-    const canSave = hasName && !hasEduError && !hasExpError;
+    const hasAboutMeError = (tempData.aboutMe || "").length > 300;
+    const hasExpDescError = (tempData.experience || []).some(exp => (exp.description || "").length > 300);
 
+    const canSave = hasName && !hasEduError && !hasExpError && !hasAboutMeError && !hasExpDescError;
     return (
         <>
             <div 
