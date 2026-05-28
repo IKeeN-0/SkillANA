@@ -53,7 +53,9 @@ export function Template(){
         const hasEducation = userData.education && 
                              userData.education.level?.trim() !== "" &&
                              userData.education.university?.trim() !== "" &&
-                             userData.education.major?.trim() !== "";
+                             userData.education.major?.trim() !== "" &&
+                             userData.education.startDate && 
+                             userData.education.endDate;
         const hasExperience = Array.isArray(userData.experience) && userData.experience.length > 0;
         return hasNames && hasAboutMe && hasContact && hasEducation && hasExperience;
     };
@@ -123,11 +125,11 @@ export function Template(){
                     <div className={`bg-[#3A1C63] p-9 rounded-[15px] text-center w-md h-auto shadow-[0_10px_30px_rgba(0,0,0,0.3)] ${styles.incompleteBoxAni}`} onClick={(e) => e.stopPropagation()}>
                         
                         <Image src="/info.png" alt="info logo" width={100} height={100} className="w-[22%] mb-4 inline-block" />
-                        <h3 className="mb-3">Incomplete Profile</h3>
-                        <p className="mb-[0.7rem]">You haven't finished setting up your profile. Would you like to continue anyway?</p>
+                        <h3 className="mb-3 text-[1.5em] font-bold">Incomplete Profile</h3>
+                        <p className="mb-4">You haven't finished setting up your profile. Would you like to continue anyway?</p>
             
                         <button 
-                            className="border-none text-white font-inherit bg-[#5F28CD] py-4 px-13 rounded-[50px] text-[1rem] transition-all duration-150 ease-in cursor-pointer hover:bg-[#4716a9]" 
+                            className="border-none text-white font-inherit bg-[#5F28CD] py-4 px-13 rounded-[50px] text-[1rem] font-semibold transition-all duration-150 ease-in cursor-pointer hover:bg-[#4716a9]" 
                             onClick={() => router.push('/profile')}
                         >
                             Go to Profile

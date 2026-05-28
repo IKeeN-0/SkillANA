@@ -8,9 +8,11 @@ export type ResumeData = {
       address: string
     },
     education: {
-    level: string,
-    major: string,
-    university: string
+      level: string,
+      major: string,
+      university: string,
+      startDate: string,
+      endDate: string
   },
     profileImg : string
     ,
