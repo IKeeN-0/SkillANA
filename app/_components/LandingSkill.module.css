@@ -1,0 +1,20 @@
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-up {
+  animation: scrollUp 160s linear infinite; 
+}
+
+.badge-grid-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem; /* ระยะห่างระหว่าง Badge */
+  padding-bottom: 3rem; /* ระยะห่างระหว่างชุดที่ 1 และ 2 เท่ากัน */
+}

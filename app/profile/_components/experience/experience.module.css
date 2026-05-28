@@ -66,3 +66,7 @@
 :global(.react-datepicker__close-icon:hover::after) {
     color: white !important;
 }
+
+:global(.react-datepicker-popper) {
+    z-index: 9999 !important;
+}
