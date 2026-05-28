@@ -26,6 +26,8 @@ export interface ProfileData {
         level: string;
         major: string;
         university: string;
+        startDate?: string | Date;
+        endDate?: string | Date;
     },
     aboutMe: string;
     experience: Experience[];
@@ -152,37 +154,54 @@ export const EditProvider = ({ children, initialData }: { children: ReactNode, i
         setIsEdit(true);
     };
     const saveData = async () => {
-    try {
-        const token = localStorage.getItem("token");
+        const eduStart = tempData.education?.startDate ? new Date(tempData.education.startDate) : null;
+        const eduEnd = tempData.education?.endDate ? new Date(tempData.education.endDate) : null;
         
-        
-        const decoded = jwtDecode(token!) as { id: string };
-        const userId = decoded.id;
-
-        
-        const res = await fetch(`/api/users/${userId}`, {
-            method: "PUT", 
-            headers: { 
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` 
-            },
-            body: JSON.stringify(tempData) 
-        });
-        
-        if (res.ok) {
-            const updatedData = await res.json();
-            console.log("Database updated successfully!");
-            
-            
-            setLiveData(tempData);
-            setIsEdit(false);
-        } else {
-            console.error("Failed to save to database");
+        if (eduStart && eduEnd && eduStart > eduEnd) {
+            return;
         }
-    } catch (error) {
-        console.error("Save Error:", error);
-    }
-};
+
+        const hasExpDateError = tempData.experience.some(exp => {
+            const expStart = exp.startDate ? new Date(exp.startDate) : null;
+            const expEnd = exp.endDate ? new Date(exp.endDate) : null;
+            return expStart && expEnd && expStart > expEnd;
+        });
+
+        if (hasExpDateError) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            
+            
+            const decoded = jwtDecode(token!) as { id: string };
+            const userId = decoded.id;
+
+            
+            const res = await fetch(`/api/users/${userId}`, {
+                method: "PUT", 
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` 
+                },
+                body: JSON.stringify(tempData) 
+            });
+            
+            if (res.ok) {
+                const updatedData = await res.json();
+                console.log("Database updated successfully!");
+                
+                
+                setLiveData(tempData);
+                setIsEdit(false);
+            } else {
+                console.error("Failed to save to database");
+            }
+        } catch (error) {
+            console.error("Save Error:", error);
+        }
+    };
 
     const reset = () => {
         setTempData(liveData);
