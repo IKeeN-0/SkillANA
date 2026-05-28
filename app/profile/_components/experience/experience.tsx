@@ -68,11 +68,10 @@ export default function Exp() {
                 const currentId = getExpId(exp);
                 const descLength = exp.description?.length || 0;
 
-                // ====== 1. สร้างเงื่อนไขเช็คว่าวันที่ผิดพลาดหรือไม่ สำหรับแต่ละกล่อง ======
+                // สร้างเงื่อนไขเช็คว่าวันที่ผิดพลาดหรือไม่ สำหรับแต่ละกล่อง
                 const startDateObj = exp.startDate ? new Date(exp.startDate) : null;
                 const endDateObj = exp.endDate ? new Date(exp.endDate) : null;
                 const isDateError = startDateObj && endDateObj && startDateObj > endDateObj;
-                // ==========================================================
 
                 return (
                     <div key={currentId} className="relative block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-full transition-all duration-300 rounded-2xl mb-5">
@@ -168,16 +167,27 @@ export default function Exp() {
                             <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Description</h2>
                             <div className="relative flex w-full items-center">
                                 <textarea 
-                                    maxLength={300}
-                                    className={`${inputBaseClass} py-3 h-30 resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent`} 
+                                    className={`${inputBaseClass} py-3 h-30 resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent ${descLength > 300 ? 'border-[#e71c1c]! !focus:border-[#e71c1c]' : ''}`}
                                     placeholder="Describe your responsibilities..." 
                                     readOnly={!isEdit}
                                     value={exp.description || ""}
                                     onChange={(e) => updateExperience(currentId, "description", e.target.value)}
                                 />
+
+                                <p
+                                    className={`absolute top-[105%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out whitespace-nowrap ${
+                                        descLength > 300 && isEdit
+                                        ? "opacity-100 translate-y-0 scale-100 visible" 
+                                        : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
+                                    }`}
+                                >
+                                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0 w-0 border-b-[6px] border-b-[#e71c1c] border-x-[6px] border-x-transparent" />
+                                    Character limit exceeded.
+                                </p>
                             </div>
+                            
                             {isEdit && (
-                                <div className="text-right text-sm text-white/50 mt-1 pr-1 font-medium">
+                                <div className={`text-right text-sm mt-1 pr-1 font-medium ${descLength > 300 ? 'text-[#e71c1c]' : 'text-white/50'}`}>
                                     {descLength} / 300
                                 </div>
                             )}

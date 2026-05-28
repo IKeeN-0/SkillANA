@@ -25,6 +25,9 @@ export interface IUserProfile {
         level: string;
         major: string;
         university: string;
+        // ====== 1. เพิ่ม startDate และ endDate ตรงนี้ ======
+        startDate?: string;
+        endDate?: string;
     };
     experience: {
         _id: string;
@@ -181,7 +184,9 @@ export default function ResumeExport({id} : {id : number}) {
                     education :{
                         level : tmpUser.education.level,
                         major :tmpUser.education.major,
-                        university : tmpUser.education.university
+                        university : tmpUser.education.university,
+                        startDate: tmpUser.education.startDate || "",
+                        endDate: tmpUser.education.endDate || ""
                     },
                     profileImg : tmpUser.profileImg
                     ,
