@@ -7,6 +7,7 @@ import { Footer } from "./_components/LandingFooter";
 import Bg from "@/app/_global_components/background/landingBackground"
 import dbConnect from '@/lib/db';
 import { Badge } from '@/lib/models/schema';
+import FadeUp from "./_components/FadeUp";
 
 export default async function LandingPage() {
     await dbConnect();
@@ -31,10 +32,21 @@ export default async function LandingPage() {
             </nav>
             
             <main >
-                <Hero_section />
-                <SkillSection badges={formattedBadges} />
-                <ResumeSection />
-                <CloseSection />
+                <FadeUp delay={0.1}>
+                    <Hero_section />
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                    <SkillSection badges={formattedBadges} /> 
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                    <ResumeSection />
+                </FadeUp>
+
+                <FadeUp delay={0.4}>
+                    <CloseSection />
+                </FadeUp>
             </main>
 
             <footer>

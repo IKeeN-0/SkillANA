@@ -102,12 +102,11 @@ export function Hero_section() {
                         
                         <div className="text-center">
                             <h2 className="text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-[#dfa8ff] drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                            60
+                            59
                             </h2>
                             <p className="text-white/60 font-medium mt-1">Tech Skills Available</p>
                         </div>
 
-                        {/* เส้นคั่น */}
                         <div className="hidden md:block w-px h-12 bg-white/10" />
 
                         <div className="text-center">

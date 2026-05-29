@@ -126,12 +126,12 @@ export default function Form(){
         <>
             <div className="flex flex-col mt-[2em] ">
                 
-                <InputComponent ref={emailRef} label="Email" placeholder="Enter your email" size="medium" isPassword={false}
+                <InputComponent ref={emailRef} label="Email" placeholder="example@gmail.com" size="medium" isPassword={false}
                     onChange={handleEmailChange} isError={isEmailError} message={emailMessage}
                 />
                 
                 <div className="w-full mt-[0.5em] mb-[1.5em] ">
-                    <InputComponent ref={passRef} label="Password" placeholder="Enter your password"
+                    <InputComponent ref={passRef} label="Password" placeholder="••••••••"
                      size="medium" isPassword={true} isError={isPasswordError} message={passMessage}
                      onChange={handlePasswordChange}
                      />
