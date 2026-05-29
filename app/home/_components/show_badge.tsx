@@ -1,7 +1,7 @@
 "use client";
 
-import styles from './show_badge.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode";
 
@@ -54,41 +54,45 @@ export function Show_badge() {
     }, []);
 
     return (
-        <div className={styles.badgeSection}>
-            <h1 className={styles.mainText}>
+        <div className="w-[96.5%] h-200 my-10 mx-auto py-32.5 px-[16.5%] rounded-[0.625rem]">
+            
+            <h1 className="w-87.5 text-[1.875rem] mb-4.5">
                 Your achievements, all in one place
             </h1>
 
-            <div className={styles.subText}>
+            <div className="w-105 text-[1.125rem] mb-7.5">
                 See all the badges you’ve earned and keep track of your growing skill set.
             </div>
 
-            <Link href='' className={styles.btn}>See My Badges</Link>
+            <Link href='' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-bold inline-block text-white">
+                See My Badges
+            </Link>
 
-            <div className={styles.collection}>
+            <div className="flex flex-col items-start justify-end min-h-55 relative mt-8">
                 {!user ? (
-                    <div className={styles.loader}>Loading...</div>
+                    <div className="text-[1.5rem] mx-auto">Loading...</div>
                 ) : user.badges && user.badges.length > 0 ? (
-                    <div className={styles.badgeList}>
+                    <div className="flex flex-nowrap justify-start gap-[0.927rem] mx-auto mb-[0.1rem] w-[96%]">
                         {[...user.badges]
                             .sort((a, b) => new Date(b.earnedAt).getTime() - new Date(a.earnedAt).getTime())
                             .slice(0, 7)
                             .map((badge: any) => (
-                                <div key={badge.badgeId} className={styles.badgeItem}>
-                                <img 
-                                    src={badge.imgUrl} 
+                                <div key={badge.badgeId}>
+                                <Image 
+                                    src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
                                     alt={badge.badgeName} 
                                     width={120}
                                     height={120}
+                                    className="object-contain"
                                 />
                                 </div>
                             ))}
                     </div>
                 ) : (
-                    <p className={styles.none}>- You don't have a badge yet -</p>
+                    <p className="text-[1.2rem] mx-auto">- You don't have a badge yet -</p>
                 )}
                 
-                <div className={styles.base}></div>
+                <div className="bg-[#4D256E] w-full h-3 rounded-[0.625rem] shadow-[0.312rem_0.187rem_0.312rem_0_rgba(0,0,0,0.4)]"></div>
             </div>
         </div>
     );

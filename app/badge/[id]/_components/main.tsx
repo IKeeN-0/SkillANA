@@ -133,9 +133,9 @@ export default function BadgePage({ id }: InputProps) {
                         </div>
 
                         {isOwn ? (
-                            <div className="flex bg-[#ceefc8] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
-                                <div className="w-3 h-3 rounded-full bg-[#aee0a5] ml-1 "></div>
-                                <p className="text-[small] font-semibold text-[#8cce80] px-2">Earned</p>
+                            <div className="flex bg-[#009000] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
+                                <div className="w-3 h-3 rounded-full bg-[#ffffff] ml-1 "></div>
+                                <p className="text-[small] font-semibold text-[#ffffff] px-2">Earned</p>
                             </div>
                         ) : (
                             <div className="flex bg-[#f3cece] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">

@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 const ProfileHeader = () => {
   const { isEdit, setEditing } = useEditContext();
   return (
-    <div className="flex items-center justify-center w-full gap-142.5 py-5 px-7.5 box-border">
+    <div className="flex justify-between my-6 w-[68%] box-border transition-all duration-300 rounded-2xl">
       <ProfileImg />
       
       <div className={`flex justify-center items-center ${isEdit ? "invisible" : "visible"}`}>
@@ -74,36 +74,36 @@ export default function UseClientPage() {
   return (
       <EditProvider initialData={data}>
         <Navbar />
-        <ProfileHeader />
-      
         <div className="flex flex-col items-center gap-10">
-        
-        <div className="flex gap-6 ml-0 h-fit ">
-          <Contact /> 
-          <Education />
+          <ProfileHeader />
+
+          <div className="flex gap-6 ml-0 h-fit ">
+            <Contact /> 
+            <Education />
+          </div>
+          
+          <div>
+            <AboutMe />
+          </div>
+          
+          <div>
+            <Exp />
+          </div>
+
+          <div className="bg-white w-350 h-0.5"></div>
+
+          <button 
+            className="my-15 w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.replace('/login');
+          }}>
+            Log Out
+          </button>
         </div>
-        
-        <div>
-          <AboutMe />
-        </div>
-        
-        <div>
-          <Exp />
-        </div>
-        <div className="bg-white w-350 h-0.5"></div>
-        <button 
-          className="my-15 w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.replace('/login');
-        }}>
-          Log Out
-        </button>
-      </div>
-      <Popup />
+        <Popup />
       
     </EditProvider>
-    
     
   );
 }
