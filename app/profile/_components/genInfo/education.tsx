@@ -7,7 +7,7 @@ export default function Education() {
     const {isEdit, liveData, updateNestedField, tempData} = useEditContext();
     const data = isEdit ? tempData.education : liveData.education;
 
-    const inputBaseClass = "text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40";
+    const inputBaseClass = `text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 ${!isEdit ? 'cursor-default' : 'cursor-text'}`;
     
     const isPresentDate = (dateVal: any) => {
         if (!dateVal) return false;

@@ -40,7 +40,7 @@ export default function Exp() {
         );
     };
 
-    const inputBaseClass = "text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium";
+    const inputBaseClass = `text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium ${!isEdit ? 'cursor-default' : 'cursor-text'}`;
 
     return (
         <div id="experience-container" className="text-[1.6em] font-bold w-325">    
