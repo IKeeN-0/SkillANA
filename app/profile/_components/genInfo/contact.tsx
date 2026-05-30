@@ -4,7 +4,7 @@ export default function Contact() {
   const { isEdit, liveData, updateNestedField, updateTempField, tempData } = useEditContext();
   const data = isEdit ? tempData.contact : liveData.contact;
 
-  const inputBaseClass = "text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40";
+  const inputBaseClass = `text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 ${!isEdit ? 'cursor-default' : 'cursor-text'}`;
 
   return (
     <>

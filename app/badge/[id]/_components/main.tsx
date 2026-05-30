@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from 'next/navigation';
 
 interface InputProps {
     id: string
@@ -84,6 +86,11 @@ export default function BadgePage({ id }: InputProps) {
         router.push(`/badge/test/${id}`);
     }
 
+    const searchParams = useSearchParams();
+    const fromPage = searchParams.get('from');
+
+    const backUrl = fromPage === 'collections' ? '/collections' : '/skills';
+
     if (isLoading) {
         return (
             <>
@@ -99,87 +106,100 @@ export default function BadgePage({ id }: InputProps) {
     }
 
     return (
-        <section className="flex justify-center mt-13 h-fit">
-            <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-full p-8.5 rounded-[10px] grid grid-cols-[2fr_4.18fr]">
+        <section className="flex flex-col items-center justify-center mt-13 h-fit w-full">
+            
+            <div className="w-[80%] mx-auto flex flex-col items-start">
                 
-                {/* รูป */}
-                <section className="flex ">
-                    <div className="bg-white w-[90%] h-65 rounded-[10px] flex justify-center items-center">
-                        <div className="relative w-[35%] h-[55%]">
-                            {imgUrl && (
-                                <Image 
-                                    src={`/${imgUrl}`} 
-                                    alt={badgeTitle || "Badge"}
-                                    fill
-                                    className="object-cover rounded-full"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                            )}
-                        </div>
-                    </div>
-                </section>
-                
-                {/* ข้อความ */}
-                <section className="flex flex-col ">
+                <Link
+                    href={backUrl}
+                    className="relative inline-block text-left text-[0.9em] mb-4 text-gray-300 hover:text-white transition-all duration-300 
+                                after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
+                                after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300 cursor-pointer"
+                >
+                    &lt; Back
+                </Link>
 
-                    <div className="flex justify-between items-start">
-                        <div className="flex flex-col gap-1">
-                            <h1 className="text-3xl font-bold">{badgeTitle}</h1>
-                            {badgeCategory && (
-                                <span className="mt-1 text-[0.9em] font-medium text-gray-500 bg-gray-200 px-2.5 py-1 rounded-md w-fit">
-                                    {badgeCategory}
-                                </span>
-                            )}
-                        </div>
-
-                        {isOwn ? (
-                            <div className="flex bg-[#009000] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
-                                <div className="w-3 h-3 rounded-full bg-[#ffffff] ml-1 "></div>
-                                <p className="text-[small] font-semibold text-[#ffffff] px-2">Earned</p>
+                {/* 3. เปลี่ยน w-[80%] mx-auto ตรงนี้เป็น w-full เพื่อให้กล่องขยายเต็ม Wrapper แม่ของมัน */}
+                <div className="bg-[rgba(255,255,255,0.5)] w-full h-full p-8.5 rounded-[10px] grid grid-cols-[2fr_4.18fr]">
+                    
+                    {/* รูป */}
+                    <section className="flex ">
+                        <div className="bg-white w-[90%] h-65 rounded-[10px] flex justify-center items-center">
+                            <div className="relative w-[35%] h-[55%]">
+                                {imgUrl && (
+                                    <Image 
+                                        src={`/${imgUrl}`} 
+                                        alt={badgeTitle || "Badge"}
+                                        fill
+                                        className="object-cover rounded-full"
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                    />
+                                )}
                             </div>
-                        ) : (
-                            <div className="flex bg-[#f3cece] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
-                                <div className="bg-[#eba6a6] w-3 h-3 rounded-full ml-1"></div>
-                                <p className="text-[small] font-semibold text-[#ec5353] px-2 ">Not Earned</p>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="max-w-[90%] text-[1.1em] leading-7 wrap-break-word mt-3.5">
-                        <p className="text-[smaller]">{badgeDescription}</p>
-                    </div>
-
-                    <section className="bg-[#ffffff96] text-[#4c1156] rounded-2xl mt-3 mb-5 p-5">
-                        <p className="text-[1.1em] font-bold mb-1.5">To earn the badge, you must pass the test based on the following criteria :</p>
-
-                        <div className="grid grid-cols-[160px_auto] gap-2.5 mt-2.5">
-                            <p className="text-[0.9em] font-medium">Number of Questions:</p>
-                            <p className="text-[0.9em] font-bold">{nQuestion} <span className="font-normal">Questions</span></p>
-
-                            <p className="text-[0.9em] font-medium">Time Limit:</p>
-                            <p className="text-[0.9em] font-bold">{tLimit} <span className="font-normal">Minutes</span></p>
-
-                            <p className="text-[0.9em] font-medium">Passing Score:</p>
-                            <p className="text-[0.9em] font-bold">{pScore} <span className="font-normal">or more correct answers</span></p>
                         </div>
                     </section>
+                
+                    {/* ข้อความ */}
+                    <section className="flex flex-col ">
 
-                    <div 
-                        className={isOwn 
-                            ? `text-white bg-[#5e5d5d] text-[1.2em] font-semibold w-full py-3 rounded-[10px] 
-                                flex justify-center items-center shadow-md cursor-not-allowed 
-                                hover:bg-[#4d4d4d] hover:text-[#bdbdbd] transition-all duration-300`
+                        <div className="flex justify-between items-start">
+                            <div className="flex flex-col gap-1">
+                                <h1 className="text-3xl font-bold">{badgeTitle}</h1>
+                                {badgeCategory && (
+                                    <span className="mt-1 text-[0.9em] font-medium text-gray-500 bg-gray-200 px-2.5 py-1 rounded-md w-fit">
+                                        {badgeCategory}
+                                    </span>
+                                )}
+                            </div>
 
-                            : `text- bg-[#5F28CD] text-[1.2em] font-semibold w-full py-3 rounded-[10px] flex 
-                                justify-center items-center cursor-pointer shadow-md
-                                hover:scale-[1.01] transition-all duration-300 hover:bg-[#3e1394] hover:text-white`
-                        } 
-                        onClick={handleClick}
-                    >
-                        {isOwn ? "Already claimed" : "Start Assessment"}
-                    </div>
-                </section>
+                            {isOwn ? (
+                                <div className="flex bg-[#009000] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
+                                    <div className="w-3 h-3 rounded-full bg-[#ffffff] ml-1 "></div>
+                                    <p className="text-[small] font-semibold text-[#ffffff] px-2">Earned</p>
+                                </div>
+                            ) : (
+                                <div className="flex bg-[#f3cece] rounded-[25px] items-center px-1 py-1.5 h-fit mt-1">
+                                    <div className="bg-[#eba6a6] w-3 h-3 rounded-full ml-1"></div>
+                                    <p className="text-[small] font-semibold text-[#ec5353] px-2 ">Not Earned</p>
+                                </div>
+                            )}
+                        </div>
 
+                        <div className="max-w-[90%] text-[1.1em] leading-7 wrap-break-word mt-3.5">
+                            <p className="text-[smaller]">{badgeDescription}</p>
+                        </div>
+
+                        <section className="bg-[#ffffff96] text-[#4c1156] rounded-2xl mt-3 mb-5 p-5">
+                            <p className="text-[1.1em] font-bold mb-1.5">To earn the badge, you must pass the test based on the following criteria :</p>
+
+                            <div className="grid grid-cols-[160px_auto] gap-2.5 mt-2.5">
+                                <p className="text-[0.9em] font-medium">Number of Questions:</p>
+                                <p className="text-[0.9em] font-bold">{nQuestion} <span className="font-normal">Questions</span></p>
+
+                                <p className="text-[0.9em] font-medium">Time Limit:</p>
+                                <p className="text-[0.9em] font-bold">{tLimit} <span className="font-normal">Minutes</span></p>
+
+                                <p className="text-[0.9em] font-medium">Passing Score:</p>
+                                <p className="text-[0.9em] font-bold">{pScore} <span className="font-normal">or more correct answers</span></p>
+                            </div>
+                        </section>
+
+                        <div 
+                            className={isOwn 
+                                ? `text-white bg-[#5e5d5d] text-[1.2em] font-semibold w-full py-3 rounded-[10px] 
+                                    flex justify-center items-center shadow-md cursor-not-allowed 
+                                    hover:bg-[#4d4d4d] hover:text-[#bdbdbd] transition-all duration-300`
+
+                                : `text- bg-[#5F28CD] text-[1.2em] font-semibold w-full py-3 rounded-[10px] flex 
+                                    justify-center items-center cursor-pointer shadow-md
+                                    hover:scale-[1.01] transition-all duration-300 hover:bg-[#3e1394] hover:text-white`
+                            } 
+                            onClick={handleClick}
+                        >
+                            {isOwn ? "Already claimed" : "Start Assessment"}
+                        </div>
+                    </section>
+                </div>
             </div>
         </section>
     )

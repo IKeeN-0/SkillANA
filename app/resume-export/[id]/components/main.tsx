@@ -95,6 +95,8 @@ export default function ResumeExport({id} : {id : number}) {
     const [myResumeData , setMyResumeData] = useState<ResumeData | null>(null)
     const router = useRouter();
 
+    const [downloadState, setDownloadState] = useState<"idle" | "downloading" | "success" | "error">("idle");
+
     const iconClass = "w-[1.2em] h-[1.2em] shrink-0";
 
     const categories = [
@@ -250,6 +252,8 @@ export default function ResumeExport({id} : {id : number}) {
     const handleDownloadClick = async () => {
         if (!myResumeData) return alert("Data not ready");
 
+        setDownloadState("downloading");
+
         try {
             const response = await fetch('/api/print', {
                 method: 'POST',
@@ -269,9 +273,21 @@ export default function ResumeExport({id} : {id : number}) {
             document.body.appendChild(a);
             a.click();
             a.remove();
+            window.URL.revokeObjectURL(url);
+
+            setDownloadState("success");
+
+            setTimeout(() => {
+                setDownloadState("idle");
+            }, 3000);
+
         } catch (err) {
             console.error(err);
-            alert("Error downloading PDF");
+            setDownloadState("error");
+
+            setTimeout(() => {
+                setDownloadState("idle");
+            }, 3000);
         }
     };
     if (!mounted) return null;
@@ -395,6 +411,48 @@ export default function ResumeExport({id} : {id : number}) {
                         Download PDF
                 </div>
             </section>
+
+            <div 
+                className={`fixed bottom-15 right-8 z-9999 flex items-center gap-4 bg-white text-[#300783] px-6 py-4 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-500 ease-out ${
+                    downloadState !== "idle" 
+                    ? "translate-y-0 opacity-100 visible" 
+                    : "translate-y-10 opacity-0 invisible"
+                }`}
+            >
+                {downloadState === "downloading" ? (
+                    <>
+                        <div className="w-7 h-7 border-4 border-[#5F28CD]/20 border-t-[#5F28CD] rounded-full animate-spin"></div>
+                        <div className="flex flex-col">
+                            <span className="font-bold text-[1.1em]">Preparing your resume...</span>
+                            <span className="text-[0.85em] text-gray-500 font-medium">This might take a few seconds.</span>
+                        </div>
+                    </>
+                ) : downloadState === "success" ? (
+                    <>
+                        <div className="w-7 h-7 bg-[#10b981] rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="font-bold text-[1.1em]">Download Completed!</span>
+                            <span className="text-[0.85em] text-gray-500 font-medium">Your resume is ready.</span>
+                        </div>
+                    </>
+                ) : downloadState === "error" ? (
+                    <>
+                        <div className="w-7 h-7 bg-[#ef4444] rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="font-bold text-[1.1em] text-[#ef4444]">Download Failed</span>
+                            <span className="text-[0.85em] text-gray-500 font-medium">Something went wrong. Please try again.</span>
+                        </div>
+                    </>
+                ) : null}
+            </div>
         </>
     );
 }

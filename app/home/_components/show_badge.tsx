@@ -54,42 +54,45 @@ export function Show_badge() {
     }, []);
 
     return (
-        <div className="w-[96.5%] h-200 my-10 mx-auto py-32.5 px-[16.5%] rounded-[0.625rem]">
+        <div className="w-[96.5%] h-120 mx-auto p-8 rounded-[0.625rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
             
-            <h1 className="w-87.5 text-[1.875rem] mb-4.5">
-                Your achievements, all in one place
+            <h1 className="text-[1.7rem] font-bold mb-2">
+                Your Latest Achievements
             </h1>
 
-            <div className="w-105 text-[1.125rem] mb-7.5">
-                See all the badges you’ve earned and keep track of your growing skill set.
+            <div className="text-[1.1rem] mb-7">
+                A quick look at your most recent milestones. Explore your full collection to track all your growing skills.
             </div>
 
-            <Link href='' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-bold inline-block text-white">
-                See My Badges
+            <Link href='/collection' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]">
+                See Your Collection
             </Link>
 
-            <div className="flex flex-col items-start justify-end min-h-55 relative mt-8">
+            <div className="mt-14 flex flex-col items-start justify-end relative w-full pt-10">
                 {!user ? (
-                    <div className="text-[1.5rem] mx-auto">Loading...</div>
+                    <div className="text-[1.5rem] mx-auto pb-2">Loading...</div>
                 ) : user.badges && user.badges.length > 0 ? (
-                    <div className="flex flex-nowrap justify-start gap-[0.927rem] mx-auto mb-[0.1rem] w-[96%]">
+                    <div className="flex flex-nowrap justify-between mx-auto mb-[0.1rem] w-[96%]">
                         {[...user.badges]
                             .sort((a, b) => new Date(b.earnedAt).getTime() - new Date(a.earnedAt).getTime())
                             .slice(0, 7)
                             .map((badge: any) => (
-                                <div key={badge.badgeId}>
-                                <Image 
-                                    src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
-                                    alt={badge.badgeName} 
-                                    width={120}
-                                    height={120}
-                                    className="object-contain"
-                                />
+                                <div 
+                                    key={badge.badgeId}
+                                    className="transition-all duration-300 ease-out hover:-translate-y-2 hover:drop-shadow-[0_0_20px_rgba(56,189,248,0.9)]"
+                                >
+                                    <Image 
+                                        src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
+                                        alt={badge.badgeName} 
+                                        width={120}
+                                        height={120}
+                                        className="object-contain"
+                                    />
                                 </div>
                             ))}
                     </div>
                 ) : (
-                    <p className="text-[1.2rem] mx-auto">- You don't have a badge yet -</p>
+                    <p className="text-[1.2rem] mx-auto pb-2">- You don't have a badge yet -</p>
                 )}
                 
                 <div className="bg-[#4D256E] w-full h-3 rounded-[0.625rem] shadow-[0.312rem_0.187rem_0.312rem_0_rgba(0,0,0,0.4)]"></div>

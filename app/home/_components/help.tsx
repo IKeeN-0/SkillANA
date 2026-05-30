@@ -2,15 +2,15 @@ import Link from 'next/link';
 
 export function Help() {
   return (
-    <div className="flex p-32.5 w-[96.5%] h-137.5 mx-auto my-10 justify-center items-center">
+    <div className="flex w-[96.5%] h-fit mx-auto p-8 rounded-[0.625rem] justify-between bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
         
-        <div className="m-[2.187rem_17%_0_0]">
-            <h1 className="w-87.5 text-[1.875rem] mb-4.5">
+        <div className="">
+            <h1 className="w-87.5 text-[1.7em] font-semibold mb-2">
                 Stuck on something?
             </h1>
             
-            <div className="w-125 text-[1.125rem] mb-10">
-                We’ve got your back! Whether you’re stuck on a test or just getting started, our guide has all the answers.
+            <div className="w-125 text-[1.1rem] mb-7">
+                Need a hand? From getting started to passing your tests, our comprehensive guide is here to help.
             </div>
             <Link 
                 href='' 
@@ -28,7 +28,7 @@ export function Help() {
             strokeWidth="1.2" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            className="h-62.5 w-auto text-white drop-shadow-lg"
+            className="h-47 w-auto mr-10 text-white drop-shadow-lg"
         >
             <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4" />
             <path d="M19 17V5a2 2 0 0 0-2-2H4" />
