@@ -64,13 +64,13 @@ export function Show_badge() {
                 A quick look at your most recent milestones. Explore your full collection to track all your growing skills.
             </div>
 
-            <Link href='/collection' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]">
+            <Link href='/collections' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]">
                 See Your Collection
             </Link>
 
             <div className="mt-14 flex flex-col items-start justify-end relative w-full pt-10">
                 {!user ? (
-                    <div className="text-[1.5rem] mx-auto pb-2">Loading...</div>
+                    <div className="text-[1.5rem] h-25 mx-auto pb-2">Loading...</div>
                 ) : user.badges && user.badges.length > 0 ? (
                     <div className="flex flex-nowrap justify-between mx-auto mb-[0.1rem] w-[96%]">
                         {[...user.badges]
