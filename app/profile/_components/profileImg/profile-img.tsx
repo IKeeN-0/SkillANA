@@ -16,7 +16,7 @@ export default function ProfileImg() {
 
     return (
         <>
-            <div id="profile-container" className="relative w-137.5 h-50 flex items-center gap-4">
+            <div id="profile-container" className="relative w-137.5 h-50 flex items-center gap-4 max-md:w-full max-md:h-auto max-md:flex-col max-md:text-center max-md:py-4">
 
                 <div 
                     id="profile-img-wrapper" 
@@ -59,10 +59,10 @@ export default function ProfileImg() {
                     )}
                 </div>
 
-                <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5"> 
+                <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5 max-md:ml-0 max-md:justify-center"> 
                     {!isEdit ? (
                         <>
-                            <div className="inline-flex flex-row gap-3 items-center w-200">
+                            <div className="inline-flex flex-row gap-3 items-center w-200 max-md:w-auto max-md:justify-center max-md:flex-wrap">
                                 <p className="text-[1.6em] font-bold">
                                     {tempData.firstName || "First Name"}
                                 </p>
@@ -73,10 +73,10 @@ export default function ProfileImg() {
                         </>
                     ) : (
                         <>
-                           <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5">
-                                <div className="flex flex-col min-h-17.5">
+                           <div className="flex flex-row items-center gap-7.5 top-[50%] ml-5 max-md:ml-0 max-md:flex-col max-md:gap-3 max-md:w-full">
+                                <div className="flex flex-col min-h-17.5 max-md:w-full max-md:px-2">
                                     <input
-                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.firstName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
+                                        className={`text-[24px] ml-10 w-100 h-10 max-md:ml-0 max-md:w-full ${errors.firstName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
                                         value={tempData.firstName || ""}
                                         onChange={(e) => handleNameChange(e, "firstName")}
                                         onBlur={() => setErrors(prev => ({ ...prev, firstName: !tempData.firstName?.trim() }))}
@@ -84,9 +84,9 @@ export default function ProfileImg() {
                                     {errors.firstName && <p className="text-[#ef4444] text-[12px] mt-1 ml-10">Please enter your first name</p>}
                                 </div>
 
-                                <div className="flex flex-col min-h-17.5">
+                                <div className="flex flex-col min-h-17.5 max-md:w-full max-md:px-2">
                                     <input
-                                        className={`text-[24px] ml-10 w-100 h-10 ${errors.lastName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
+                                        className={`text-[24px] ml-10 w-100 h-10 max-md:ml-0 max-md:w-full ${errors.lastName ? "border-2! border-solid! border-[#ef4444]! outline-none" : ""}`}
                                         value={tempData.lastName || ""}
                                         onChange={(e) => handleNameChange(e, "lastName")}
                                         onBlur={() => setErrors(prev => ({ ...prev, lastName: !tempData.lastName?.trim() }))}

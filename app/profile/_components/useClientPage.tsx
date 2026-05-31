@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 const ProfileHeader = () => {
   const { isEdit, setEditing } = useEditContext();
   return (
-    <div className="flex items-center justify-center w-full gap-142.5 py-5 px-7.5 box-border">
+    <div className="flex items-center justify-center w-full gap-142.5 py-5 px-7.5 box-border max-md:flex-col max-md:gap-6 max-md:px-4">
       <ProfileImg />
       
       <div className={`flex justify-center items-center ${isEdit ? "invisible" : "visible"}`}>
@@ -78,7 +78,7 @@ export default function UseClientPage() {
       
         <div className="flex flex-col items-center gap-10">
         
-        <div className="flex gap-6 ml-0 h-fit ">
+        <div className="flex gap-6 ml-0 h-fit max-md:flex-col max-md:items-center max-md:w-full">
           <Contact /> 
           <Education />
         </div>
@@ -90,7 +90,7 @@ export default function UseClientPage() {
         <div>
           <Exp />
         </div>
-        <div className="bg-white w-350 h-0.5"></div>
+        <div className="bg-white w-350 h-0.5 max-md:w-[90vw]"></div>
         <button 
           className="my-15 w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
           onClick={() => {

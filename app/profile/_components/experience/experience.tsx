@@ -32,7 +32,7 @@ export default function Exp() {
     const inputBaseClass = "text-white text-[16px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium";
 
     return (
-        <div id="experience-container" className="text-[1.6em] font-bold w-325">    
+        <div id="experience-container" className="text-[1.6em] font-bold w-325 max-md:w-[90vw]">    
             
             <div id="exp-header" className="flex justify-between items-center w-full gap-4">
                 <h1>Experience {expList.length}/5</h1> 
@@ -70,9 +70,9 @@ export default function Exp() {
                             </button>
                         )}
 
-                        <div id={`experience-content-${index}`} className="flex justify-between gap-5 items-end px-2 pt-2">
+                        <div id={`experience-content-${index}`} className="flex justify-between gap-5 items-end px-2 pt-2 max-md:flex-col max-md:items-stretch">
                             
-                            <div className="block w-1/2">
+                            <div className="block w-1/2 max-md:w-full">
                                 <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Title</h2>
                                 <div className="relative flex w-full items-center">
                                     <input 
@@ -86,7 +86,7 @@ export default function Exp() {
                                 </div>  
                             </div>
 
-                            <div className="block w-1/4">
+                            <div className="block w-1/4 max-md:w-full">
                                 <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">Start Date</h2>
                                 <div className="relative flex w-full items-center">
                                     <DatePicker
@@ -108,7 +108,7 @@ export default function Exp() {
                                 </div>
                             </div>
 
-                            <div className="block w-1/4">
+                            <div className="block w-1/4 max-md:w-full">
                                 <h2 className="mb-2 text-[18px] font-bold font-['Poppins',sans-serif]">End Date</h2>
                                 <div className="relative flex w-full items-center">
                                     <DatePicker

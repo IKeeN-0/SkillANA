@@ -8,10 +8,10 @@ export default function Education() {
     
   return (
     <>
-      <div id="Education-container" className="text-[1.6em] font-bold">    
+      <div id="Education-container" className="text-[1.6em] font-bold max-md:w-[90vw]">    
         <h1>Education</h1> 
         
-        <div id="Education-content" className="block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl">
+        <div id="Education-content" className="block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl max-md:w-full">
             
             <div id="Education-Level" className="block text-[0.8em] font-semibold mb-3">
                 <h2 className="mb-1">Education Level</h2>
