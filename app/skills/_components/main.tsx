@@ -4,11 +4,36 @@ import Footer from "@/app/_global_components/footer/footer"
 import Sidebar from "./sidebar/sidebar"
 import Section from "./section/section"
 import Bg from "@/app/_global_components/background/pageBackground"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode"
 import { BadgeData } from "./section/section"
 import { Category } from "./section/section"
 import { User } from "./section/section"
+
+//Skeleton Component มารองรับสถานะ Loading ตามหลัก Fallback UI
+function SectionSkeleton() {
+    return (
+        <div className="w-full animate-pulse flex flex-col gap-8">
+            {[1, 2].map((i) => (
+                <div key={i} className="w-full">
+   
+                    <div className="h-8 bg-white/20 rounded w-48 mb-4"></div>
+
+                    <div className="px-4 py-8 rounded-4xl bg-white/5 border border-white/10 min-h-[200px]">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(7.5rem,1fr))] gap-x-6 gap-y-10 justify-items-center">
+                            {[1, 2, 3, 4, 5].map((j) => (
+                                <div key={j} className="flex flex-col items-center gap-3 w-full">
+                                    <div className="w-[6em] h-[6em] rounded-full bg-white/10"></div>
+                                    <div className="h-4 bg-white/10 rounded w-20"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
 
 export default function Main({ mode = "all" }: { mode?: "all" | "collections" }) {
     const [category, setCategory] = useState<string>('all');
@@ -17,68 +42,65 @@ export default function Main({ mode = "all" }: { mode?: "all" | "collections" })
     const [loading, setLoading] = useState<boolean>(true);
     const [user, setUser] = useState<User | null>(null);
 
-    
-   useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                window.location.replace('/login');
-                return;
-            }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    window.location.replace('/login');
+                    return;
+                }
 
-            const decodeToken = jwtDecode(token) as any;
-           
-            const userId = decodeToken.id || decodeToken.sub || decodeToken._id;
+                const decodeToken = jwtDecode(token) as any;
+                const userId = decodeToken.id || decodeToken.sub || decodeToken._id;
 
-            if (!userId) {
-                console.error("No User ID found in token");
+                if (!userId) {
+                    console.error("No User ID found in token");
+                    setLoading(false);
+                    return;
+                }
+
+                // การทำงานแบบ Concurrent API Fetching
+                const [badgeRes, userRes] = await Promise.all([
+                    fetch('/api/badges', { headers: { "Authorization": `Bearer ${token}` } }),
+                    fetch(`/api/users/${userId}`, { headers: { "Authorization": `Bearer ${token}` } })
+                ]);
+
+                const badgeData = await badgeRes.json();
+                const userData = await userRes.json();
+
+                const badgeInfo = Array.isArray(badgeData) ? badgeData : badgeData.data || [];
+                const userInfo = userData.user || userData.data || userData;
+                
+                setUser(userInfo);
+                setBadges(badgeInfo);
+
+                const uniqueCategories = Array.from(
+                    new Map(
+                        badgeInfo
+                        .filter((b: any) => b?.category?.categoryId)
+                        .map((b: any) => [
+                            b.category.categoryId.toString(),
+                            {
+                                ...b.category,
+                                categoryId: b.category.categoryId.toString()
+                            }
+                        ])
+                    ).values()
+                ) as Category[];
+                
+                setCategories(uniqueCategories);
+            } catch (error) {
+                console.error("Fetch error:", error);
+            } finally {
                 setLoading(false);
-                return;
             }
-
-            const [badgeRes, userRes] = await Promise.all([
-                fetch('/api/badges', { headers: { "Authorization": `Bearer ${token}` } }),
-                fetch(`/api/users/${userId}`, { headers: { "Authorization": `Bearer ${token}` } })
-            ]);
-
-            const badgeData = await badgeRes.json();
-            const userData = await userRes.json();
-
-            const badgeInfo = Array.isArray(badgeData) ? badgeData : badgeData.data || [];
-            const userInfo = userData.user || userData.data || userData;
-            
-            setUser(userInfo);
-        
-            setBadges(badgeInfo);
-
-            const uniqueCategories = Array.from(
-                new Map(
-                    badgeInfo
-                    .filter((b: any) => b?.category?.categoryId)
-                    .map((b: any) => [
-                        b.category.categoryId.toString(),
-                        {
-                            ...b.category,
-                            categoryId: b.category.categoryId.toString()
-                        }
-                    ])
-                ).values()
-            ) as Category[];
-            
-            setCategories(uniqueCategories);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        } finally {
-            setLoading(false);
         }
-    }
-    fetchData();
-}, []);
+        fetchData();
+    }, []);
 
-const filteredBadges = badges;
+    const filteredBadges = badges;
 
-    if (loading) return <div></div>;
     return (
         <div className="relative w-full h-screen text-white flex flex-col overflow-hidden"> 
 
@@ -100,12 +122,17 @@ const filteredBadges = badges;
                 </aside>
 
                 <section id="scrollable-section" className="flex-1 p-8 h-full overflow-y-auto scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]: scroll-smooth">
-                    <Section
-                        category={category}
-                        badges={filteredBadges}
-                        user={user}  
-                        mode={mode}       
-                    />
+ 
+                    {loading ? (
+                        <SectionSkeleton />
+                    ) : (
+                        <Section
+                            category={category}
+                            badges={filteredBadges}
+                            user={user}  
+                            mode={mode}       
+                        />
+                    )}
                 </section>
             </main>
 

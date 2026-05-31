@@ -36,6 +36,67 @@ interface BadgeItem{
     }
 }
 
+// ============================================================================
+    //ฟังก์ชันการจัดการ IndexedDB ในรูปแบบของ Promise เพื่อไม่ให้บล็อก Main Thread
+// ============================================================================
+const initDB = (): Promise<IDBDatabase> => {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("QuizAppDB", 1);
+        request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains("quizProgress")) {
+                db.createObjectStore("quizProgress", { keyPath: "badgeId" });
+            }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+};
+
+const saveProgressDB = async (badgeId: string, currentIdx: number, indices: number[], timeLeft: number | null) => {
+    try {
+        const db = await initDB();
+        const transaction = db.transaction("quizProgress", "readwrite");
+        const store = transaction.objectStore("quizProgress");
+        store.put({
+            badgeId,
+            currentQuestionIdx: currentIdx,
+            selectedIndices: indices,
+            timeLeft: timeLeft
+        });
+    } catch (err) {
+        console.error("IndexedDB Save Error:", err);
+    }
+};
+
+const getProgressDB = async (badgeId: string): Promise<any> => {
+    try {
+        const db = await initDB();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction("quizProgress", "readonly");
+            const store = transaction.objectStore("quizProgress");
+            const request = store.get(badgeId);
+            request.onsuccess = () => resolve(request.result || null);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (err) {
+        console.error("IndexedDB Fetch Error:", err);
+        return null;
+    }
+};
+
+const deleteProgressDB = async (badgeId: string) => {
+    try {
+        const db = await initDB();
+        const transaction = db.transaction("quizProgress", "readwrite");
+        const store = transaction.objectStore("quizProgress");
+        store.delete(badgeId);
+    } catch (err) {
+        console.error("IndexedDB Delete Error:", err);
+    }
+};
+// ============================================================================
+
 export default function MainBox({id} : InputProps){
     const router = useRouter()
     const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -48,25 +109,39 @@ export default function MainBox({id} : InputProps){
     const [showTimeOutPopup, setShowTimeOutPopup] = useState(false);
     
     useEffect(() => {
-        if(selectedIndices[currentQuestionIdx] != -1){
+        if(selectedIndices[currentQuestionIdx] !== undefined && selectedIndices[currentQuestionIdx] !== -1){
             setSelectedAnswer(selectedIndices[currentQuestionIdx]);
-        }else setSelectedAnswer(null) // รีเซ็ตให้ยังไม่เลือกเมื่อเปลี่ยนข้อ
-    }, [currentQuestionIdx]);
+        }else setSelectedAnswer(null) 
+    }, [currentQuestionIdx, selectedIndices]);
     
-    useEffect(()=>{ // fetchTime
-        const fetchData = async () => { //Get badge function
+    useEffect(()=>{ 
+        const fetchData = async () => { 
             const res = await fetch(`/api/badges/${id}`);
             const data = await res.json()
             setBadge(data.badge)
             const badgeQuestion = data.badge.test.questions
+            
+            // 2. CHECKPOINT: ตรวจสอบว่ามีข้อมูล State เดิมค้างอยู่ใน IndexedDB หรือไม่
+            const savedProgress = await getProgressDB(id);
+
             if(badgeQuestion){
                 setQuestions(badgeQuestion)
-                const initialIndices = new Array(badgeQuestion.length).fill(-1);
-                setSelectedIndices(initialIndices);
+                
+                if (savedProgress) {
+                    // กู้ข้อมูลฟอร์มเดิมกลับมาทำงานต่อทันที
+                    setSelectedIndices(savedProgress.selectedIndices);
+                    setCurrentQuesitonIdx(savedProgress.currentQuestionIdx);
+                    setTimeLeft(savedProgress.timeLeft);
+                } else {
+                    // หากไม่มีประวัติเก่า ให้เริ่มต้นระบบเก็บข้อมูลชุดใหม่
+                    const initialIndices = new Array(badgeQuestion.length).fill(-1);
+                    setSelectedIndices(initialIndices);
+                    
+                    const initialSeconds : string = data.badge.criteria.timeLimit;
+                    const seconds : number = Number(initialSeconds.slice(0, 2)) * 60
+                    setTimeLeft(seconds);
+                }
             }
-            const initialSeconds : string = data.badge.criteria.timeLimit;
-            const seconds : number = Number(initialSeconds.slice(0, 2)) * 60
-            setTimeLeft(seconds);
             setPassingScore(data.badge.criteria.passingScore)
         };
         fetchData();
@@ -76,8 +151,15 @@ export default function MainBox({id} : InputProps){
         localStorage.removeItem("timeRemaining")
         localStorage.removeItem("pass")
         localStorage.removeItem("imgUrl")
-    },[]);
+    }, [id]);
     
+    // 3. BACKGROUND WORKER: บันทึกสถานะลง IndexedDB ทุกครั้งที่มีการขยับเปลี่ยนตัวแปรผ่านแบบ Asynchronous
+    useEffect(() => {
+        if (id && questions.length > 0) {
+            saveProgressDB(id, currentQuestionIdx, selectedIndices, timeLeft);
+        }
+    }, [currentQuestionIdx, selectedIndices, timeLeft, id, questions]);
+
     useEffect(()=>{
         if (timeLeft === null || timeLeft <= 0) return;
 
@@ -90,7 +172,7 @@ export default function MainBox({id} : InputProps){
 
     useEffect(() => {
         if (timeLeft !== null && timeLeft <= 0) {
-        setShowTimeOutPopup(true);
+            setShowTimeOutPopup(true);
         }
     }, [timeLeft]);
 
@@ -104,9 +186,6 @@ export default function MainBox({id} : InputProps){
     if (timeLeft === null) return <div>Loading timer...</div>;
 
     const currentQuestion = questions[currentQuestionIdx];
-    
-    //----------------------------------------------------------------------------------------
-    //Click Function
     
     const handleChoice = (idx : number)=>{
         setSelectedAnswer(idx);
@@ -124,43 +203,48 @@ export default function MainBox({id} : InputProps){
         setCurrentQuesitonIdx(idx)
     }
 
-    const handleSubmit = ()=>{
-        // 1. ดึงเฉลยออกมาเป็น Array ของ string
+    // 4. RACE CONDITION REPAIR: แปลงฟังก์ชันให้รองรับสถาปัตยกรรม Async เพื่อจัดลำดับ Network และล้าง IndexedDB หลังสอบเสร็จ
+    const handleSubmit = async () => {
         const correctAnswers = questions.map(q => q.correctAnswer);
         const score = correctAnswers.filter((val, idx) => val === questions[idx].answers[selectedIndices[idx]]).length;
         let pass = "0";
-        if(score >= passingScore){ //If pass then update badge for user!
+
+        if(score >= passingScore){ 
             pass = "1"
-            const updateUserBadge = async ()=>{
-                try{
-                    const token = localStorage.getItem("token");
-                    if(!token){ router.push("/login"); return}
-                    const decodeToken = jwtDecode(token) as any;
-                    const userId = decodeToken.id || decodeToken.sub || decodeToken._id;
-                    const res = await fetch(`/api/users/${userId}/badge`,{
-                        method : "POST",
-                        body : JSON.stringify({
-                            badgeId : badge._id,
-                            badgeName : badge.badgeName,
-                            imgUrl: badge.imgUrl
-                        })
-                    })
-                    const data = await res.json();
-                    console.log(data.message)
-                }
-                catch(err){
-                    console.error(err)
-                }
-            }
-            updateUserBadge();
+            await updateUserBadge();
         }
         
-        localStorage.setItem("score",score.toString())
-        localStorage.setItem("total",questions.length.toString())
-        localStorage.setItem("timeRemaining",formatTime(timeLeft))
-        localStorage.setItem("pass",pass)
+        // ล้างข้อมูลความคืบหน้าออกจากคลังในเครื่องหลังจากกดยืนยันคำตอบสำเร็จเสร็จสิ้น
+        await deleteProgressDB(id);
+
+        localStorage.setItem("score", score.toString())
+        localStorage.setItem("total", questions.length.toString())
+        localStorage.setItem("timeRemaining", formatTime(timeLeft))
+        localStorage.setItem("pass", pass)
         localStorage.setItem("imgUrl", badge.imgUrl)
         router.push("/badge/test/result")
+    }
+
+    const updateUserBadge = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            if(!token){ router.push("/login"); return }
+            const decodeToken = jwtDecode(token) as any;
+            const userId = decodeToken.id || decodeToken.sub || decodeToken._id;
+            const res = await fetch(`/api/users/${userId}/badge`, {
+                method : "POST",
+                headers: { "Content-Type": "application/json" },
+                body : JSON.stringify({
+                    badgeId : badge._id,
+                    badgeName : badge.badgeName,
+                    imgUrl: badge.imgUrl
+                })
+            })
+            const data = await res.json();
+            console.log(data.message)
+        } catch (err) {
+            console.error("Network or authorization error in background transaction:", err)
+        }
     }
     
     return (
@@ -225,9 +309,7 @@ export default function MainBox({id} : InputProps){
                             &lt; Back
                         </button>
 
-                        {/* สลับปุ่มระหว่าง Next กับ Submit */}
                         {currentQuestionIdx === questions.length - 1 ? (
-                            // ข้อสุดท้ายโชว์ปุ่ม Submit
                             <button 
                                 onClick={handleSubmit}
                                 className="py-3 px-8 font-bold text-[1em] rounded-[10px] transition-all duration-200 bg-[#5F28CD] text-white hover:bg-[#4a1f9e] shadow-lg cursor-pointer"
@@ -235,7 +317,6 @@ export default function MainBox({id} : InputProps){
                                 Submit
                             </button>
                         ) : (
-                            // ข้อยังไม่จบโชว์ Next
                             <button 
                                 onClick={handleNext}
                                 className="py-3 px-6 font-semibold text-[1em] rounded-[10px] transition-all duration-200 bg-[#5F28CD] text-white hover:bg-[#4a1f9e] shadow-md cursor-pointer"
@@ -277,14 +358,13 @@ export default function MainBox({id} : InputProps){
 
             <style>{`
                 @keyframes blinkRedWhite {
-                    0%, 100% { color: #ff4d4f; border-color: #ff4d4f; } /* สีแดง */
-                    50% { color: #ffffff; border-color: #ffffff; }     /* สีขาว */
+                    0%, 100% { color: #ff4d4f; border-color: #ff4d4f; }
+                    50% { color: #ffffff; border-color: #ffffff; }
                 }
                 .animate-blink {
                     animation: blinkRedWhite 2s ease-in-out infinite;
                 }
             `}</style>
-
         </>
     )
 }
