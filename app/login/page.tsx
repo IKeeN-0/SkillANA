@@ -12,23 +12,15 @@ export default function Login() {
                 <Bg />
             </div>
             
-            <main className="relative z-10 w-full h-full flex justify-center">
+            <main className="relative z-10 w-full h-full flex flex-col xl:flex-row justify-center items-center xl:items-start">
                 <LeftBox></LeftBox>
                 
-                <section className="flex flex-col items-center w-[50%] mt-[2.7em] ">
-                    <Link 
-                        href='/' 
-                        className="relative inline-block self-start text-[0.9em] ml-[17%] mb-10 text-gray-300 hover:text-white transition-all duration-300 
-                                    after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
-                                    after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
-                    >
-                        &lt; Back
-                    </Link>
+                <section className="flex flex-col w-full xl:w-[50%] h-full items-center justify-center mx-auto px-3 sm:px-0">
 
                     <div className="flex flex-col justify-center items-center mt-15">
                         <h3 className="text-[1.8em] font-bold">Welcome Back!</h3>
                         
-                        <h6 className="text-large pt-[0.2em] ">Login to your account to connect with features</h6>
+                        <h6 className="text-[0.9em] sm:text-large pt-[0.2em] text-center sm:text-left">Login to your account to connect with features</h6>
                     </div>
 
                     <Form></Form>

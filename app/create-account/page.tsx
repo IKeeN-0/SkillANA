@@ -10,9 +10,12 @@ export default function Login() {
                 <Bg />
             </div>
             
-            <main className="relative z-10 w-full h-full flex justify-center">
+            {/* โทรศัพท์/ไอแพด: จัดแนวดิ่ง (flex-col) จัดกึ่งกลาง | คอมพิวเตอร์ (xl:): จัดแนวขนานขนาบข้าง */}
+            <main className="relative z-10 w-full h-full flex flex-col xl:flex-row justify-center items-center xl:items-start">
                 <LeftBox />
-                <section className="flex flex-col w-[50%] h-full items-center">
+                
+                {/* โทรศัพท์/ไอแพด: ขยายเต็มจอ w-full เพื่อจัดกึ่งกลาง | คอมพิวเตอร์ (xl:): กลับไปใช้ขนาด w-[50%] ตามเดิมของคุณ */}
+                <section className="flex flex-col w-full xl:w-[50%] h-full items-center justify-center mx-auto">
                     <CreateAccountForm />
                 </section>
             </main>

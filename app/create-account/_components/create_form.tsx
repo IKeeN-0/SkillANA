@@ -135,21 +135,13 @@ export default function CreateAccountForm(){
 
     return (
         <>
-            <section className="box-border my-18 flex h-full flex-col">
-                <Link 
-                    href='/' 
-                    className="relative inline-block self-start text-[0.9em] mb-10 text-gray-300 hover:text-white transition-all duration-300 
-                                after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
-                                after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
-                >
-                    &lt; Back
-                </Link>
+            <section className="box-border my-20 lg:my-15 flex h-full flex-col px-20 sm:px-0">
                 <div>
-                    <h3 className="text-[1.8em] font-bold ">Create your account</h3>
-                    <p className="text-large pt-[0.2em] ">Create an account so you can explore the website</p>
+                    <h3 className="text-[1.3em] sm:text-[1.8em] font-bold ">Create your account</h3>
+                    <p className="text-sm sm:text-large pt-[0.2em] ">Create an account so you can explore the website</p>
                 </div>
                 
-                <div className="flex gap-[1em] mt-[2em] ">
+                <div className="flex flex-col sm:flex-row gap-[1em] mt-[1.5em] sm:mt-[2em] ">
                     <InputComponent ref={firstNameRef} label="First Name" size="small" placeholder="Somsri" 
                     isError={errors.firstName[0]} message={errors.firstName[1] } onChange={(value: string) => handleOnchange("firstName", value)}
                     />
@@ -170,14 +162,14 @@ export default function CreateAccountForm(){
                 
                 <div className="flex flex-col gap-[.5em] items-center mt-[0.7em]">
                     <button 
-                        className="w-full h-[2.8em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[large] font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
+                        className="w-full h-[2.4em] sm:h-[2.8em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[0.95em] sm:text-[large] font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
                         {isLoading ? <Spinner /> : "Sign up"}
                     </button>
                     
-                    <p className="text-[.9em] mt-1.5 ">
+                    <p className="text-[0.8em] sm:text-[.9em] mt-1.5 text-center sm:text-left">
                         Already have an account? 
                         <Link 
                             href="/login" 
