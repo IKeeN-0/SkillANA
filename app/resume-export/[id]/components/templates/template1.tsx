@@ -1,7 +1,6 @@
 "use client"
 import { ResumeData } from "./type/resume"
 import mainstyles from "./main_style.module.css"
-import styles from "./template1.module.css"
 import { useEffect, useState } from "react"
 
 type Props = {
@@ -9,7 +8,23 @@ type Props = {
   size: "full" | "small";
 };
 
-export default function Template4({ data, size }: Props) {
+const formatResumeDate = (dateString?: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "";
+
+  const now = new Date();
+  
+  // ถ้าเป็นเดือน/ปีปัจจุบัน หรือ อนาคต ให้ใช้คำว่า Present
+  const isPresent = date.getFullYear() > now.getFullYear() || 
+                    (date.getFullYear() === now.getFullYear() && date.getMonth() >= now.getMonth());
+
+  if (isPresent) return "Present";
+
+  return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(date);
+};
+
+export default function Template1({ data, size }: Props) {
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
@@ -22,96 +37,85 @@ export default function Template4({ data, size }: Props) {
 
   // แยกก้อนเนื้อหาออกมา จะได้ไม่ต้องเขียนซ้ำ
   const ResumeContent = (
-    <div className={styles.bg}>
-      <section className={styles.leftSideContainer}>
-        <section className={styles.profile}>
-          <img className={styles.profileImg} src={data.profileImg} />
-        </section>
+    <div className="text-black p-[3.5em]">
+      <section className="text-[2.2em] flex justify-center items-center">
+        <h2 className="font-semibold">{data.firstName} {data.lastName}</h2>
+      </section>
+      
+      <div className="w-full h-[0.06em] bg-black mb-2.25"></div>
 
-        <section className={styles.contact}>
-          <h2>CONTACT</h2>
-          <div className={styles.phone}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-phone-icon lucide-phone">
-              <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
-            </svg>
-            <p>{data.contact.phoneNumber}</p>
-          </div>
-          <div className={styles.email}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail-icon lucide-mail">
-              <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /><rect x="2" y="4" width="20" height="16" rx="2" />
-            </svg>
-            <p>{data.email}</p>
-          </div>
-          <div className={styles.address}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-map-pin-icon lucide-map-pin">
-              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /><circle cx="12" cy="10" r="3" />
-            </svg>
-            <p>{data.contact.address}</p>
-          </div>
-        </section>
+      <section className="text-[16px] flex flex-col items-center gap-1">
+        {data.contact.address.length > 40 ? (
+          <>
+            <p className="leading-[1.2] text-center">{data.contact.phoneNumber} | {data.email}</p>
+            <p className="leading-[1.2] text-center">{data.contact.address}</p>
+          </>
+        ) : (
+          <p className="leading-[1.2] text-center">{data.contact.phoneNumber} | {data.email} | {data.contact.address}</p>
+        )}
+      </section>
+      
+      <div className="w-full h-[0.06em] bg-black my-2.25"></div>
 
-        <div className={styles.lHorizonLine}></div>
-
-        <section className={styles.education}>
-          <h2>EDUCATION</h2>
-          <h5 className={styles.university}>{data.education.university}</h5>
-          <h6 className={styles.major}>{data.education.major}</h6>
-          <p className={styles.level}>{data.education.level}</p>
-        </section>
-
-        <div className={styles.lHorizonLine}></div>
-
-        <section className={styles.skill}>
-          <h2>Skills</h2>
-          <ul className={styles.skillList}>
-            {data.badges?.map((badge, idx) => (<li key={idx}>{badge.badgeName}</li>))}
-          </ul>
-        </section>
-
+      <section className="text-[16px] my-[0.5em]">
+        <p>{data.aboutMe}</p>
       </section>
 
-      <div className={styles.verticalLine}></div>
-
-      <section className={styles.rightSideContainer}>
-        <section className={styles.name}>
-          <h2>{data.firstName}</h2>
-          <h2>{data.lastName}</h2>
-        </section>
-
-        <div className={styles.rHorizonLine}></div>
-
-        <section className={styles.aboutme}>
-          <h2>ABOUT ME</h2>
-          <p>{data.aboutMe}</p>
-        </section>
-
-        <section className={styles.exp}>
-          <h2>EXPERIENCE</h2>
-          {data.experience?.map((experience, idx) => (
-            <div key={idx} className={styles.expBox}>
-              <section className={styles.expContent}>
-                <h6 className={styles.title}>{experience.title}</h6>
-                <h6 className={styles.date}>{`${experience.startDate.slice(0, 4)} - ${experience.endDate.slice(0, 4)}`}</h6>
-                <p className={styles.description}>{experience.description}</p>
-              </section>
-            </div>
-          ))}
-        </section>
-
+      <section className="text-[20px] mt-[0.7em]">
+        <h2 className="font-semibold">EDUCATION</h2>
+        <div className="w-full h-[0.06em] bg-black mb-[2.5px]"></div>
+        <div className="flex justify-between mt-[0.5em]">
+          <h5 className="text-[18px] font-bold">{data.education.university}</h5>  
+          <h6 className="text-[16px] font-semibold pt-0.5">
+            {data.education?.startDate || data.education?.endDate 
+              ? `${formatResumeDate(data.education.startDate)} - ${formatResumeDate(data.education.endDate)}` 
+              : ""}
+          </h6>
+        </div>
+        <h6 className="text-[16px] font-semibold">{data.education.major}</h6>
+        <p className="text-[16px]">{data.education.level}</p>
       </section>
+
+      <section className="text-[20px] mt-[0.7em]">
+        <h2 className="font-semibold">EXPERIENCE</h2>
+        <div className="w-full h-[0.06em] bg-black mb-[2.5px]"></div>
+        {data.experience?.map((experience, idx) => (
+          <div key={idx}>
+            <section>
+              <div className="flex justify-between mt-[0.5em]">
+                <h6 className="text-[18px] font-bold">{experience.title}</h6>
+                <h6 className="text-[16px] font-semibold pt-0.5">
+                  {`${formatResumeDate(experience.startDate)} - ${formatResumeDate(experience.endDate)}`}
+                </h6>
+              </div>
+              <ul className="pl-[1.2em] list-disc">
+                <li className="text-[16px] mt-[0.2em]">{experience.description}</li>
+              </ul>
+              
+            </section>
+          </div>
+        ))}
+      </section>
+
+      <section className="text-[20px] mt-[0.7em]">
+        <h2 className="font-semibold">SKILLS</h2>
+        <div className="w-full h-[0.06em] bg-black mb-[2.5px]"></div>
+        <ul className="pl-[1.2em] text-[18px] list-disc">
+          {data.badges?.map((badge, idx) => (<li key={idx}>{badge.badgeName}</li>))}
+        </ul>
+      </section>
+
+        
     </div>
   );
 
-  // เลือกว่าจะเรนเดอร์ขนาดเล็ก (มีกล่องครอบ) หรือขนาดเต็ม
   return size === "full" ? (
     <div className={mainstyles.ResumeFull}>
       {ResumeContent}
     </div>
   ) : (
-    <div className={mainstyles.previewWrapper}>
       <div className={mainstyles.ResumeSmall}>
         {ResumeContent}
       </div>
-    </div>
   );
 }

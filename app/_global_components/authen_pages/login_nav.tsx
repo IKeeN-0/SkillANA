@@ -4,7 +4,7 @@ export default function Navbar() {
     return (
         <>
             <nav className="w-full h-[10vh] flex items-center pl-[3.5%] pt-[1%]
-                bg-[#1b103d] text-white"
+                bg-[#140b2e] text-white"
             >
                 
                 <div className="flex items-center gap-[1em] h-full">

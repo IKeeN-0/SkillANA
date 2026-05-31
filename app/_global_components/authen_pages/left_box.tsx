@@ -3,8 +3,9 @@ import Image from "next/image";
 export default function LeftBox() {
     return (
         <>
-            <section className="flex flex-col pl-[5%] w-[45%]">
-                <div className="relative w-[72%] h-[50%] mt-[5em] ">
+            <section className="flex flex-col pl-[4%] w-[45%] mt-[7%]">
+                
+                <div className="relative w-[72%] aspect-4/3">
                     <Image 
                         src="/login-logo2-final.png" 
                         alt="SkillANA Logo"
@@ -14,7 +15,7 @@ export default function LeftBox() {
                     />
                 </div>
                 
-                <div className="ml-17.5">
+                <div className="ml-17.5 mt-4">
                     <h2 className="text-[1.5em] font-bold ">
                         Learn and grow <br />
                         your skills with SkillANA

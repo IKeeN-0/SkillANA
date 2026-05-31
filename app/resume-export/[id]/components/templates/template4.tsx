@@ -1,8 +1,8 @@
 "use client"
-import {ResumeData} from "./type/resume"
+import { ResumeData } from "./type/resume"
 import mainstyles from "./main_style.module.css"
-import styles from "./template4.module.css"
-import { useEffect,useState } from "react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 
 type Props = {
   data: ResumeData;
@@ -10,131 +10,161 @@ type Props = {
 };
 
 export default function Template4({ data, size }: Props) {
-    const [isMounted, setIsMounted] = useState(false);
+    const [, setIsMounted] = useState(false);
+    
     useEffect(() => {
         setIsMounted(true);
     }, []);
     console.log(data)
-  const containerClass = isMounted 
-    ? (size === "full" ? mainstyles.ResumeFull : mainstyles.ResumeSmall)
-    : mainstyles.Resume; 
 
   if (!data) {
-    return <div>Loading...</div>; // หรือ return null; ถ้าไม่อยากให้แสดงอะไรเลย
+    return <div>Loading...</div>; 
   }
+
   return (
     <>
-        <div className ={size == "full" ? mainstyles.ResumeFull :mainstyles.ResumeSmall } >
-          <main className = {styles.thisResume}>
-              <section style={{backgroundColor : "#374151"}}>
-                  <section className={styles.leftSideContainer}>
-                      
-                      <div className={styles.imgBox}>
-                        <img className={styles.profileImg} src={data.profileImg}></img>
-                      </div>
-                      <div className = {styles.aboutMeBox}>
-                          <div style={{display : "flex", gap : "1em" , width : "100%", alignItems : "flex-end"}}>
-                              <img className={styles.iconStyle}  src={"/icon/user.png"}></img>
-                              <h3>About Me</h3>
-                          </div>
+        <div className={size == "full" ? mainstyles.ResumeFull : mainstyles.ResumeSmall} >
+            
+            <div className="w-[210mm] min-h-fit mx-auto bg-[#f5f5f5] text-[#2f3a4c] overflow-hidden">
+                
+                {/* HEADER */}
+                <header className="bg-[#2f3a4c] flex items-center pt-[0.35rem] px-10.5 pb-[1.05rem]">
+                    
+                    <div className="w-[6.3rem] h-[6.3rem] border-[3.5px] border-solid border-white rounded-full flex items-center justify-end ml-16 shrink-0">
+                        <Image 
+                            src={data.profileImg || "/user.png"} 
+                            alt="Profile"  
+                            width={120}
+                            height={120}
+                            className="w-[5.95rem] h-[5.95rem] object-cover rounded-full"
+                        />
+                    </div>
 
-                          <div className={styles.aboutMeContent}>
-                            <p style={{ textAlign: "justify", textJustify : "inter-word",hyphens: "auto"}}>{data.aboutMe}</p>
-                          </div>
-                      </div>
+                    <div className="ml-44">
+                        <h1 className="text-white text-[32px] opacity-90 m-0">
+                            {data.firstName} {data.lastName}
+                        </h1>
+                    </div>
+                </header>
 
-                      <div className={styles.contactBox}>
-                          <div className = {styles.contactContentBoxTitle}>
-                              <img className={styles.iconStyle} src={"/icon/contact.png"}></img>
-                              <h3>Contact</h3>
-                          </div>
-                          <div className = {styles.contactContentBox}>
-                              <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/phone.png"}></img>
-                              <p>{data.contact.phoneNumber}</p>
-                          </div>
-                          <div className = {styles.contactContentBox}>
-                               <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/mail.png"}></img>
-                               <p>{data.email}</p>
-                          </div>
-                          <div className = {styles.contactContentBox}>
-                             <img style={{width : "10%", height : "75%" , filter : "invert(1)"}} src={"/icon/location.png"}></img>
-                             <p>{data.contact.address}</p>
-                          </div>
-                      </div>
+                {/* BODY */}
+                <div className="flex">
+                    
+                    {/* LEFT SIDEBAR */}
+                    <aside className="w-[42%] bg-[#d9d9d9] pt-10.5 pr-[24.5px] pb-0 pl-[0.7rem] h-[62.4rem] relative">
+                        
+                        <section className="mb-[1.05rem]">
+                            <h2 className="text-[25.2px] mb-[1.05rem] tracking-[2.1px] border-b-2 border-solid border-[#2f3a4c] pb-1.75">
+                                CONTACT
+                            </h2>
 
-                      <div className={styles.skillBox}>
-                        <div className = {styles.contactContentBoxTitle}>
-                              <img style={{width : "12%", height : "75%" , filter : "invert(1)"}} src={"/icon/setting.png"}></img>
-                              <h3>Skills</h3>
-                          </div>
-                          <ul className={styles.skillList}>
-                              {data.badges?.map((badge,idx)=>(<li key={idx}>{badge.badgeName}</li>))}
-                          </ul>
-                      </div>
-                      <div className={styles.languageBox}>
-                         <div className = {styles.languageBoxTitle}>
-                              <img style={{width : "12%", height : "12%" , filter : "invert(1)"}} src={"/icon/language.png"}></img>
-                              <h3>Languages</h3>
-                          </div>
-
-                          <ul className={styles.languageList}>
-                              <li>{"English B2"}</li>
-                              <li>{"Thai Native"}</li>
-                          </ul>
-                      </div>
-
-                  </section>
-              </section>
-              <section className={styles.rightSideContainer}>
-                  
-                  <div className={styles.nameContainer}>
-                      <h2>{data.firstName}</h2>
-                      <h2>{data.lastName}</h2>
-                  </div>
-                  
-                  <div className={styles.rightSideContent}>
-                      <div className = {styles.rightSideContentTitle}>
-                              <img style={{width : "12%", height : "90%" }} src={"/icon/education.png"}></img>
-                              <h3>Education</h3>
-                      </div>
-
-                      <div className={styles.educationBox}>
-                          <div className={styles.timeLine}>
-                              <div className={styles.dot1}></div>
-                              <div className={styles.dot2}></div>
-                          </div>
-
-                          <section className={styles.educationContent}>
-                            <h6 style={{fontSize : "small"}}>{data.education.university}</h6>
-                            <h6 style={{fontSize : "small"}}>{data.education.major}</h6>
-                            <p style={{fontSize : "x-small"}}>{data.education.level}</p>
-                          </section>
-                      </div>
-                       <div className = {styles.rightSideContentTitle}>
-                              <img style={{width : "12%", height : "75%" }} src={"/icon/suitcase.png"}></img>
-                              <h3>Experience</h3>
-                      </div>
-                      {data.experience?.map((experience, idx) =>(
-                            <div key={idx} className={styles.educationBox}>
-                            <div key={idx} className={styles.timeLine}>
-                                <div className={styles.dot1}></div>
-                                <div className={styles.dot2}></div>
+                            <div className="flex items-center m-[0_0_1.05rem_0] gap-[0.7rem] text-[12.6px]">
+                                <Image src="/icon/phone.png" alt="Phone" width={24} height={24} className="w-[1.4rem] h-[1.4rem]" />
+                                <span>{data.contact.phoneNumber}</span>
                             </div>
 
-                            <section className={styles.educationContent}>
-                                <h6 style={{fontSize : "small"}}>{`(${experience.startDate.slice(0,4)}-${experience.endDate.slice(0,4)})`}</h6>
-                                <h6 style={{fontSize : "small"}}>{experience.title}</h6>
-                                <p style={{fontSize : "x-small"}}>{experience.description}</p>
-                            </section>
-                        </div>
-                      ))}
+                            <div className="flex items-center m-[0_0_1.05rem_0] gap-[0.7rem] text-[12.6px]">
+                                <Image src="/icon/mail.png" alt="Email" width={24} height={24} className="w-[1.4rem] h-[1.4rem]" />
+                                <span>{data.email}</span>
+                            </div>
 
+                            <div className="flex items-center m-[0_0_1.05rem_0] gap-[0.7rem] text-[12.6px]">
+                                <Image src="/icon/location.png" alt="Address" width={24} height={24} className="w-[1.4rem] h-[1.4rem]" />
+                                <span>{data.contact.address}</span>
+                            </div>
+                        </section>
 
+                        <section className="mb-[1.05rem]">
+                            <h2 className="text-[25.2px] mb-[1.05rem] tracking-[2.1px] border-b-2 border-solid border-[#2f3a4c] pb-1.75">
+                                SKILLS
+                            </h2>
+                            <ul className="pl-[1.05rem] m-0">
+                                {data.badges?.map((badge, idx) => (
+                                    <div key={idx} className="mb-[12.6px] text-[15.4px]">
+                                        <li className="mb-[12.6px] text-[15.4px]">{badge.badgeName}</li>
+                                    </div>
+                                ))} 
+                            </ul>
+                        </section>
+                    </aside>
 
-                  </div>
-              </section>
+                    {/* RIGHT CONTENT */}
+                    <main className="w-[58%] py-10.5 px-8.75">
+                        
+                        {/* PROFILE */}
+                        <section className="mb-7">
+                            <div className="flex items-center gap-3.5 mb-[1.05rem]">
+                                <div className="w-[1.4rem] h-[1.33rem] bg-[#2f3a4c] text-white rounded-full flex items-center justify-center text-[14px] shrink-0"></div>
+                                <h2 className="text-[16.8px] tracking-[2.1px] border-b-2 border-solid border-[#2f3a4c] w-full pb-1.75">
+                                    PROFILE
+                                </h2>
+                            </div>
 
-          </main>
+                            <div className="relative ml-[0.7rem] pl-[0.7rem] before:content-[''] before:absolute before:left-0 before:top-0 before:w-0.5 before:h-full before:bg-[#9a9a9a]">
+                                <p className="text-[14.7px] leading-[1.19]">
+                                    {data.aboutMe}
+                                </p>
+                            </div>
+                        </section>
+
+                        {/* EXPERIENCE */}
+                        <section className="mb-7">
+                            <div className="flex items-center gap-3.5 mb-[1.05rem]">
+                                <div className="w-[1.4rem] h-[1.33rem] bg-[#2f3a4c] text-white rounded-full flex items-center justify-center text-[14px] shrink-0"></div>
+                                <h2 className="text-[16.8px] tracking-[2.1px] border-b-2 border-solid border-[#2f3a4c] w-full pb-1.75">
+                                    WORK EXPERIENCE
+                                </h2>
+                            </div>
+
+                            <div className="relative ml-[0.7rem] pl-[0.7rem] before:content-[''] before:absolute before:left-0 before:top-0 before:w-0.5 before:h-full before:bg-[#9a9a9a]">
+                                <div className="relative mb-8.75">
+                                    <div className="timelineDot"></div>
+
+                                    <div>
+                                        {data.experience?.map((experience,idx) => (
+                                            <div key={idx} >
+                                                <h3 className="text-[18px] text-[#1d2436] m-0">
+                                                    {experience.title} {`(${experience.startDate.slice(0,4)}-${experience.endDate.slice(0,4)})`}
+                                                </h3>
+                                                <div className="mb-[0.42rem]">
+                                                    <p className="text-[14.7px] leading-[1.19] m-0">{experience.description}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* EDUCATION */}
+                        <section className="mb-7">
+                            <div className="flex items-center gap-3.5 mb-[1.05rem]">
+                                <div className="w-[1.4rem] h-[1.33rem] bg-[#2f3a4c] text-white rounded-full flex items-center justify-center text-[14px] shrink-0"></div>
+                                <h2 className="text-[16.8px] tracking-[2.1px] border-b-2 border-solid border-[#2f3a4c] w-full pb-1.75">
+                                    EDUCATION
+                                </h2>
+                            </div>
+
+                            <div className="relative ml-[0.7rem] pl-[0.7rem] before:content-[''] before:absolute before:left-0 before:top-0 before:w-0.5 before:h-full before:bg-[#9a9a9a]">
+                                <div className="relative mb-8.75">
+                                    <div className="timelineDot"></div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <h3 className="text-[16.8px] m-0 font-bold">Education Level</h3>
+                                        <h4 className="text-[15.4px] mb-[0.42rem] font-normal m-0">{data.education.level}</h4>
+
+                                        <h3 className="text-[16.8px] m-0 font-bold">Institution</h3>
+                                        <h4 className="text-[15.4px] mb-[0.42rem] font-normal m-0">{data.education.university}</h4>
+
+                                        <h3 className="text-[16.8px] m-0 font-bold"> Major</h3>
+                                        <h4 className="text-[15.4px] mb-[0.42rem] font-normal m-0">{data.education.major}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+            </div>
         </div>
     </>
   );

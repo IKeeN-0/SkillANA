@@ -45,14 +45,14 @@ export default function Form(){
         const pass = passRef.current?.value
 
         if(!email && !pass){
-            setEmailMessage("Plase enter an email.")
+            setEmailMessage("Please enter an email.")
             setIsEmailError(true);
             setIsPasswordError(true);
-            setPassMessage("Plase enter an password.")
+            setPassMessage("Please enter an password.")
             setIsLoading(false);
             return;
         }
-        else if(!email){setEmailMessage("Plase enter an email."); setIsEmailError(true); setIsLoading(false); return;}
+        else if(!email){setEmailMessage("Please enter an email."); setIsEmailError(true); setIsLoading(false); return;}
         else if(!pass){ setIsPasswordError(true); setPassMessage("Plase enter an password."); setIsLoading(false); return;}
 
         try{
@@ -84,9 +84,9 @@ export default function Form(){
                     router.push("/verify");
                 }
             }else{
-                setIsEmailError(true);
+                setIsEmailError(true); 
                 setIsPasswordError(true);
-                setEmailMessage("")
+                setEmailMessage("");
                 setPassMessage("Incorrect email or password.");
             }
         }
@@ -99,6 +99,12 @@ export default function Form(){
     }
 
     const handleEmailChange = (value: string) => {
+        if (passMessage === "Incorrect email or password.") {
+            setIsEmailError(false);
+            setIsPasswordError(false);
+            setPassMessage("");
+        }
+
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
             setEmailMessage("Invalid email format.")
             setIsEmailError(true);
@@ -106,28 +112,26 @@ export default function Form(){
         
     };
     const handlePasswordChange = (value: string) =>{
+        if (passMessage === "Incorrect email or password.") {
+            setIsEmailError(false);
+            setIsPasswordError(false);
+            setPassMessage("");
+        }
 
         if(value) setIsPasswordError(false);
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-        console.log("test")
-        handleSubmit();
-    }
-    };
     
     return(
         <>
-            {/* .container */}
             <div className="flex flex-col mt-[2em] ">
                 
-                <InputComponent ref={emailRef} label="Email" placeholder="Enter your email" size="medium" isPassword={false}
+                <InputComponent ref={emailRef} label="Email" placeholder="example@gmail.com" size="medium" isPassword={false}
                     onChange={handleEmailChange} isError={isEmailError} message={emailMessage}
                 />
                 
-                <div className="w-full mt-[0.5em] mb-[2em] ">
-                    <InputComponent ref={passRef} label="Password" placeholder="Enter your password"
+                <div className="w-full mt-[0.5em] mb-[1.5em] ">
+                    <InputComponent ref={passRef} label="Password" placeholder="••••••••"
                      size="medium" isPassword={true} isError={isPasswordError} message={passMessage}
                      onChange={handlePasswordChange}
                      />
@@ -139,7 +143,7 @@ export default function Form(){
                     </Link>
                 </div>
 
-                <div className="flex flex-col gap-[.8em] w-full items-center">
+                <div className="flex flex-col gap-[.8em] w-full items-center mt-5">
                     <button 
                         className="w-full h-[2.8em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[large] font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                         onClick={handleSubmit}
@@ -152,8 +156,8 @@ export default function Form(){
                         <Link 
                             href="/create-account" 
                             className="relative inline-block self-start mb-[1em] text-[#dfa8ff] font-semibold ml-[0.7em] hover:text-[#ba44ff] transition-all duration-300 
-                                after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[1px] after:bg-gray-300 
-                                after:opacity-0 after:translate-y-[2px] hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
+                                after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-gray-300 
+                                after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                         >
                             Sign up
                         </Link> 
