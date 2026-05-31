@@ -4,14 +4,14 @@ export default function Contact() {
   const { isEdit, liveData, updateNestedField, updateTempField, tempData } = useEditContext();
   const data = isEdit ? tempData.contact : liveData.contact;
 
-  const inputBaseClass = "text-white text-[16px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40";
+  const inputBaseClass = `text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 ${!isEdit ? 'cursor-default' : 'cursor-text'}`;
 
   return (
     <>
       <div id="contact-container" className="text-[1.6em] font-bold">    
         <h1>Contact</h1> 
         
-        <div id="contact-content" className="block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl">
+        <div id="contact-content" className="block mt-1.5 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl">
             
             <div id="Email" className="block text-[0.8em] font-semibold mb-3">
                 <h2 className="mb-1">Email</h2>
@@ -48,7 +48,7 @@ export default function Contact() {
                 <div className="relative flex w-full items-center">
                     <textarea 
                         id="address" 
-                        rows={2}
+                        rows={1}
                         className={`${inputBaseClass} py-3 resize-none font-medium`} 
                         placeholder="e.g., 123 Main St, City, State 12345" 
                         readOnly={!isEdit}

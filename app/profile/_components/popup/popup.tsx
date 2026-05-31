@@ -6,13 +6,29 @@ export default function Popup() {
 
     if (!isEdit) return null;
 
-    const isValid = tempData.firstName?.trim() !== "" && tempData.lastName?.trim() !== "";
+    // เช็คว่ากรอกชื่อและนามสกุลแล้ว
+    const hasName = tempData.firstName?.trim() !== "" && tempData.lastName?.trim() !== "";
 
+    // เช็ค Error วันที่ฝั่ง Education 
+    const eduStart = tempData.education?.startDate ? new Date(tempData.education.startDate) : null;
+    const eduEnd = tempData.education?.endDate ? new Date(tempData.education.endDate) : null;
+    const hasEduError = eduStart && eduEnd && eduStart > eduEnd;
+
+    // เช็ค Error วันที่ฝั่ง Experience 
+    const hasExpError = (tempData.experience || []).some(exp => {
+        const expStart = exp.startDate ? new Date(exp.startDate) : null;
+        const expEnd = exp.endDate ? new Date(exp.endDate) : null;
+        return expStart && expEnd && expStart > expEnd;
+    });
+
+    const hasAboutMeError = (tempData.aboutMe || "").length > 300;
+    const hasExpDescError = (tempData.experience || []).some(exp => (exp.description || "").length > 300);
+
+    const canSave = hasName && !hasEduError && !hasExpError && !hasAboutMeError && !hasExpDescError;
     return (
         <>
             <div 
                 className="fixed bottom-10 left-1/2 -translate-x-1/2 w-300 h-20 bg-[#ffffff] flex justify-end items-center rounded-[0.625rem]" 
-                onClick={() => setEditing(false)}
             >
                 <div className="inline-flex gap-2.5">
                     
@@ -25,10 +41,10 @@ export default function Popup() {
                     
                     <button 
                         className={`mr-5 w-63 h-12 text-[1.1em] font-bold bg-[#5F28CD] text-white border-none rounded-[0.625rem]  transition-colors duration-200 hover:bg-[#3e1394] ${
-                            !isValid ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+                            !canSave ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
                         }`}
-                        onClick={() => { if (isValid) { setEditing(false); saveData(); } }}
-                        disabled={!isValid}
+                        onClick={() => { if (canSave) { setEditing(false); saveData(); } }}
+                        disabled={!canSave}
                     >
                         Save Changes
                     </button>

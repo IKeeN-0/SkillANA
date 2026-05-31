@@ -219,7 +219,7 @@ export default function MainBox({id} : InputProps){
                             className={`py-2 px-6 font-semibold text-[1em] rounded-[10px] transition-all duration-200 ${
                                 currentQuestionIdx === 0 
                                 ? "opacity-0 pointer-events-none"
-                                : "bg-transparent border-2 border-[#3f1a88] text-[#3f1a88] hover:border-[#5F28CD] hover:bg-[#5F28CD] hover:text-white cursor-pointer"
+                                : "bg-purple-500/30 text-purple-100 hover:border-[#5F28CD] hover:bg-purple-500/50 transition-colors cursor-pointer"
                             }`}
                         >
                             &lt; Back
