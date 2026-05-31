@@ -146,6 +146,53 @@
  *                       type: string
  *                   correctAnswer:
  *                     type: string
+ *
+ *     PendingUser:
+ *       type: object
+ *       properties:
+ *         pendingUser:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *             lastName:
+ *               type: string
+ *             email:
+ *               type: string
+ *               format: email
+ *
+ *     BadgeAddRequest:
+ *       type: object
+ *       required:
+ *         - badgeId
+ *         - badgeName
+ *         - imgUrl
+ *       properties:
+ *         badgeId:
+ *           type: string
+ *         badgeName:
+ *           type: string
+ *         imgUrl:
+ *           type: string
+ *
+ *     PrintRequest:
+ *       type: object
+ *       required:
+ *         - data
+ *         - templateId
+ *       properties:
+ *         data:
+ *           type: object
+ *           description: Resume data to render into PDF
+ *         templateId:
+ *           type: string
+ *           description: Resume template identifier
+ *
+ *     ErrorResponse:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
  */
 
 /**
@@ -153,9 +200,8 @@
  * /api/users/{id}:
  *   get:
  *     summary: Get user by ID
+ *     description: Returns public user profile (password excluded). No authentication required.
  *     tags: [Users]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -183,6 +229,10 @@
  *               $ref: '#/components/schemas/MessageResponse'
  *       500:
  *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *
  *   put:
  *     summary: Update user
@@ -213,13 +263,17 @@
  *       400:
  *         description: Invalid input
  *       403:
- *         description: Unauthorized
+ *         description: Forbidden — token user ID does not match path ID
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/MessageResponse'
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       500:
  *         description: Update failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 
 /**
@@ -227,10 +281,8 @@
  * /api/users/{id}/badge:
  *   post:
  *     summary: Add badge to user
+ *     description: Appends a badge to the user's badges array if not already earned.
  *     tags: [Users]
- *     security:
- *       - bearerAuth: []
- *
  *     parameters:
  *       - in: path
  *         name: id
@@ -243,26 +295,39 @@
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - badgeId
- *             properties:
- *               badgeId:
- *                 type: string
+ *             $ref: '#/components/schemas/BadgeAddRequest'
  *
  *     responses:
  *       200:
- *         description: Badge added
+ *         description: Badge added successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UserFull'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Badge added successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/UserFull'
  *       400:
- *         description: Invalid or duplicate badge
+ *         description: Invalid ID format or user already has this badge
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
  *       500:
  *         description: Update failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageResponse'
  */
 /**
  * @swagger
@@ -281,6 +346,51 @@
  *                 $ref: '#/components/schemas/Badge'
  *       500:
  *         description: Failed to fetch badges
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+/**
+ * @swagger
+ * /api/badges/{id}:
+ *   get:
+ *     summary: Get badge by ID
+ *     tags: [Badges]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Badge found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 badge:
+ *                   $ref: '#/components/schemas/Badge'
+ *       400:
+ *         description: Invalid ID format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: Badge not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Failed to fetch badge
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 /**
  * @swagger
@@ -310,10 +420,11 @@
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Create user successfully
  *                 token:
  *                   type: string
  *       400:
- *         description: Invalid registration state
+ *         description: Missing pending user, missing information, or email already exists
  *         content:
  *           application/json:
  *             schema:
@@ -430,6 +541,73 @@
  */
 /**
  * @swagger
+ * /api/print:
+ *   post:
+ *     summary: Generate resume PDF
+ *     description: Renders resume data with the given template and returns a PDF file.
+ *     tags: [Print]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PrintRequest'
+ *     responses:
+ *       200:
+ *         description: PDF generated successfully
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       500:
+ *         description: PDF generation failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+/**
+ * @swagger
+ * /api/uploadthing:
+ *   get:
+ *     summary: UploadThing route handler (GET)
+ *     description: UploadThing internal GET handler for upload configuration.
+ *     tags: [Upload]
+ *     responses:
+ *       200:
+ *         description: UploadThing GET response
+ *   post:
+ *     summary: Upload profile image
+ *     description: |
+ *       UploadThing file upload endpoint. Use the `profileImg` slug.
+ *       Requires Bearer JWT. Max file size 4MB. Accepted type: image.
+ *       On success, updates the authenticated user's `profileImg` field.
+ *     tags: [Upload]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         description: Upload completed
+ *       401:
+ *         description: Unauthorized — missing or invalid JWT
+ *       500:
+ *         description: Upload or database update failed
+ */
+/**
+ * @swagger
  * /api/auth/login:
  *   post:
  *     summary: Login user
@@ -469,5 +647,9 @@
  *               $ref: '#/components/schemas/MessageResponse'
  *       500:
  *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 export {};

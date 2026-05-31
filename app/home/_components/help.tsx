@@ -13,7 +13,7 @@ export function Help() {
                 We’ve got your back! Whether you’re stuck on a test or just getting started, our guide has all the answers.
             </div>
 
-            <Link href='' className={styles.btn}>View Our Start Guide</Link>
+            <Link href='/SkillANA-User-Handbook.pdf' className={styles.btn} download>View Our Start Guide</Link>
         </div>
         <img src='/paper.png' className={styles.paper}></img>
         
