@@ -303,7 +303,7 @@ export default function MainBox({id} : InputProps){
                             className={`py-2 px-6 font-semibold text-[1em] rounded-[10px] transition-all duration-200 ${
                                 currentQuestionIdx === 0 
                                 ? "opacity-0 pointer-events-none"
-                                : "bg-purple-500/30 text-purple-100 hover:border-[#5F28CD] hover:bg-purple-500/50 transition-colors cursor-pointer"
+                                : "bg-[#9152bec5] text-purple-100 hover:border-[#5F28CD] hover:bg-purple-500/50 transition-colors cursor-pointer"
                             }`}
                         >
                             &lt; Back
