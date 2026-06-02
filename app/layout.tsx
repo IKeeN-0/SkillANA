@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import "./globals.css";
-
+import { Suspense } from "react";
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -21,7 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} scroll-smooth`}>
         <body>
+          <Suspense fallback={
+                <div className="w-full h-[80vh] flex flex-col justify-center items-center text-white/80">
+                    <p className="animate-pulse">Loading execution environment...</p>
+                </div>
+            }>
             {children}
+
+          </Suspense>
         </body>
     </html>
   );

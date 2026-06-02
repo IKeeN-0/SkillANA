@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react"; // 1. เพิ่มการนําเข้า Suspense
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
@@ -10,7 +10,35 @@ interface InputProps {
     id: string
 }
 
+interface Badge {
+    badgeId: string;
+    badgeName: string;
+    imgUrl: string;
+    earnedAt: Date;
+    _id?: string
+}
+
+// ==========================================
+// 🌟 1. COMPONENT หลัก (ทำหน้าที่เป็น Wrapper ครอบด้วย Suspense)
+// ==========================================
 export default function BadgePage({ id }: InputProps) {
+    return (
+        <Suspense fallback={
+            <section className="grow flex justify-center mt-13 w-full">
+                <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-[75vh] rounded-[10px] flex justify-center items-center">
+                    <div className="w-16 h-16 border-4 border-solid border-[rgba(255,255,255,0.1)] border-l-white rounded-full animate-spin"></div>
+                </div>
+            </section>
+        }>
+            <BadgePageContent id={id} />
+        </Suspense>
+    );
+}
+
+// ==========================================
+// 🌟 2. COMPONENT ย่อย (ย้ายลอจิกเดิมทั้งหมดมาไว้ตรงนี้)
+// ==========================================
+function BadgePageContent({ id }: InputProps) {
     const router = useRouter()
     const [badgeTitle, setBadgeTitle] = useState("");
     const [badgeCategory, setBadgeCategory] = useState("");
@@ -78,6 +106,7 @@ export default function BadgePage({ id }: InputProps) {
         router.push(`/badge/test/${id}`);
     }
 
+    // จุดเจ้าปัญหาใช้งานได้อย่างปลอดภัยแล้ว เพราะอยู่ภายใต้ขอบเขตของ Suspense ข้ามฝั่ง Client
     const searchParams = useSearchParams();
     const fromPage = searchParams.get('from');
 

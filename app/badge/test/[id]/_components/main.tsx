@@ -222,7 +222,7 @@ export default function MainBox({id} : InputProps){
         localStorage.setItem("timeRemaining", formatTime(timeLeft))
         localStorage.setItem("pass", pass)
         localStorage.setItem("imgUrl", badge.imgUrl)
-        router.push("/badge/test/result")
+        router.push("/badge/result")
     }
 
     const updateUserBadge = async () => {

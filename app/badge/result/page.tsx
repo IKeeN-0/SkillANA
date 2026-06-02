@@ -2,6 +2,7 @@ import ResultMain from "./_components/resultMain";
 import Bg from "@/app/_global_components/background/pageBackground"
 import { Navbar } from "@/app/_global_components/navbar/navbar";
 import Footer from "@/app/_global_components/footer/footer"
+import { Suspense } from "react"; // 1. Import Suspense เข้ามา
 
 export default function Result(){
     return (
@@ -12,7 +13,14 @@ export default function Result(){
 
             <Navbar></Navbar>
 
-            <ResultMain></ResultMain>
+            {/* 2. ใช้ Suspense ครอบเฉพาะส่วนของ ResultMain */}
+            <Suspense fallback={
+                <div className="w-full h-[80vh] flex flex-col justify-center items-center text-white/80">
+                    <p className="animate-pulse">Loading execution environment...</p>
+                </div>
+            }>
+                <ResultMain />
+            </Suspense>
             
             <footer className="shrink-0 mt-auto">
                 <Footer />

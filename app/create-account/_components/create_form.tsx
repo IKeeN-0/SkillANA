@@ -65,7 +65,7 @@ export default function CreateAccountForm(){
         //     body : JSON.stringify({firstName : data.firstName, lastName : data.lastName, email: data.email, password: data.password})
         // })
 
-        const otpRes = await fetch("http://localhost:3000/api/auth/otp",{
+        const otpRes = await fetch("/api/auth/otp",{
             method : "POST",
             headers : {"Content-Type" : "application/json"},
             body : JSON.stringify({email: data.email})
@@ -78,7 +78,7 @@ export default function CreateAccountForm(){
             console.error(otpData.message)
             return;
         }else{
-            const pendingUserRes = await fetch("http://localhost:3000/api/auth/register/pending-users",{
+            const pendingUserRes = await fetch("/api/auth/register/pending-users",{
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({firstName: data.firstName, lastName: data.lastName, email: data.email, password: data.password})
