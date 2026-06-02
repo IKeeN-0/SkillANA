@@ -59,7 +59,7 @@ export default function OtpForm(){
         }
 
         try {
-            const res = await fetch("http://localhost:3000/api/auth/otp/verify",{
+            const res = await fetch("/api/auth/otp/verify",{
                 method: "POST",
                 headers: {"Content-Type" : "application/json"},
                 body: JSON.stringify({email: email, otp_code : otpString})
@@ -71,7 +71,7 @@ export default function OtpForm(){
                 return;
             }else{
                 if(method == "register"){
-                    const regis_res = await fetch("http://localhost:3000/api/auth/register",{
+                    const regis_res = await fetch("/api/auth/register",{
                         method: "POST",
                         headers: {"Content-Type" : "application/json"},
                         body: JSON.stringify({email: email})
@@ -120,7 +120,7 @@ export default function OtpForm(){
         }
 
         try {
-            const otpRes = await fetch("http://localhost:3000/api/auth/otp",{
+            const otpRes = await fetch("/api/auth/otp",{
                 method : "POST",
                 headers : {"Content-Type" : "application/json"},
                 body : JSON.stringify({email: email})
