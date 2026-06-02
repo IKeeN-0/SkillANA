@@ -8,14 +8,14 @@ export default async function BadgeInfo({params} : {params : Promise<{ id : stri
     const id = data.id;
     return(
         <div className="relative w-full min-h-screen text-white flex flex-col overflow-hidden">
-
             <div className="absolute inset-0 -z-10">
                 <Bg />
             </div>
 
             <Navbar></Navbar>
             
-            <BadgePage id = {id}></BadgePage>
+            {/* เรียกใช้ได้เลยอย่างปลอดภัย เพราะ BadgePage ข้างในมี Suspense ดูแลตัวเองแล้ว */}
+            <BadgePage id={id}></BadgePage>
 
             <footer className="shrink-0 mt-auto">
                 <Footer />

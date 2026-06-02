@@ -20,6 +20,7 @@ export default function OtpForm(){
     
     useEffect(() => {
         itemsRef.current[0]?.focus();
+        // เรียกตรงนี้ปลอดภัย 100% เพราะ useEffect ทำงานแค่บน Client เท่านั้น
         const savedEmail = sessionStorage.getItem("pending_email");
         const savedMethod = sessionStorage.getItem("method");
         if(savedEmail && savedMethod){
@@ -28,7 +29,7 @@ export default function OtpForm(){
         }else{
             router.replace('/login')
         }
-    }, []);
+    }, [router]);
 
     const handleFocusNext = (index: number) => {
         if (index < 5) {
@@ -43,7 +44,6 @@ export default function OtpForm(){
     };
 
     const handleSubmit = async ()=>{
-        // 🛠️ เริ่มต้นโหลดและดึง Error เก่าออกก่อนเริ่มส่งใหม่
         setIsLoading(true); 
         setIsError(false);
 
@@ -70,26 +70,29 @@ export default function OtpForm(){
                 setIsLoading(false); 
                 return;
             }else{
-                if(method == "register"){
-                    const regis_res = await fetch("/api/auth/register",{
-                        method: "POST",
-                        headers: {"Content-Type" : "application/json"},
-                        body: JSON.stringify({email: email})
-                    })
-                    const regis_data = await regis_res.json()
-                    if(!regis_res.ok){
-                        console.error(regis_data.message)
-                        setIsLoading(false);
-                        return;
-                    }else{
-                        const token = regis_data.token;
-                        localStorage.setItem("token",token)
-                        router.push("/home");
+                //  ครอบตรวจเช็คสิทธิ์เพื่อให้มั่นใจว่ารันบน Browser ชัวร์ๆ (แก้จุดนี้)
+                if (typeof window !== "undefined") {
+                    if(method == "register"){
+                        const regis_res = await fetch("/api/auth/register",{
+                            method: "POST",
+                            headers: {"Content-Type" : "application/json"},
+                            body: JSON.stringify({email: email})
+                        })
+                        const regis_data = await regis_res.json()
+                        if(!regis_res.ok){
+                            console.error(regis_data.message)
+                            setIsLoading(false);
+                            return;
+                        }else{
+                            const token = regis_data.token;
+                            localStorage.setItem("token", token)
+                            router.push("/home");
+                        }
+                    }else if(method == "login"){
+                        const token = localStorage.getItem("token")
+                        if(!token) router.replace("/login")
+                        else router.push("/home")
                     }
-                }else if(method == "login"){
-                    const token = localStorage.getItem("token")
-                    if(!token) router.replace("/login")
-                    else router.push("/home")
                 }
             }
         } catch (error) {
@@ -103,7 +106,6 @@ export default function OtpForm(){
         setIsResendErr(isErr);
         setIsResendText(true);
 
-        // ถ้าเคยกดแล้วกดซ้ำ ให้รีเซ็ตเวลา 3 วิใหม่
         if (resendTimeoutRef.current) clearTimeout(resendTimeoutRef.current);
 
         resendTimeoutRef.current = setTimeout(() => {
@@ -113,9 +115,8 @@ export default function OtpForm(){
 
     const resend = async () => {
         const now = Date.now();
-        //  เช็คว่ากดครั้งล่าสุดผ่านไป 1 นาที (60000 ms) หรือยัง
         if (now - lastResendTime < 60000) {
-            showResendMessage(true); // แสดง Error ว่าให้รอ 1 นาที
+            showResendMessage(true);
             return;
         }
 
@@ -129,8 +130,8 @@ export default function OtpForm(){
             if(!otpRes.ok){
                 showResendMessage(true);
             } else {
-                setLastResendTime(Date.now()); // อัปเดตเวลาที่ส่งล่าสุด
-                showResendMessage(false); // สำเร็จ
+                setLastResendTime(Date.now());
+                showResendMessage(false);
             }
         } catch (error) {
             showResendMessage(true);
@@ -139,7 +140,6 @@ export default function OtpForm(){
     
     return (
         <>
-            {/* เพิ่ม relative และ items-center เพื่อให้ Popup อยู่ตรงกลางกล่องพอดี */}
             <div className="relative flex flex-col mt-[5em] items-center">
                 <section className="flex gap-[1em]">
                     {[0, 1, 2, 3, 4, 5].map((index) => (
@@ -149,7 +149,6 @@ export default function OtpForm(){
                                 if (el) itemsRef.current[index] = el;
                             }}
                             onChange={(e: any) => {
-                                //  เคลียร์ Error ทันทีเมื่อแก้ OTP
                                 if (isError) {
                                     setIsError(false);
                                     setErrorMsg("");
@@ -169,7 +168,6 @@ export default function OtpForm(){
                     ))}
                 </section>
                 
-                {/* Popup Error*/}
                 <p
                     className={`absolute top-[125%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
                         isError && errorMsg
@@ -177,7 +175,6 @@ export default function OtpForm(){
                         : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
                     }`}
                 >
-                    {/* ลูกศรชี้ขึ้นตรงกลาง */}
                     <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0 w-0 border-b-[6px] border-b-[#e71c1c] border-x-[6px] border-x-transparent" />
                     {errorMsg}
                 </p>

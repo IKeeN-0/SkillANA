@@ -59,7 +59,8 @@ export async function POST(req : Request){ // Create Account
     }
 }
 
-export async function GET(req : Request, {params} : {params : {id: string}}){// Get User Information
+// ลบ , {params} ด้านหลังออกไปเลย
+export async function GET(req : Request){
     try {
         await dbConnect();
 
@@ -70,12 +71,11 @@ export async function GET(req : Request, {params} : {params : {id: string}}){// 
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
+        // 1. ถอดรหัสหา id จาก token ตรงๆ
         const payload = jwt.verify(token, process.env.JWT_SECRET!) as {id : string};
         
-        if (payload.id !== params.id) {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-        }
-       const user = await User.findById(params.id);
+        // 2. เอา payload.id ไปค้นหาใน Database ได้เลย (ปลอดภัยกว่าเพราะอ้างอิงจาก token ที่ Login)
+        const user = await User.findById(payload.id);
 
        if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -87,28 +87,24 @@ export async function GET(req : Request, {params} : {params : {id: string}}){// 
     }
 } 
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+// ฝั่ง PUT ก็ปรับให้ใช้ payload.id เช่นกันครับ
+export async function PUT(req: Request) {
   try {
     await dbConnect();
     
-    // 1. Security check (same as your GET route)
     const authHeader = req.headers.get("authorization");
     const token = authHeader?.split(" ")[1];
-    const decoded = jwt.verify(token!, process.env.JWT_SECRET!) as { id: string };
-
-    if (decoded.id !== params.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    
+    if (!token) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
-    // 2. Get the new data from the request body
     const body = await req.json();
 
-    // 3. Update the document in MongoDB
-    // { new: true } returns the updated document
-    const updatedUser = await User.findByIdAndUpdate(params.id, body, { new: true });
+    // อัปเดตโดยใช้ decoded.id จาก Token
+    const updatedUser = await User.findByIdAndUpdate(decoded.id, body, { new: true });
 
     return NextResponse.json(updatedUser, { status: 200 });
 

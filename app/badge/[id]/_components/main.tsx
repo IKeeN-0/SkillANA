@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react"; // 1. เพิ่มการนําเข้า Suspense
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
@@ -18,7 +18,27 @@ interface Badge {
     _id?: string
 }
 
+// ==========================================
+// 🌟 1. COMPONENT หลัก (ทำหน้าที่เป็น Wrapper ครอบด้วย Suspense)
+// ==========================================
 export default function BadgePage({ id }: InputProps) {
+    return (
+        <Suspense fallback={
+            <section className="grow flex justify-center mt-13 w-full">
+                <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-[75vh] rounded-[10px] flex justify-center items-center">
+                    <div className="w-16 h-16 border-4 border-solid border-[rgba(255,255,255,0.1)] border-l-white rounded-full animate-spin"></div>
+                </div>
+            </section>
+        }>
+            <BadgePageContent id={id} />
+        </Suspense>
+    );
+}
+
+// ==========================================
+// 🌟 2. COMPONENT ย่อย (ย้ายลอจิกเดิมทั้งหมดมาไว้ตรงนี้)
+// ==========================================
+function BadgePageContent({ id }: InputProps) {
     const router = useRouter()
     const [badgeTitle, setBadgeTitle] = useState("");
     const [badgeCategory, setBadgeCategory] = useState("");
@@ -86,6 +106,7 @@ export default function BadgePage({ id }: InputProps) {
         router.push(`/badge/test/${id}`);
     }
 
+    // จุดเจ้าปัญหาใช้งานได้อย่างปลอดภัยแล้ว เพราะอยู่ภายใต้ขอบเขตของ Suspense ข้ามฝั่ง Client
     const searchParams = useSearchParams();
     const fromPage = searchParams.get('from');
 
@@ -94,7 +115,7 @@ export default function BadgePage({ id }: InputProps) {
     if (isLoading) {
         return (
             <>
-                <section className="grow flex justify-center mt-13">
+                <section className="grow flex justify-center mt-13 w-full">
                     <div className="bg-[rgba(255,255,255,0.5)] w-[80%] h-[75%] rounded-[10px] flex justify-center items-center">
                         <div className="flex justify-center items-center w-80 h-80 min-h-50">
                             <div className="w-[50%] aspect-square max-w-75 border-15 border-solid border-[rgba(255,255,255,0.1)] border-l-white rounded-full animate-spin drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
@@ -119,7 +140,6 @@ export default function BadgePage({ id }: InputProps) {
                     &lt; Back
                 </Link>
 
-                {/* 3. เปลี่ยน w-[80%] mx-auto ตรงนี้เป็น w-full เพื่อให้กล่องขยายเต็ม Wrapper แม่ของมัน */}
                 <div className="bg-[rgba(255,255,255,0.5)] w-full h-full p-8.5 rounded-[10px] grid grid-cols-[2fr_4.18fr]">
                     
                     {/* รูป */}

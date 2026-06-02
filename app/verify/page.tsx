@@ -1,11 +1,23 @@
 "use client"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import LeftBox from "../_global_components/authen_pages/left_box"
 import OtpForm from "./_components/otp_form"
 import Bg from "../_global_components/background/pageBackground"
 
 export default function Login(){
-    const userEmail = sessionStorage.getItem("pending_email")
+    // 1. สร้าง State มารองรับค่า Email (ค่าเริ่มต้นเป็นสายอักขระว่าง หรือหมุนโหลด)
+    const [userEmail, setUserEmail] = useState("")
+    
+    // 2. ดึงค่าจาก sessionStorage ข้างใน useEffect เพื่อให้รันเฉพาะบน Browser เท่านั้น
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const savedEmail = sessionStorage.getItem("pending_email")
+            if (savedEmail) {
+                setUserEmail(savedEmail)
+            }
+        }
+    }, [])
     
     return(
         <div className="relative w-full text-white">
@@ -34,7 +46,7 @@ export default function Login(){
                     <div>
                         <p className="text-center text-[1em] mt-[2em] ">
                             Enter the 6 digits code we sent to<br />
-                            {userEmail} to verify
+                            {userEmail || "your email"} to verify
                         </p>
                     </div>
                 
