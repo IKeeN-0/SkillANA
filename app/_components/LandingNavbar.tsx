@@ -8,7 +8,7 @@ export function LandingPageNavbar() {
             <nav className="flex h-15 w-full items-center justify-between bg-[#240f65] text-[1rem] text-white px-4 md:px-6 xl:px-8">
                 
                 {/* ขนาดกล่องโลโก้ปรับเปลี่ยนความกว้างแบบ Responsive ให้ยืดหยุ่นในแต่ละขนาดหน้าจอ */}
-                <Link href="/" className="relative w-[7em] md:w-[10em] xl:w-[11em] h-full ">
+                <Link href="/" className="relative w-[7em] md:w-[10em] xl:w-[10em] h-full ">
                     <Image 
                         src="/SkillAna.png" 
                         alt="SkillANA Logo" 

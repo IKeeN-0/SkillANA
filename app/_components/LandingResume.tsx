@@ -1,6 +1,6 @@
 export function ResumeSection() {
     return (
-        <div id="resume" className="bg-[#0e0314] w-[96.5%] h-auto my-10 mx-auto py-12 px-4 md:py-40 md:px-[16.5%] rounded-[0.625rem]">
+        <div id="resume" className="bg-[#0e0314] w-[96.5%] h-auto my-10 mx-auto py-30 px-5 md:py-40 md:px-[16.5%] rounded-[0.625rem]">
             
             {/* ปรับฟอนต์หัวข้อเป็น text-[1.5em] บนมือถือ */}
             <h2 className="w-full md:w-75 text-[1.5em] md:text-[2em] font-bold mb-4.5">

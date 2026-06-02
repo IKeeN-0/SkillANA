@@ -13,7 +13,7 @@ interface SkillSectionProps {
 
 export function SkillSection({ badges = [] }: SkillSectionProps) {
     return (
-        <div id="badges" className="mx-auto my-10 h-auto w-[96.5%] px-6 py-12 md:px-[16.5%] md:py-27.5">
+        <div id="badges" className="mx-auto my-10 h-auto w-[96.5%] px-6 py-20 md:px-[16.5%] md:py-27.5">
             <h2 className="mb-4.5 w-full max-w-md text-[1.8em] md:text-[2em] font-bold">
                 Discover new possibilities
             </h2>

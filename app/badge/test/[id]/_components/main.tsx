@@ -5,6 +5,7 @@ import Choice from "./choice";
 import { useRouter } from 'next/navigation'
 import Dot from "./dot";
 import { jwtDecode } from "jwt-decode";
+import Spinner from "@/app/_global_components/authen_pages/spinner"
 
 interface InputProps{
     id : string
@@ -36,9 +37,6 @@ interface BadgeItem{
     }
 }
 
-// ============================================================================
-    //ฟังก์ชันการจัดการ IndexedDB ในรูปแบบของ Promise เพื่อไม่ให้บล็อก Main Thread
-// ============================================================================
 const initDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("QuizAppDB", 1);
@@ -95,7 +93,6 @@ const deleteProgressDB = async (badgeId: string) => {
         console.error("IndexedDB Delete Error:", err);
     }
 };
-// ============================================================================
 
 export default function MainBox({id} : InputProps){
     const router = useRouter()
@@ -121,19 +118,16 @@ export default function MainBox({id} : InputProps){
             setBadge(data.badge)
             const badgeQuestion = data.badge.test.questions
             
-            // 2. CHECKPOINT: ตรวจสอบว่ามีข้อมูล State เดิมค้างอยู่ใน IndexedDB หรือไม่
             const savedProgress = await getProgressDB(id);
 
             if(badgeQuestion){
                 setQuestions(badgeQuestion)
                 
                 if (savedProgress) {
-                    // กู้ข้อมูลฟอร์มเดิมกลับมาทำงานต่อทันที
                     setSelectedIndices(savedProgress.selectedIndices);
                     setCurrentQuesitonIdx(savedProgress.currentQuestionIdx);
                     setTimeLeft(savedProgress.timeLeft);
                 } else {
-                    // หากไม่มีประวัติเก่า ให้เริ่มต้นระบบเก็บข้อมูลชุดใหม่
                     const initialIndices = new Array(badgeQuestion.length).fill(-1);
                     setSelectedIndices(initialIndices);
                     
@@ -153,7 +147,6 @@ export default function MainBox({id} : InputProps){
         localStorage.removeItem("imgUrl")
     }, [id]);
     
-    // 3. BACKGROUND WORKER: บันทึกสถานะลง IndexedDB ทุกครั้งที่มีการขยับเปลี่ยนตัวแปรผ่านแบบ Asynchronous
     useEffect(() => {
         if (id && questions.length > 0) {
             saveProgressDB(id, currentQuestionIdx, selectedIndices, timeLeft);
@@ -183,7 +176,16 @@ export default function MainBox({id} : InputProps){
         return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
 
-    if (timeLeft === null) return <div>Loading timer...</div>;
+    if (timeLeft === null) {
+        return (
+            <div className="w-full h-[80vh] flex flex-col justify-center items-center">
+                <Spinner />
+                <p className="mt-5 text-white/80 text-[1.2em] font-medium animate-pulse">
+                    Loading timer...
+                </p>
+            </div>
+        )
+    }
 
     const currentQuestion = questions[currentQuestionIdx];
     
@@ -203,7 +205,6 @@ export default function MainBox({id} : InputProps){
         setCurrentQuesitonIdx(idx)
     }
 
-    // 4. RACE CONDITION REPAIR: แปลงฟังก์ชันให้รองรับสถาปัตยกรรม Async เพื่อจัดลำดับ Network และล้าง IndexedDB หลังสอบเสร็จ
     const handleSubmit = async () => {
         const correctAnswers = questions.map(q => q.correctAnswer);
         const score = correctAnswers.filter((val, idx) => val === questions[idx].answers[selectedIndices[idx]]).length;
@@ -214,7 +215,6 @@ export default function MainBox({id} : InputProps){
             await updateUserBadge();
         }
         
-        // ล้างข้อมูลความคืบหน้าออกจากคลังในเครื่องหลังจากกดยืนยันคำตอบสำเร็จเสร็จสิ้น
         await deleteProgressDB(id);
 
         localStorage.setItem("score", score.toString())
@@ -249,22 +249,29 @@ export default function MainBox({id} : InputProps){
     
     return (
         <>
-            <div className="w-full h-full flex mt-[4em] flex-col items-center">
-                <main className="bg-[rgba(255,255,255,0.45)] w-[70%] h-[80%] rounded-[15px] flex flex-col items-center justify-around">
+            {/* เอา mt-[4em] ออก แล้วใช้ flex-1 ร่วมกับ justify-center py-6 xl:py-10 */}
+            {/* เพื่อให้ตัวคอนเทนต์จัดอยู่ตรงกลางหน้าจอแนวตั้งอย่างสมบูรณ์แบบ ส่งผลให้ช่องไฟบน-ล่างสมมาตรกันพอดี */}
+            <div className="w-full flex-1 flex flex-col items-center justify-center py-6 xl:py-10 px-4">
+                
+                {/* - w-full บนมือถือขยายกว้างขึ้น และค่อยเป็น w-[70%] บนจอใหญ่ */}
+                {/* - จำกัดความสูงในจอโน้ตบุ๊ก (xl:h-[75vh] max-h-[80vh]) เพื่อไม่ให้หลุด 1 หน้าจอ และทำ p-6 เพื่อคุมระยะด้านใน */}
+                <main className="bg-[rgba(255,255,255,0.45)] w-full sm:w-[85%] md:w-[75%] xl:w-[70%] min-h-[70vh] xl:h-[75vh] max-h-[85vh] rounded-[15px] flex flex-col items-center justify-around p-5 xl:p-7">
                         
-                    <section className={`border-2 border-solid w-[15%] py-2 mt-5 flex justify-center items-center rounded-[15px] transition-colors duration-300 ${
+                    {/* ส่วนแสดงเวลา */}
+                    <section className={`border-2 border-solid w-[30%] sm:w-[20%] xl:w-[15%] py-2 flex justify-center items-center rounded-[15px] transition-colors duration-300 shrink-0 ${
                         timeLeft !== null && timeLeft <= 60 && timeLeft > 0 
                         ? 'animate-blink' 
                         : 'border-white text-white'
                     }`}>
-                        <h3 className="text-3xl font-semibold">{formatTime(timeLeft)}</h3>
+                        <h3 className="text-2xl xl:text-3xl font-semibold">{formatTime(timeLeft)}</h3>
                     </section>
 
-                    <section className="w-[70%] max-h-[75%] flex flex-col gap-5">
+                    {/* ส่วนของคำถามและ Choice */}
+                    <section className="w-[95%] sm:w-[85%] xl:w-[75%] max-h-[75%] flex flex-col gap-4 xl:gap-5 my-4">
 
-                        <div className="flex gap-[.3em] h-15">
+                        <div className="flex gap-[.3em] min-h-12">
                             <h3 className="text-[1em]">{currentQuestionIdx + 1}.</h3>
-                            <h3 className="text-[1em] font-semibold">{currentQuestion?.question}</h3>
+                            <h3 className="text-[1em] font-semibold leading-snug">{currentQuestion?.question}</h3>
                         </div>
                         
                         <Choice text={currentQuestion?.answers[0]} isSelected={selectedAnswer == 0} 
@@ -283,7 +290,8 @@ export default function MainBox({id} : InputProps){
                             onClick={() => handleChoice(3)}  >  
                         </Choice>
                         
-                        <section className="mx-auto flex gap-[1.5em]">
+                        {/* 🌟 เพิ่ม flex-wrap และ justify-center ป้องกันไม่ให้จุดสถานะหลุดขอบทางขวาบนจอมือถือ */}
+                        <section className="mx-auto flex flex-wrap justify-center gap-[1em] xl:gap-[1.5em] mt-2">
                             {questions.map((_, idx) =>(
                                 <Dot
                                     key={idx} 
@@ -295,15 +303,15 @@ export default function MainBox({id} : InputProps){
                         </section>
                     </section>
 
-                    <section className="self-end flex gap-[1em] mr-[1.5em] pb-4">
-                        
+                    {/* ปุ่มเนวิเกชันควบคุม */}
+                    <section className="self-end flex gap-[1em] mr-[1.5em] pb-2 shrink-0">
                         <button 
                             onClick={handleBack}
                             disabled={currentQuestionIdx === 0}
                             className={`py-2 px-6 font-semibold text-[1em] rounded-[10px] transition-all duration-200 ${
                                 currentQuestionIdx === 0 
                                 ? "opacity-0 pointer-events-none"
-                                : "bg-[#9152bec5] text-purple-100 hover:border-[#5F28CD] hover:bg-purple-500/50 transition-colors cursor-pointer"
+                                : "bg-white/15 text-#FFFFFF hover:bg-white/25 transition-colors cursor-pointer"
                             }`}
                         >
                             &lt; Back
@@ -331,30 +339,34 @@ export default function MainBox({id} : InputProps){
             </div>
 
             {showTimeOutPopup && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                    <div className="bg-white text-black w-100 p-8 rounded-[20px] flex flex-col items-center shadow-2xl text-center transform transition-all scale-100 opacity-100">
-                        <div className="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-5">
-                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h2 className="text-2xl font-bold mb-2">Time's Up!</h2>
-                        <p className="text-gray-600 mb-8 text-[1em] leading-relaxed">
-                            Time for this section has ended. <br />
-                            Please click <strong>'OK'</strong> to submit.
-                        </p>
-                        <button 
-                            onClick={() => {
-                                setShowTimeOutPopup(false);
-                                handleSubmit();
-                            }}
-                            className="w-full bg-[#5F28CD] text-white py-3 rounded-[10px] font-bold text-[1.1em] hover:bg-[#4a1f9e] cursor-pointer transition-colors duration-200"
-                        >
-                            OK
-                        </button>
-                    </div>
-                </div>
-            )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="bg-white text-black w-[90%] sm:w-95 p-6 sm:p-8 rounded-[20px] flex flex-col items-center shadow-2xl text-center transform transition-all scale-100 opacity-100">
+            
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4 sm:mb-5">
+                <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">Time's Up!</h2>
+            
+            <p className="text-gray-600 mb-6 sm:mb-8 text-[0.95em] sm:text-[1em] leading-relaxed">
+                Time for this section has ended. <br />
+                Please click <strong>'OK'</strong> to submit.
+            </p>
+            
+            <button 
+                onClick={() => {
+                    setShowTimeOutPopup(false);
+                    handleSubmit();
+                }}
+                className="w-full bg-[#5F28CD] text-white py-2.5 sm:py-3 rounded-[10px] font-bold text-[1em] sm:text-[1.1em] hover:bg-[#4a1f9e] cursor-pointer transition-colors duration-200"
+            >
+                OK
+            </button>
+        </div>
+    </div>
+)}
 
             <style>{`
                 @keyframes blinkRedWhite {

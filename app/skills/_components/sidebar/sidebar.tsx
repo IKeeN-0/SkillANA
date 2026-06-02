@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { Category } from '../section/section'
 import { categoryOrderMap } from '../section/section'
 
 type Prop = {
     onSelect: (category: string) => void;
     categories: Category[];
+    activeCategory: string; 
 }
 
 const getCategoryIcon = (name: string) => {
@@ -15,18 +16,6 @@ const getCategoryIcon = (name: string) => {
     const iconClass = "w-[1.35em] h-[1.35em] transition-all duration-300";
 
     switch (cleanName) {
-        case 'all':
-            return (
-                <svg 
-                    className="w-5 h-5 shrink-0 transition-all duration-300" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor" 
-                    strokeWidth={2}
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V16zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V16z" />
-                </svg>
-            );
         case 'website development':
             return (
                 <svg className={iconClass} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -67,52 +56,55 @@ const getCategoryIcon = (name: string) => {
     }
 };
 
-export default function Sidebar({ onSelect, categories }: Prop) {
-    const [select, setSelect] = useState<string>("all");
+export default function Sidebar({ onSelect, categories, activeCategory }: Prop) {
+
+    useEffect(() => {
+        if (categories && categories.length > 0 && !activeCategory) {
+            const sortedCategories = [...categories].sort((a,b) => (categoryOrderMap[a.name] ?? 999) - (categoryOrderMap[b.name] ?? 999));
+            const firstCategory = sortedCategories[0];
+            onSelect(firstCategory.categoryId);
+        }
+    }, [categories, activeCategory, onSelect]);
 
     const handler = (categoryId: string) => {
-        setSelect(categoryId);
-        onSelect(categoryId);
+        onSelect(categoryId); 
+        
+        const targetElement = document.getElementById(`category-${categoryId}`);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
-    const liBaseClass = "py-[1.4em] pl-[1.8rem] pr-[2rem] my-2 flex items-center gap-[1rem] cursor-pointer transition-all duration-300 border-l-4 rounded-r-[8px]";
+    // ลด md:pr-[2rem] เป็น md:pr-[1rem] เพื่อให้ข้อความมีพื้นที่เยอะขึ้น
+    const liBaseClass = "py-2 px-4 md:py-[1.4em] md:pl-[1.8rem] md:pr-[1rem] my-1 md:my-2 flex-shrink-0 flex items-center gap-2 md:gap-[1rem] cursor-pointer transition-all duration-300 md:border-l-4 rounded-full md:rounded-none md:rounded-r-[8px]";
 
     const getStatusClass = (isActive: boolean) => {
         return isActive
-            ? "bg-[#5F28CD] border-[#9d6fff] text-white scale-[0.97]"
-            : "bg-transparent border-transparent text-gray-300 hover:bg-[#5F28CD]/40 hover:border-[#5F28CD] hover:scale-[0.98] hover:text-white"; 
+            ? "bg-[#5F28CD] md:border-[#9d6fff] text-white md:scale-[0.97]"
+            : "bg-white/5 md:bg-transparent border-transparent text-gray-300 hover:bg-[#5F28CD]/40 hover:md:border-[#5F28CD] hover:md:scale-[0.98] hover:text-white"; 
     }
 
     return (
-        <div className="w-[16em] h-screen bg-[#23103d] flex items-start text-white border-r border-[#ffffff1a]">
+        <div className="w-full md:w-[18em] h-auto md:h-full bg-[#23103d] flex items-center md:items-start text-white md:border-r border-[#ffffff1a]">
             
-            <div className="flex flex-col mt-[15%] text-[1em] w-full px-2">
+            <div className="flex flex-col md:mt-[15%] text-[1em] w-full px-2 py-3 md:py-0">
 
-                <h2 className='text-[1.2em] font-semibold tracking-wide pl-6 mb-[1.5em] text-gray-400 uppercase text-xs'>Category</h2>
+                <h2 className='hidden md:block text-[1.2em] font-semibold tracking-wide pl-6 mb-[1.5em] text-gray-400 uppercase text-xs'>Category</h2>
                 
-                <ul className="list-none w-full h-full p-0 m-0 flex flex-col gap-1">
-                    
-                    {/* เมนูหลัก */}
-                    <li
-                        className={`${liBaseClass} ${getStatusClass(select === 'all')}`}
-                        onClick={() => handler('all')}
-                    >
-                        {getCategoryIcon('all')}
-                        <span className="font-medium">All Skills</span>
-                    </li>
-
+                <ul className="list-none w-full h-full p-0 m-0 flex flex-row md:flex-col gap-2 md:gap-1 overflow-x-auto md:overflow-visible scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-2 md:px-0">
                     {[...categories]
                     .sort((a,b) => (categoryOrderMap[a.name] ?? 999) - (categoryOrderMap[b.name] ?? 999))
                     .map((cate) => {
-                        const isActive = select === cate.categoryId;
+                        const isActive = activeCategory === cate.categoryId;
                         return (
                             <li  
                                 key={cate.categoryId} 
                                 className={`${liBaseClass} ${getStatusClass(isActive)}`}
                                 onClick={() => handler(cate.categoryId)}
                             >
-                                {getCategoryIcon(cate.name)}
-                                <span className="font-medium">{cate.name}</span>
+                                <span className="scale-75 md:scale-100 shrink-0">{getCategoryIcon(cate.name)}</span>
+                                {/* เปลี่ยนจาก whitespace-nowrap ตลอดกาล เป็นยอมให้ปัดบรรทัดได้บนจอคอม (md:whitespace-normal md:leading-tight) */}
+                                <span className="font-medium text-sm md:text-base whitespace-nowrap md:whitespace-normal md:leading-tight">{cate.name}</span>
                             </li>
                         );
                     })

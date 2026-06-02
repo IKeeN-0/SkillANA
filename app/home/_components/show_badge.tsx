@@ -18,7 +18,7 @@ interface UserData {
 
 export function Show_badge() {
     const [user, setUser] = useState<UserData | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,9 +44,9 @@ export function Show_badge() {
                     const profileData = await res.json();
                     setUser(profileData);
                 }
-            }catch (error) {
+            } catch (error) {
                 console.error("Fetch error:", error);
-            }finally {
+            } finally {
                 setLoading(false);
             }
         };
@@ -54,45 +54,57 @@ export function Show_badge() {
     }, []);
 
     return (
-        <div className="w-[96.5%] h-120 mx-auto p-8 rounded-[0.625rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
+        <div className="h-auto xl:h-120 mx-auto p-4 md:p-8 rounded-[0.625rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
             
-            <h1 className="text-[1.7rem] font-bold mb-2">
+            {/* หัวข้อ: มือถือ 20px, iPad 24px, โน้ตบุ๊กขึ้นไป 1.7rem (ตามเดิม) */}
+            <h1 className="text-xl md:text-2xl xl:text-[1.7rem] font-bold mb-2">
                 Your Latest Achievements
             </h1>
 
-            <div className="text-[1.1rem] mb-7">
+            {/* คำอธิบาย: มือถือ 14px, iPad 16px, โน้ตบุ๊กขึ้นไป 1.1rem (ตามเดิม) และลด margin ล่างในมือถือให้แคบลงนิดนึง */}
+            <div className="text-sm md:text-base xl:text-[1.1rem] mb-4 xl:mb-7 opacity-90">
                 A quick look at your most recent milestones. Explore your full collection to track all your growing skills.
             </div>
 
-            <Link href='/collections' className="bg-[#5F28CD] py-[0.937rem] px-7.5 rounded-[0.625rem] text-[1.125rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]">
+            <Link href='/collections' className="bg-[#5F28CD] py-3 px-5 text-sm md:py-2.5 md:px-5 md:text-base xl:py-[0.937rem] xl:px-7.5 xl:text-[1.125rem] rounded-[0.625rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]">
                 See Your Collection
             </Link>
 
-            <div className="mt-14 flex flex-col items-start justify-end relative w-full pt-10">
+            <div className="mt-6 md:mt-14 flex flex-col items-start justify-end relative w-full pt-4 md:pt-10">
                 {!user ? (
-                    <div className="text-[1.5rem] h-25 mx-auto pb-2">Loading...</div>
+                    <div className="text-lg md:text-xl xl:text-[1.5rem] h-25 mx-auto pb-2">Loading...</div>
                 ) : user.badges && user.badges.length > 0 ? (
                     <div className="flex flex-nowrap justify-between mx-auto mb-[0.1rem] w-[96%]">
                         {[...user.badges]
                             .sort((a, b) => new Date(b.earnedAt).getTime() - new Date(a.earnedAt).getTime())
                             .slice(0, 7)
-                            .map((badge: any) => (
-                                <div 
-                                    key={badge.badgeId}
-                                    className="transition-all duration-300 ease-out hover:-translate-y-2 hover:drop-shadow-[0_0_20px_rgba(56,189,248,0.9)]"
-                                >
-                                    <Image 
-                                        src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
-                                        alt={badge.badgeName} 
-                                        width={120}
-                                        height={120}
-                                        className="object-contain"
-                                    />
-                                </div>
-                            ))}
+                            .map((badge: any, index: number) => {
+                                
+                                let visibilityClass = "";
+                                if (index >= 3 && index <= 5) {
+                                    visibilityClass = "hidden md:block";
+                                } else if (index === 6) {
+                                    visibilityClass = "hidden min-[1921px]:block";
+                                }
+
+                                return (
+                                    <div 
+                                        key={badge.badgeId}
+                                        className={`transition-all duration-300 ease-out hover:-translate-y-2 hover:drop-shadow-[0_0_20px_rgba(56,189,248,0.9)] shrink-0 ${visibilityClass}`}
+                                    >
+                                        <Image 
+                                            src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
+                                            alt={badge.badgeName} 
+                                            width={120}
+                                            height={120}
+                                            className="object-contain w-20 h-20 sm:w-24 sm:h-24 md:w-30 md:h-30"
+                                        />
+                                    </div>
+                                );
+                            })}
                     </div>
                 ) : (
-                    <p className="text-[1.2rem] mx-auto pb-2">- You don't have a badge yet -</p>
+                    <p className="text-base md:text-lg xl:text-[1.2rem] mx-auto pb-2">- You don't have a badge yet -</p>
                 )}
                 
                 <div className="bg-[#4D256E] w-full h-3 rounded-[0.625rem] shadow-[0.312rem_0.187rem_0.312rem_0_rgba(0,0,0,0.4)]"></div>

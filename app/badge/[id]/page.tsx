@@ -7,19 +7,25 @@ export default async function BadgeInfo({params} : {params : Promise<{ id : stri
     const data = await params;
     const id = data.id;
     return(
-        <div className="relative w-full min-h-screen text-white flex flex-col overflow-hidden">
+        <div className="relative w-full h-screen text-white flex flex-col overflow-hidden">
 
             <div className="absolute inset-0 -z-10">
                 <Bg />
             </div>
 
-            <Navbar></Navbar>
+            <div className="shrink-0 w-full z-50">
+                <Navbar />
+            </div>
             
-            <BadgePage id = {id}></BadgePage>
+            <main className="flex-1 w-full overflow-y-auto flex flex-col scroll-smooth">
+                
+                <BadgePage id={id} />
 
-            <footer className="shrink-0 mt-auto">
-                <Footer />
-            </footer>
+                <div className="shrink-0 w-full mt-auto">
+                    <Footer />
+                </div>
+                
+            </main>
         </div>
     )
 }
