@@ -26,20 +26,15 @@ export default function Login(){
                 <Bg />
             </div>
 
-            <main className="relative z-10 w-full h-full flex justify-center">
+            {/* ปรับให้แสดงผลเป็นแบบ flex-col บนจอ iPad/โทรศัพท์ และเปลี่ยนเป็น flex-row บนจอ Laptop (lg:) */}
+            <main className="relative z-10 w-full h-full flex flex-col lg:flex-row justify-center items-center lg:items-start">
                 
+                {/* คอมโพเนนต์ฝั่งซ้ายจะซ่อนอัตโนมัติบนหน้าจอขนาดเล็กภายในตัว left_box เอง */}
                 <LeftBox></LeftBox>
                 
-                <section className="flex flex-col items-center w-[50%] mt-20 ">
-
-                    <Link 
-                        href='/' 
-                        className="relative inline-block self-start text-[0.9em] mb-10 ml-[17%] text-gray-300 hover:text-white transition-all duration-300 
-                                    after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
-                                    after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
-                    >
-                        &lt; Back
-                    </Link>
+                {/* ฝั่งขวา: บนหน้าจอมือถือและ iPad ให้ขยายเต็มกว้างขึ้น (w-[90%] หรือ w-[80%]) และจัดกึ่งกลางด้วย mx-auto */}
+                {/* เมื่อเป็นหน้าจอคอมพิวเตอร์ Laptop ขึ้นไป (lg:) จะกลับไปเป็นขนาด w-[50%] ชิดข้างขวาตามโครงสร้างเดิม */}
+                <section className="flex flex-col items-center w-[90%] md:w-[70%] lg:w-[50%] mt-20 lg:my-9 mx-auto lg:mx-0">
                     
                     <h3 className="text-[1.8em] font-bold mt-[1em] ">OTP Verification</h3>
                 
@@ -53,7 +48,8 @@ export default function Login(){
                     <OtpForm></OtpForm>
                 
                 </section>
-            </main> 
+                
+            </main>
         </div>
     )
 }

@@ -18,3 +18,14 @@
   gap: 3rem; /* ระยะห่างระหว่าง Badge */
   padding-bottom: 3rem; /* ระยะห่างระหว่างชุดที่ 1 และ 2 เท่ากัน */
 }
+
+/* Mobile only: force 3 badges per row */
+@media (max-width: 767px) {
+  .badge-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-bottom: 1rem;
+    justify-items: center;
+  }
+}

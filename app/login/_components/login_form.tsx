@@ -124,7 +124,7 @@ export default function Form(){
     
     return(
         <>
-            <div className="flex flex-col mt-[2em] ">
+            <div className="flex flex-col mt-[2em] px-3 sm:px-0">
                 
                 <InputComponent ref={emailRef} label="Email" placeholder="example@gmail.com" size="medium" isPassword={false}
                     onChange={handleEmailChange} isError={isEmailError} message={emailMessage}
@@ -151,7 +151,7 @@ export default function Form(){
                     >
                         {isLoading ? <Spinner /> : "Login"} 
                     </button>
-                    <p className="text-[.9em] "> 
+                    <p className="text-[.9em] text-center sm:text-left"> 
                         Don't have an account? 
                         <Link 
                             href="/create-account" 

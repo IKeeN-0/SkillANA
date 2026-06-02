@@ -25,8 +25,8 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const sizeClasses = {
-        small: "w-[15em] h-[2.4em]",
-        medium: "w-[31em] h-[2.4em]"
+        small: "w-full sm:w-[15em] h-[2.0em] sm:h-[2.4em]",
+        medium: "w-full sm:w-[31em] h-[2.0em] sm:h-[2.4em]"
     };
 
     return (

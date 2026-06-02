@@ -82,54 +82,42 @@ export function ProgressStats() {
   }, []);
 
   return (
-    <div className="h-full mx-auto p-8 rounded-[0.625rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 flex flex-col">
-      
-      <h2 className="text-2xl font-bold text-white mb-6 font-['Poppins',sans-serif]">Your Stats</h2>
+    <div className="h-full w-full mx-auto p-4 xl:p-8 rounded-[0.625rem] bg-white/10 backdrop-blur-xl border border-white/20 flex flex-col">
+      <h2 className="text-xl xl:text-2xl font-bold text-white mb-4 xl:mb-6">Your Stats</h2>
 
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md flex flex-col justify-center items-center relative overflow-hidden group hover:border-[#dfa8ff]/40 transition-all duration-300 w-full mb-6">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#dfa8ff] blur-[60px] opacity-10 group-hover:opacity-20 transition-opacity duration-300 rounded-full" />
-          <div className="relative z-10 text-5xl font-black text-white drop-shadow-lg">
+      <div className="flex flex-col md:flex-row xl:flex-col gap-4 xl:gap-6 flex-1">
+        
+        {/* Total Badges (กล่องบน) */}
+        {/* เพิ่ม xl:flex-none เพื่อไม่ให้มันยืดตัวในแนวตั้ง และเพิ่ม xl:py-6 เพื่อคุมระยะด้านบนล่างให้สวยงาม */}
+        <div className="bg-white/5 border border-white/10 rounded-3xl p-4 md:p-6 flex flex-col justify-center items-center flex-1 md:max-w-[30%] xl:max-w-full xl:flex-none xl:py-6">
+          <div className="text-3xl xl:text-5xl font-black text-white">
             {loading ? "..." : stats.badgesEarned}
           </div>
-          <div className="relative z-10 text-white/70 mt-2 font-medium tracking-wider uppercase text-sm">
+          <div className="text-white/70 mt-1 text-[10px] xl:text-sm uppercase text-center">
             Total Badges Earned
           </div>
         </div>
 
-      {/* หลอดความคืบหน้าของแต่ละหมวด */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md flex-1 group hover:border-[#dfa8ff]/40 transition-all duration-300">
-        <h3 className="text-[1.1rem] font-bold text-white mb-6">Badge Collection Progress</h3>
-        
-        {loading ? (
-            <div className="text-white/60 text-center py-4">Loading stats...</div>
-        ) : (
-            <div className="flex flex-col gap-5">
-            {categoryProgress.map((cat) => {
-                // คำนวณเปอร์เซ็นต์ ถ้าไม่มีเหรียญเลยให้เป็น 0
-                const percentage = cat.total > 0 ? Math.round((cat.earned / cat.total) * 100) : 0;
-
-                return (
-                <div key={cat.name} className="w-full">
-                    <div className="flex justify-between items-center mb-1.5">
-                    <span className="text-white/90 text-[1em] font-semibold">{cat.name}</span>
-                    <span className="text-white/50 text-sm font-medium">
-                        {cat.earned} / {cat.total}
-                    </span>
-                    </div>
-                    
-                    <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden shadow-inner">
-                    <div 
-                        className={`h-full ${cat.color} rounded-full transition-all duration-1000 ease-out`}
-                        style={{ width: `${percentage}%` }}
-                    />
-                    </div>
+        {/* Progress Bars (กล่องล่าง) */}
+        {/* มี flex-1 อยู่แล้ว มันจะยืดตัวเพื่อกินพื้นที่ที่เหลือทั้งหมดบนจอโน้ตบุ๊กโดยอัตโนมัติ */}
+        <div className="bg-white/5 border border-white/10 rounded-3xl p-4 md:p-6 flex-1">
+          <h3 className="text-sm xl:text-[1.1rem] font-bold text-white mb-4">Badge Collection Progress</h3>
+          <div className="flex flex-col gap-3 lg:gap-2 xl:gap-5">
+            {categoryProgress.map((cat) => (
+              <div key={cat.name} className="w-full">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-white/90 text-[10px] md:text-xs xl:text-[1em] font-semibold">{cat.name}</span>
+                  <span className="text-white/50 text-[12px]">{cat.earned}/{cat.total}</span>
                 </div>
-                )
-            })}
-            </div>
-        )}
-      </div>
+                <div className="w-full h-1.5 xl:h-2.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className={`h-full ${cat.color} rounded-full`} style={{ width: `${cat.total > 0 ? (cat.earned/cat.total)*100 : 0}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
+      </div>
     </div>
   )
 }

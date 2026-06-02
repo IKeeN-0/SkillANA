@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
     return (
@@ -9,7 +10,7 @@ export default function Navbar() {
                 
                 <div className="flex items-center gap-[1em] h-full">
                     
-                    <div className="relative w-[9em] h-[100%]">
+                    <Link href="/" className="relative w-[9em] h-full cursor-pointer block transition-transform hover:scale-105">
                         <Image 
                             src="/SkillAna.png" 
                             alt="SkillANA Logo" 
@@ -17,7 +18,7 @@ export default function Navbar() {
                             className="object-contain block w-full"
                             priority
                         />
-                    </div>
+                    </Link>
                     
                 </div>
             </nav>

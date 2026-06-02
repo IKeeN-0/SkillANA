@@ -2,23 +2,20 @@ import Link from 'next/link';
 
 export function Help() {
   return (
-    <div className="flex w-[96.5%] h-fit mx-auto p-8 rounded-[0.625rem] justify-between bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
-        
-        <div className="">
-            <h1 className="w-87.5 text-[1.7em] font-semibold mb-2">
+    <div className="flex w-full h-auto lg:h-48 xl:h-fit mx-auto p-4 pb-5 md:p-8 rounded-[0.625rem] justify-between items-center bg-white/10 backdrop-blur-xl border border-white/20 transition-all">
+        <div className="max-w-[70%] md:max-w-[60%]">
+            <h1 className="text-lg md:text-xl xl:text-[1.7em] font-semibold mb-1 xl:mb-2">
                 Stuck on something?
             </h1>
             
-            <div className="w-125 text-[1.1rem] mb-7">
-                Need a hand? From getting started to passing your tests, our comprehensive guide is here to help.
+            <div className="text-xs md:text-sm xl:text-[1.1rem] mb-4 xl:mb-7 opacity-80 leading-relaxed">
+                Need a hand? Our comprehensive guide is here to help.
             </div>
 
-          
-            <Link 
-                href='/SkillANA-User-Handbook.pdf' 
-                className="bg-[#5F28CD] py-[0.937rem] px-10 rounded-[0.625rem] text-[1.125rem] font-bold transition-all duration-300 ease hover:bg-[#4410ab] inline-block text-white"
+            <Link href='/SkillANA-User-Handbook.pdf' 
+                className="bg-[#5F28CD] py-2 px-4 text-sm md:py-2.5 md:px-5 md:text-base xl:py-[0.937rem] xl:px-7.5 xl:text-[1.125rem] rounded-[0.625rem] font-semibold inline-block text-white duration-300 ease hover:bg-[#4410ab]"
             download>
-                View Our Start Guide
+                Start Guide
             </Link>
         </div>
         
@@ -28,16 +25,13 @@ export function Help() {
             fill="none" 
             stroke="currentColor" 
             strokeWidth="1.2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className="h-47 w-auto mr-10 text-white drop-shadow-lg"
+            className="h-20 md:h-32 lg:h-24 xl:h-47 w-auto text-white xl:text-white"
         >
             <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4" />
             <path d="M19 17V5a2 2 0 0 0-2-2H4" />
             <path d="M15 8h-5" />
             <path d="M15 12h-5" />
         </svg>
-        
     </div>
   );
-};
+}

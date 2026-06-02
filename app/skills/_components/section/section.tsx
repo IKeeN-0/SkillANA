@@ -32,7 +32,8 @@ type Prop = {
     category: string;
     badges: BadgeData[];
     user: User | null;
-    mode: "all" | "collections"; 
+    mode: "all" | "collections";
+    onVisible: (categoryId: string) => void;
 }
 
 type BadgeOwned = BadgeData & { owned: boolean }
@@ -54,7 +55,7 @@ export const categoryOrderMap: Record<string, number> = {
     "Cloud & DevOps": 5
 };
 
-export default function Section({ category, badges, user, mode }: Prop) {
+export default function Section({ badges, user, mode, onVisible }: Prop) {
 
     const group = useMemo(() => {
         if (!user) return {};
@@ -93,27 +94,33 @@ export default function Section({ category, badges, user, mode }: Prop) {
         return Object.entries(group).sort((a, b) => a[1].order - b[1].order);
     }, [group]);
 
-    const firstCategoryId = sortedGroups[0]?.[0];
-
     const fromQuery = mode === "collections" ? "collections" : "skills";
-
-    if (badges.length === 0 && Object.keys(group).length === 0) {
-        return <div>No badges found.</div>;
-    }
 
     useEffect(() => {
         const container = document.getElementById('scrollable-section');
         if (!container) return;
 
-        if (category === 'all' || category === firstCategoryId) {
-            container.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            const targetElement = document.getElementById(`category-${category}`);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id.replace('category-', '');
+                        onVisible(id);
+                    }
+                });
+            },
+            {
+                root: container,
+                rootMargin: '-20% 0px -50% 0px', 
+                threshold: 0
             }
-        }
-    }, [category, firstCategoryId]); // ทำงานเมื่อกดเปลี่ยน category
+        );
+
+        const sections = document.querySelectorAll('[id^="category-"]');
+        sections.forEach((sec) => observer.observe(sec));
+
+        return () => observer.disconnect();
+    }, [sortedGroups, onVisible]);
 
     if (badges.length === 0 && Object.keys(group).length === 0) {
         return <div>No badges found.</div>;
@@ -131,12 +138,12 @@ export default function Section({ category, badges, user, mode }: Prop) {
                     return (
                         <div key={id} id={`category-${id}`} className="w-full scroll-mt-4">
                             <div className="flex justify-between items-center mb-[0.7rem]">
-                                <h1 className="text-[1.7em] font-bold tracking-wide text-white">
+                                <h1 className="text-lg md:text-xl xl:text-[1.7em] font-bold tracking-wide text-white">
                                     {groupItem.categoryName}
                                 </h1>
                                 
                                 {mode === "collections" && (
-                                    <span className="text-[1em] font-medium text-white/90 bg-white/15 px-3 py-1 rounded-full border border-white/20">
+                                    <span className="text-[10px] md:text-xs xl:text-[1em] font-medium text-white/90 bg-white/15 px-3 py-1 rounded-full border border-white/20 whitespace-nowrap">
                                         {displayBadges.length} / {groupItem.badge.length} Earned
                                     </span>
                                 )}
@@ -145,7 +152,7 @@ export default function Section({ category, badges, user, mode }: Prop) {
                             <div className="relative px-4 py-5 rounded-4xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] mb-[2.2em] w-full transition-all duration-300 hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.5)]">
     
                                     {mode === "collections" && displayBadges.length === 0 ? (
-                                        <h2 className="w-full text-center p-10 text-white/70 flex items-center justify-center min-h-50">
+                                        <h2 className="w-full text-center p-6 md:p-10 text-white/70 flex items-center justify-center min-h-50 text-sm md:text-base xl:text-lg">
                                             You don't have any badges in this category yet
                                         </h2>
                                     ) : (
@@ -160,8 +167,8 @@ export default function Section({ category, badges, user, mode }: Prop) {
                                                             
                                                             <div className={`w-full h-full rounded-full flex items-center justify-center transition-all duration-500 ${
                                                                 b.owned 
-                                                                ? "drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]" // ถ้ามีแล้ว: เรืองแสงสีเขียวอ่อนๆ
-                                                                : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100" // ถ้ายังไม่มี: ขาวดำและจางลง (แต่พอเอาเมาส์ชี้จะสว่างขึ้นมา)
+                                                                ? "drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                                                                : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100"
                                                             }`}>
                                                                 <Image
                                                                     src={`/${b.imgUrl}`}
@@ -185,7 +192,8 @@ export default function Section({ category, badges, user, mode }: Prop) {
                                                     </div>
     
                                                     <div className="flex flex-col items-center justify-center w-full mt-1">
-                                                        <h3 className={`text-[14px] font-semibold transition-colors duration-300 leading-tight wrap-break-word max-w-full px-1 ${
+                                                        {/* ปรับขนาดชื่อเหรียญ: มือถือ 11px, iPad 12px, คอม 14px (ค่าเดิม) */}
+                                                        <h3 className={`text-[11px] md:text-[12px] xl:text-[14px] font-semibold transition-colors duration-300 leading-tight wrap-break-word max-w-full px-1 ${
                                                             b.owned ? "text-white" : "text-white/40 group-hover:text-white/90"
                                                         }`}>
                                                             {b.badgeName}
