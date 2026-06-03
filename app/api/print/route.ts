@@ -5,6 +5,7 @@ import chromium from '@sparticuz/chromium';
 export const maxDuration = 60; // Set timeout to 60 seconds for Vercel
 
 export async function POST(request: NextRequest) {
+  let browser;
   try {
     const { data, templateId } = await request.json();
     console.log("Template ID:", templateId);
@@ -20,13 +21,19 @@ export async function POST(request: NextRequest) {
     }
     
     const targetUrl = `${origin}/resume-pdf/?data=${encodedData}&template=${templateId}`;
-    
     console.log("Generating PDF for URL:", targetUrl);
 
-    let browser;
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-      // Configure chromium for Vercel environment
-      // Ensure we are using the correct binary and arguments
+    const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
+
+    if (BROWSERLESS_TOKEN) {
+      // Strategy A: Remote Browser (Recommended for reliability)
+      console.log("Connecting to Browserless.io...");
+      browser = await puppeteer.connect({
+        browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}`,
+      });
+    } else if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+      // Strategy B: Local Chromium on Vercel (Prone to library issues)
+      console.log("Launching local chromium on Vercel...");
       browser = await puppeteer.launch({
         args: [
           ...chromium.args,
@@ -34,6 +41,8 @@ export async function POST(request: NextRequest) {
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-gpu',
+          '--no-zygote',
+          '--single-process',
         ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
@@ -41,7 +50,8 @@ export async function POST(request: NextRequest) {
         ignoreHTTPSErrors: true,
       } as any);
     } else {
-      // Local development configuration
+      // Strategy C: Local development
+      console.log("Launching local browser for development...");
       try {
         const localPuppeteer = require('puppeteer');
         browser = await localPuppeteer.launch({ 
@@ -86,6 +96,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error("PDF Generation Error Details:", error);
+    if (browser) await browser.close();
     return NextResponse.json({ 
       error: 'Failed to generate PDF', 
       message: error.message,
