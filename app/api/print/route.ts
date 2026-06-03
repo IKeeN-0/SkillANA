@@ -9,10 +9,14 @@ export async function POST(request: NextRequest) {
     const { data, templateId } = await request.json();
     console.log("Template ID:", templateId);
 
-    const encodedData = Buffer.from(JSON.stringify(data)).toString('base64');
+    // Encode data using a browser-safe base64 method (unescape(encodeURIComponent) ensures UTF-8)
+    const jsonStr = JSON.stringify(data);
+    const encodedData = Buffer.from(encodeURIComponent(jsonStr)).toString('base64');
     
     // Determine the base URL dynamically
     const origin = request.nextUrl.origin;
+    // On Vercel, if origin is localhost:3000, it might be wrong. 
+    // We can use VERCEL_URL if available, but request.nextUrl.origin is usually correct in Next.js.
     const targetUrl = `${origin}/resume-pdf/?data=${encodedData}&template=${templateId}`;
     
     console.log("Generating PDF for URL:", targetUrl);
@@ -21,36 +25,53 @@ export async function POST(request: NextRequest) {
     if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
       // Vercel / Production configuration
       browser = await puppeteer.launch({
-        args: chromium.args,
+        args: [
+          ...chromium.args,
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--disable-gpu',
+        ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
+        ignoreHTTPSErrors: true,
       });
     } else {
       // Local development configuration
-      // Note: You must have a browser installed locally (e.g., Chrome or Chromium)
-      // or use the 'puppeteer' package which includes its own Chromium.
-      // Since we switched to puppeteer-core, we might need to point to a local executable
-      // or assume the user still has 'puppeteer' (which they do in package.json)
-      // but 'puppeteer-core' is preferred for Vercel.
       try {
         const localPuppeteer = require('puppeteer');
-        browser = await localPuppeteer.launch({ headless: true });
+        browser = await localPuppeteer.launch({ 
+          headless: true,
+          args: ['--no-sandbox']
+        });
       } catch (e) {
-        // Fallback if 'puppeteer' is not available or fails
         browser = await puppeteer.launch({
           headless: true,
-          executablePath: '/usr/bin/google-chrome' // Common path for Linux, adjust if needed
+          executablePath: '/usr/bin/google-chrome',
+          args: ['--no-sandbox']
         });
       }
     }
 
     const page = await browser.newPage();
-    await page.goto(targetUrl, { waitUntil: 'networkidle0' });
+    
+    // Set a reasonable timeout for page load
+    await page.goto(targetUrl, { 
+      waitUntil: 'networkidle0',
+      timeout: 45000 
+    });
 
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
+      margin: {
+        top: '10mm',
+        right: '10mm',
+        bottom: '10mm',
+        left: '10mm'
+      }
     });
 
     await browser.close();
@@ -62,7 +83,11 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error("PDF Generation Error:", error);
-    return NextResponse.json({ error: 'Failed to generate PDF', details: error.message }, { status: 500 });
+    console.error("PDF Generation Error Details:", error);
+    return NextResponse.json({ 
+      error: 'Failed to generate PDF', 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, { status: 500 });
   }
 }

@@ -29,7 +29,8 @@ export default function ResumePdfPage() {
 
     if (encoded) {
       try {
-        const decoded = JSON.parse(Buffer.from(encoded, 'base64').toString());
+        // Use browser-native atob for decoding base64 in the client component
+        const decoded = JSON.parse(decodeURIComponent(escape(window.atob(encoded))));
         setData(decoded);
       } catch (e) {
         console.error("Decode error", e);
