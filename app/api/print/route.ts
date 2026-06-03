@@ -75,6 +75,10 @@ export async function POST(request: NextRequest) {
       timeout: 45000 
     });
 
+    // Wait for the custom signal from the page that data is loaded and rendered
+    console.log("Waiting for isDataReady flag...");
+    await page.waitForFunction('window.isDataReady === true', { timeout: 30000 });
+
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,

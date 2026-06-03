@@ -8,6 +8,13 @@ import Template3 from '../resume-export/[id]/components/templates/template3';
 import Template4 from '../resume-export/[id]/components/templates/template4';
 import Template5 from '../resume-export/[id]/components/templates/template5';
 
+// Extend the window interface for TypeScript
+declare global {
+  interface Window {
+    isDataReady?: boolean;
+  }
+}
+
 const templates: { [key: string]: React.ComponentType<any> } = {
   "1": Template1,
   "2": Template2,
@@ -32,6 +39,13 @@ export default function ResumePdfPage() {
         // Use browser-native atob for decoding base64 in the client component
         const decoded = JSON.parse(decodeURIComponent(escape(window.atob(encoded))));
         setData(decoded);
+        
+        // Signal to Puppeteer that data is ready
+        // Small delay to ensure React has rendered the templates
+        setTimeout(() => {
+          window.isDataReady = true;
+          console.log("Data is ready for PDF capture");
+        }, 500);
       } catch (e) {
         console.error("Decode error", e);
       }
