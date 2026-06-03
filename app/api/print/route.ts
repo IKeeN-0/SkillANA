@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage();
 
     // Mirror browser console logs to server logs for debugging
-    page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
-    page.on('pageerror', err => console.error('BROWSER ERROR:', err.message));
+    page.on('console', (msg : any)  => console.log('BROWSER LOG:', msg.text()));
+    page.on('pageerror', (err : any)=> console.error('BROWSER ERROR:', err.message));
     
     console.log("Navigating to target URL...");
     await page.goto(targetUrl, { 
