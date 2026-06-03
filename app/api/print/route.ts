@@ -9,14 +9,19 @@ export async function POST(request: NextRequest) {
     const { data, templateId } = await request.json();
     console.log("Template ID:", templateId);
 
-    // Encode data using a browser-safe base64 method (unescape(encodeURIComponent) ensures UTF-8)
+    // Encode data using a browser-safe base64 method
     const jsonStr = JSON.stringify(data);
     const encodedData = Buffer.from(encodeURIComponent(jsonStr)).toString('base64');
     
     // Determine the base URL dynamically
-    const origin = request.nextUrl.origin;
-    // On Vercel, if origin is localhost:3000, it might be wrong. 
-    // We can use VERCEL_URL if available, but request.nextUrl.origin is usually correct in Next.js.
+    // Priority: 1. Request Origin, 2. VERCEL_URL environment variable, 3. Localhost fallback
+    let origin = request.nextUrl.origin;
+    
+    // Fallback logic for Vercel environment to ensure we have the correct public URL
+    if (origin.includes('localhost') && process.env.VERCEL_URL) {
+      origin = `https://${process.env.VERCEL_URL}`;
+    }
+    
     const targetUrl = `${origin}/resume-pdf/?data=${encodedData}&template=${templateId}`;
     
     console.log("Generating PDF for URL:", targetUrl);
@@ -32,11 +37,12 @@ export async function POST(request: NextRequest) {
           '--disable-dev-shm-usage',
           '--disable-accelerated-2d-canvas',
           '--disable-gpu',
+          '--window-size=1920,1080',
         ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
-        ignoreHTTPSErrors: true ,
+        ignoreHTTPSErrors: true,
       } as any);
     } else {
       // Local development configuration
@@ -47,7 +53,7 @@ export async function POST(request: NextRequest) {
           args: ['--no-sandbox']
         });
       } catch (e) {
-        browser = await puppeteer.launch({
+        browser = await (puppeteer as any).launch({
           headless: true,
           executablePath: '/usr/bin/google-chrome',
           args: ['--no-sandbox']
@@ -67,10 +73,10 @@ export async function POST(request: NextRequest) {
       format: 'A4',
       printBackground: true,
       margin: {
-        top: '10mm',
-        right: '10mm',
-        bottom: '10mm',
-        left: '10mm'
+        top: '0mm',
+        right: '0mm',
+        bottom: '0mm',
+        left: '0mm'
       }
     });
 
@@ -87,7 +93,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       error: 'Failed to generate PDF', 
       message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      stack: error.stack
     }, { status: 500 });
   }
 }
