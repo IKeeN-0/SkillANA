@@ -93,7 +93,7 @@ export function Template(){
                     <Image src={`/${src}`} alt="Resume Template" width={400} height={565} className="w-full h-auto block" />
                     
                     <div className="absolute bottom-4 right-[1.06rem] w-10 h-10 bg-[#5F28CD] rounded-full flex items-center justify-center opacity-0 translate-y-1.25 transition-all duration-300 z-10 group-hover:opacity-100 group-hover:translate-y-0">
-                        <Image src="/magnifying-glass.png" alt="Zoom in icon" width={20} height={20} className="w-[47%]" />
+                        <Image src="/magnifying-glass.png" alt="Zoom in icon" width={20} height={20} className="w-[47%] h-auto" />
                     </div>
                 </div>
             ))}
@@ -147,7 +147,7 @@ export function Template(){
                     
                     <div className={`bg-[#3A1C63] p-9 rounded-[15px] text-center w-md h-auto shadow-[0_10px_30px_rgba(0,0,0,0.3)] ${styles.incompleteBoxAni}`} onClick={(e) => e.stopPropagation()}>
                         
-                        <Image src="/info.png" alt="info logo" width={100} height={100} className="w-[22%] mb-4 inline-block" />
+                        <Image src="/info.png" alt="info logo" width={100} height={100} className="w-[22%] h-auto mb-4 inline-block" />
                         <h3 className="mb-3 text-[1.5em] font-bold">Incomplete Profile</h3>
                         <p className="mb-4">You haven't finished setting up your profile. Would you like to continue anyway?</p>
             

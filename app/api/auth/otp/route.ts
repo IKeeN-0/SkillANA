@@ -64,7 +64,7 @@ export async function POST(req: Request){
             createdAt: new Date(),
             isUsed: false
         })
-        sendOtpEmail(email,randomNum);
+        await sendOtpEmail(email,randomNum);
         return NextResponse.json({message: "OTP has been sent to your email."}, {status: 200})
     }
     catch(err){
