@@ -78,7 +78,6 @@ export default function ProfileImg() {
                             <div className="flex flex-col h-28 w-72 max-md:w-full max-md:h-auto">
                                 <label className={labelClass}>First Name <span className='text-red-500'>*</span></label>
                                 <input
-                                    maxLength={25}
                                     className={`${inputBaseClass} ${errors.firstName ? "border-[#ef4444]! bg-[#ef4444]/10!" : ""}`}
                                     placeholder="e.g., John"
                                     value={tempData.firstName || ""}
@@ -89,16 +88,12 @@ export default function ProfileImg() {
                                     <div className="w-full">
                                         {errors.firstName && <p className="text-[#ef4444] text-[12px]">Please enter your first name</p>}
                                     </div>
-                                    <p className="text-white/50 text-[12px] whitespace-nowrap">
-                                        {(tempData.firstName || "").length} / 25
-                                    </p>
                                 </div>
                             </div>
 
                             <div className="flex flex-col h-28 w-72 max-md:w-full max-md:h-auto">
                                 <label className={labelClass}>Last Name <span className='text-red-500'>*</span></label>
                                 <input
-                                    maxLength={25}
                                     className={`${inputBaseClass} ${errors.lastName ? "border-[#ef4444]! bg-[#ef4444]/10!" : ""}`}
                                     placeholder="e.g., Doe"
                                     value={tempData.lastName || ""}
@@ -109,9 +104,6 @@ export default function ProfileImg() {
                                     <div className="w-full">
                                         {errors.lastName && <p className="text-[#ef4444] text-[12px]">Please enter your last name</p>}
                                     </div>
-                                    <p className="text-white/50 text-[12px] whitespace-nowrap">
-                                        {(tempData.lastName || "").length} / 25
-                                    </p>
                                 </div>
                             </div>
 
