@@ -19,21 +19,18 @@ export default function Education() {
         );
     };
 
-    // ====== แปลงค่าวันที่เพื่อนำมาเปรียบเทียบ ======
     const startDateObj = data?.startDate ? new Date(data.startDate) : null;
     const endDateObj = data?.endDate ? new Date(data.endDate) : null;
-
-    // ====== เช็คว่าวันที่ผิดพลาดหรือไม่ ======
     const isDateError = startDateObj && endDateObj && startDateObj > endDateObj;
 
     return (
         <>
-        <div id="Education-container" className="text-[1.6em] font-bold">    
+        <div id="Education-container" className="text-[1.6em] font-bold max-md:w-[90vw]">    
             <h1>Education</h1> 
             
-            <div id="Education-content" className="flex flex-col gap-3 mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl">
+            <div id="Education-content" className="flex flex-col gap-3 mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl max-md:w-full">
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
                     <div id="Education-Level" className="block text-[0.8em] font-semibold">
                         <h2 className="mb-1">Education Level</h2>
                         <div className="relative flex w-full items-center">
@@ -80,7 +77,7 @@ export default function Education() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
                     <div id="Start-Date" className="block text-[0.8em] font-semibold">
                         <h2 className="mb-1">Start Date</h2>
                         <div className="relative flex w-full items-center">

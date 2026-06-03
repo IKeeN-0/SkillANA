@@ -19,7 +19,7 @@ export default function ProfileImg() {
 
     return (
         <>
-            <div id="profile-container" className="relative w-[31%] h-50 flex items-center gap-10">
+            <div id="profile-container" className="relative w-[31%] h-50 flex items-center gap-10 max-md:w-full max-md:h-auto max-md:flex-col max-md:text-center max-md:py-4">
 
                 <div 
                     id="profile-img-wrapper" 
@@ -62,9 +62,9 @@ export default function ProfileImg() {
                     )}
                 </div>
 
-                <div className="flex flex-row items-center"> 
+                <div className="flex flex-row items-center max-md:justify-center"> 
                     {!isEdit ? (
-                        <div className="inline-flex flex-row gap-3 items-center w-200">
+                        <div className="inline-flex flex-row gap-3 items-center w-200 max-md:w-auto max-md:justify-center max-md:flex-wrap">
                             <p className="text-[1.6em] font-bold">
                                 {tempData.firstName || "First Name"}
                             </p>
@@ -73,9 +73,9 @@ export default function ProfileImg() {
                             </p>
                         </div>
                     ) : (
-                        <div className="flex flex-row items-start gap-6">
+                        <div className="flex flex-row items-start gap-6 max-md:flex-col max-md:gap-3 max-md:w-full max-md:px-2">
                             
-                            <div className="flex flex-col h-28 w-72">
+                            <div className="flex flex-col h-28 w-72 max-md:w-full max-md:h-auto">
                                 <label className={labelClass}>First Name <span className='text-red-500'>*</span></label>
                                 <input
                                     maxLength={25}
@@ -95,7 +95,7 @@ export default function ProfileImg() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col h-28 w-72">
+                            <div className="flex flex-col h-28 w-72 max-md:w-full max-md:h-auto">
                                 <label className={labelClass}>Last Name <span className='text-red-500'>*</span></label>
                                 <input
                                     maxLength={25}

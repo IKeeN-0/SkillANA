@@ -11,10 +11,10 @@ export default function AboutMe() {
     
     return (
         <>
-            <div id="AboutMe-container" className="text-[1.6em] font-bold ">    
+            <div id="AboutMe-container" className="text-[1.6em] font-bold max-md:w-[90vw]">    
                 <h1>About Me</h1> 
                 
-                <div id="AboutMe-content" className="block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-325 transition-all duration-300 rounded-2xl">
+                <div id="AboutMe-content" className="block mt-1 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-325 transition-all duration-300 rounded-2xl max-md:w-full">
                     
                     <div id="About-Me" className="block text-[0.8em] font-semibold ">
                         <div className="relative flex w-full items-center">
