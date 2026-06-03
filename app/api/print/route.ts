@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const { data, templateId } = await request.json();
     console.log("Template ID:", templateId);
 
-    // Encode data using a browser-safe base64 method
+    // Encode data using a UTF-8 safe base64 method
     const jsonStr = JSON.stringify(data);
     const encodedData = Buffer.from(encodeURIComponent(jsonStr)).toString('base64');
     
@@ -26,13 +26,11 @@ export async function POST(request: NextRequest) {
     const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
 
     if (BROWSERLESS_TOKEN) {
-      // Strategy A: Remote Browser (Recommended for reliability)
       console.log("Connecting to Browserless.io...");
       browser = await puppeteer.connect({
         browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}`,
       });
     } else if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-      // Strategy B: Local Chromium on Vercel (Prone to library issues)
       console.log("Launching local chromium on Vercel...");
       browser = await puppeteer.launch({
         args: [
@@ -50,7 +48,6 @@ export async function POST(request: NextRequest) {
         ignoreHTTPSErrors: true,
       } as any);
     } else {
-      // Strategy C: Local development
       console.log("Launching local browser for development...");
       try {
         const localPuppeteer = require('puppeteer');
@@ -68,16 +65,21 @@ export async function POST(request: NextRequest) {
     }
 
     const page = await browser.newPage();
+
+    // Mirror browser console logs to server logs for debugging
+    page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
+    page.on('pageerror', err => console.error('BROWSER ERROR:', err.message));
     
-    // Set a reasonable timeout for page load
+    console.log("Navigating to target URL...");
     await page.goto(targetUrl, { 
-      waitUntil: 'networkidle0',
+      waitUntil: 'networkidle2', // Changed to networkidle2 for better stability
       timeout: 45000 
     });
 
-    // Wait for the custom signal from the page that data is loaded and rendered
     console.log("Waiting for isDataReady flag...");
+    // Increased timeout for waitForFunction just in case, but usually it should be fast
     await page.waitForFunction('window.isDataReady === true', { timeout: 30000 });
+    console.log("Flag detected, capturing PDF...");
 
     const pdf = await page.pdf({
       format: 'A4',
@@ -91,6 +93,7 @@ export async function POST(request: NextRequest) {
     });
 
     await browser.close();
+    console.log("PDF generated successfully");
 
     return new NextResponse(pdf as any, {
       headers: {
