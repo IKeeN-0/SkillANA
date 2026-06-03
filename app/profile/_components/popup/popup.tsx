@@ -28,7 +28,7 @@ export default function Popup() {
     return (
         <>
             <div 
-                className="fixed bottom-10 left-1/2 z-50 flex h-20 w-300 -translate-x-1/2 items-center justify-end rounded-[0.625rem] bg-[#ffffff] shadow-[0_4px_24px_rgba(0,0,0,0.12)] max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:h-auto max-md:w-full max-md:translate-x-0 max-md:justify-center max-md:rounded-none max-md:rounded-t-[0.625rem] max-md:px-4 max-md:py-4 max-md:pb-[calc(1rem+env(safe-area-inset-bottom,0px))]" 
+                className="fixed bottom-0 left-1/2 z-50 flex h-20 w-full -translate-x-1/2 items-center justify-end rounded-[0.625rem] bg-[#ffffff] shadow-[0_4px_24px_rgba(0,0,0,0.12)] max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:h-auto max-md:w-full max-md:translate-x-0 max-md:justify-center max-md:rounded-none max-md:rounded-t-[0.625rem] max-md:px-4 max-md:py-4 max-md:pb-[calc(1rem+env(safe-area-inset-bottom,0))]" 
             >
                 <div className="inline-flex items-center gap-2.5 max-md:w-full max-md:max-w-sm max-md:justify-center max-md:gap-3">
                     
