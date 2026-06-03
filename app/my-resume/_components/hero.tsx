@@ -19,10 +19,17 @@ export function Hero(){
     const delayStep = totalCycleTime / BADGES.length;
     return(
         <div className={styles.containner}>
+            {/* ปรับให้ข้อความอยู่ตรงกลางบนมือถือ และชิดซ้ายบนจอใหญ่ */}
             <div className={styles.text}>
-                <h1 className="text-[2em] font-bold ">Instant resume, powered by your skills</h1>
-                <p className="w-[80%] text-[1.1em] pt-2 ">Choose a template below to generate your professional resume.</p>
+                <h1 className="text-[1.8em] sm:text-[2.2em] md:text-[2.5em] font-bold text-center md:text-left">
+                    Instant resume, powered by your skills
+                </h1>
+                <p className="w-full md:w-[80%] text-[1em] sm:text-[1.1em] pt-2 text-center md:text-left mx-auto md:mx-0">
+                    Choose a template below to generate your professional resume.
+                </p>
             </div>
+            
+            {/* โซนโชว์เรซูเม่: ซ่อนบนจอเล็ก (hidden) และจะแสดงตั้งแต่จอขนาดกลางขึ้นไป (md:flex) */}
             <div className={styles.show}>
                 <div className={styles.lineWrapperBack}>
                     <div className={styles.orbitLine}></div>
@@ -32,8 +39,8 @@ export function Hero(){
                     className={styles.resumeImg}
                     src="/resumes/hero_show.png"
                     alt="example resume show"
-                    width={280}
-                    height={390}
+                    width={200}
+                    height={278}
                     priority
                 />
 
@@ -45,15 +52,15 @@ export function Hero(){
                     {BADGES.map((src, idx) => (
                         <div 
                             key={idx} 
-                            className={styles.orbitX} /*อนิเมชั่นซ้าย ขวา */
+                            className={styles.orbitX}
                             style={{ 
-                                "--delay": `${idx * -delayStep}s`,  /* แบ่งเวลาทั้งหมดด้วยจำนวนรูป เพื่อหาว่าแต่ละรูปควรออกตัวห่างกันกี่วินาที*/
-                                "--duration": `${totalCycleTime}s` /*คุมความเร็วในการหมุน*/
+                                "--delay": `${idx * -delayStep}s`, 
+                                "--duration": `${totalCycleTime}s`
                             } as React.CSSProperties}
                         >
-                            <div className={styles.orbitY}>        {/*อนิเมชั่นบน ล่าง */}
+                            <div className={styles.orbitY}>
                                 <div className={styles.badgeContent}>
-                                    <Image src={src} alt="badge" width={65} height={65} />
+                                    <Image src={src} alt="badge" width={50} height={50} className="w-[70%] h-auto" />
                                 </div>
                             </div>
                         </div>

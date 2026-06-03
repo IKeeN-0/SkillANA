@@ -100,19 +100,42 @@ export function Template(){
 
             {selectedImg && (
                 <div 
-                    className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.652)] flex justify-center items-center z-1000 ${isClosing ? styles.fadeOut : ""}`} 
+                    className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.652)] flex justify-center items-center z-1000 p-4 ${isClosing ? styles.fadeOut : ""}`} 
                     onClick={handleClose}
                 >
-                    <div className={`bg-[#1b0d30] rounded-[10px] w-[40%] h-auto my-[1.8%] mx-auto shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col items-center gap-4 ${styles.popupAni}`} onClick={(e) => e.stopPropagation()}>
+                    {/* ─── 📦 จุดที่แก้ไขหลัก: ปรับความกว้างกล่องให้ยืดหยุ่น (w-[92%] บนมือถือ -> md:w-[45%] บนจอคอม) ─── */}
+                    <div 
+                        className={`bg-[#1b0d30] rounded-[15px] w-[92%] sm:w-[70%] md:w-[45%] lg:w-[35%] h-auto max-h-[95vh] my-auto mx-auto shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col items-center gap-4 overflow-y-auto p-4 ${styles.popupAni}`} 
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         
-                        <div className="relative w-[95%] max-h-[90vh] flex items-center justify-between mt-4">
-                            <h2 className="ml-6 text-[1.3em] font-semibold">Resume Preview</h2>
-                            <button className="w-[5%] bg-transparent border-none text-white text-[2.5rem] cursor-pointer transition-transform duration-200 hover:scale-125" onClick={handleClose}>×</button>
+                        {/* ─── ✏️ ส่วนหัว: ปรับปุ่มปิดไม่ให้เบียดตัวหนังสือ ─── */}
+                        <div className="relative w-full flex items-center justify-between px-2 mt-2">
+                            <h2 className="text-[1.2em] sm:text-[1.3em] font-semibold">Resume Preview</h2>
+                            <button 
+                                className="bg-transparent border-none text-white text-[2rem] leading-none cursor-pointer transition-transform duration-200 hover:scale-125" 
+                                onClick={handleClose}
+                            >
+                                &times;
+                            </button>
                         </div>
 
-                        <Image src={`/${selectedImg}`} alt="Preview Template" width={800} height={1130} className="w-auto h-auto max-h-[75vh] shadow-[0_0_30px_rgba(0,0,0,0.5)] object-contain mb-2" />
+                        {/* ─── 🖼️ ส่วนรูปภาพ: ปรับให้กว้างพอดีกับกล่องเสมอ ─── */}
+                        <div className="w-full flex justify-center items-center my-2">
+                            <Image 
+                                src={`/${selectedImg}`} 
+                                alt="Preview Template" 
+                                width={800} 
+                                height={1130} 
+                                className="w-auto h-auto max-w-[90%] max-h-[55vh] sm:max-h-[60vh] shadow-[0_0_20px_rgba(0,0,0,0.3)] object-contain rounded" 
+                            />
+                        </div>
                         
-                        <button className="bg-[#5F28CD] border-none text-white py-4 px-40 font-inherit text-[1.125rem] font-semibold rounded-[40px] transition-all duration-150 ease-in mb-6 cursor-pointer hover:bg-[#4716a9]" onClick={handleSelectTemplate}>
+                        {/* ─── 🔘 ส่วนปุ่ม: ปรับความกว้างปุ่มให้แปรผันตามกล่อง (w-[85%]) ไม่ใช้ Padding แนวนอนตายตัวเพื่อป้องกันปุ่มล้น ─── */}
+                        <button 
+                            className="w-[85%] bg-[#5F28CD] border-none text-white py-3 sm:py-4 font-inherit text-[1rem] sm:text-[1.125rem] font-semibold rounded-[40px] transition-all duration-150 ease-in mb-4 cursor-pointer hover:bg-[#4716a9] text-center" 
+                            onClick={handleSelectTemplate}
+                        >
                             Select this template
                         </button>
                     </div>
