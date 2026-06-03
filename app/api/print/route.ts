@@ -14,10 +14,7 @@ export async function POST(request: NextRequest) {
     const encodedData = Buffer.from(encodeURIComponent(jsonStr)).toString('base64');
     
     // Determine the base URL dynamically
-    // Priority: 1. Request Origin, 2. VERCEL_URL environment variable, 3. Localhost fallback
     let origin = request.nextUrl.origin;
-    
-    // Fallback logic for Vercel environment to ensure we have the correct public URL
     if (origin.includes('localhost') && process.env.VERCEL_URL) {
       origin = `https://${process.env.VERCEL_URL}`;
     }
@@ -28,16 +25,15 @@ export async function POST(request: NextRequest) {
 
     let browser;
     if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-      // Vercel / Production configuration
+      // Configure chromium for Vercel environment
+      // Ensure we are using the correct binary and arguments
       browser = await puppeteer.launch({
         args: [
           ...chromium.args,
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
           '--disable-gpu',
-          '--window-size=1920,1080',
         ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
