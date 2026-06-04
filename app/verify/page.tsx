@@ -20,7 +20,7 @@ export default function Login(){
     }, [])
     
     return(
-        <div className="relative w-full text-white">
+        <div className="relative w-full text-white h-[90vh] overflow-hidden">
 
             <div className="absolute inset-0 -z-10">
                 <Bg />
@@ -34,13 +34,13 @@ export default function Login(){
                 
                 {/* ฝั่งขวา: บนหน้าจอมือถือและ iPad ให้ขยายเต็มกว้างขึ้น (w-[90%] หรือ w-[80%]) และจัดกึ่งกลางด้วย mx-auto */}
                 {/* เมื่อเป็นหน้าจอคอมพิวเตอร์ Laptop ขึ้นไป (lg:) จะกลับไปเป็นขนาด w-[50%] ชิดข้างขวาตามโครงสร้างเดิม */}
-                <section className="flex flex-col w-full xl:w-[50%] h-full items-center justify-center mx-auto mt-20 lg:my-9 px-3 sm:px-0">  
-                    <h3 className="text-[1.8em] font-bold mt-[1em] xl:mt-[2em] ">OTP Verification</h3>
+                <section className="flex flex-col w-full xl:w-[50%] h-full items-center justify-center mx-auto px-3 sm:px-0">  
+                    <h3 className="text-3xl lg:text-5xl font-bold">OTP Verification</h3>
                 
                     <div>
-                        <p className="text-center text-[1em] mt-[2em] ">
+                        <p className="text-center text-base lg:text-xl mt-6 lg:mt-10 text-gray-300">
                             Enter the 6 digits code we sent to<br />
-                            {userEmail || "your email"} to verify
+                            <span className="text-white font-semibold">{userEmail || "your email"}</span> to verify
                         </p>
                     </div>
                 

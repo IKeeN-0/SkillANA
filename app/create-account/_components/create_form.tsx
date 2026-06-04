@@ -135,13 +135,13 @@ export default function CreateAccountForm(){
 
     return (
         <>
-            <section className="box-border my-20 lg:my-15 flex h-full flex-col px-20 sm:px-0">
-                <div>
-                    <h3 className="text-[1.3em] sm:text-[1.8em] font-bold ">Create your account</h3>
-                    <p className="text-sm sm:text-large pt-[0.2em] ">Create an account so you can explore the website</p>
+            <section className="box-border my-6 lg:my-10 flex h-full flex-col px-10 sm:px-0">
+                <div className="mb-4 lg:mb-6">
+                    <h3 className="text-2xl lg:text-4xl font-bold">Create your account</h3>
+                    <p className="text-base lg:text-lg pt-[0.2em] text-gray-300">Create an account so you can explore the website</p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-[1em] mt-[1.5em] sm:mt-[2em] ">
+                <div className="flex flex-col sm:flex-row gap-[1em] mt-[0.5em] lg:mt-[1em] ">
                     <InputComponent ref={firstNameRef} label="First Name" size="small" placeholder="Somsri" 
                     isError={errors.firstName[0]} message={errors.firstName[1] } onChange={(value: string) => handleOnchange("firstName", value)}
                     />
@@ -160,16 +160,16 @@ export default function CreateAccountForm(){
                 isError={errors.confirmPassword[0]} message={errors.confirmPassword[1]} onChange={(value: string)=> handleConfirmPassword("confirmPassword",value)}
                 />
                 
-                <div className="flex flex-col gap-[.5em] items-center mt-[0.7em]">
+                <div className="flex flex-col gap-[.6em] items-center mt-[0.5em] lg:mt-[1em]">
                     <button 
-                        className="w-full h-[2.4em] sm:h-[2.8em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[0.95em] sm:text-[large] font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
+                        className="w-full h-[3em] lg:h-[3.5em] flex justify-center items-center border-none rounded-[8px] bg-[#5F28CD] text-white cursor-pointer text-lg lg:text-xl font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
                         {isLoading ? <Spinner /> : "Sign up"}
                     </button>
                     
-                    <p className="text-[0.8em] sm:text-[.9em] mt-1.5 text-center sm:text-left">
+                    <p className="text-sm lg:text-base mt-1 text-center sm:text-left">
                         Already have an account? 
                         <Link 
                             href="/login" 

@@ -262,7 +262,11 @@ export default function ResumeExport({id} : {id : number}) {
                 body: JSON.stringify({ data: myResumeData, templateId: id }),
             });
 
-            if (!response.ok) throw new Error("Download failed");
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error("Server Error details:", errorData);
+                throw new Error(errorData.message || errorData.error || "Download failed");
+            }
 
             // สร้าง Blob เพื่อสั่ง Download ไฟล์ใน Browser
             const blob = await response.blob();
