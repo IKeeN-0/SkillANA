@@ -43,7 +43,7 @@ export default function Exp() {
     const inputBaseClass = `text-white text-[14px] px-5 w-full rounded-[0.625rem] bg-white/5 border border-white/20 focus:outline-none focus:bg-white/10 focus:border-white/40 transition-colors duration-200 placeholder-white/40 font-medium ${!isEdit ? 'cursor-default' : 'cursor-text'}`;
 
     return (
-        <div id="experience-container" className="text-[1.6em] font-bold w-325 max-md:w-[90vw]">    
+        <div id="experience-container" className="text-[1.6em] font-bold w-full">    
             
             <div id="exp-header" className="flex justify-between items-center w-full gap-4">
                 <h1>Experience {expList.length}/5</h1> 
@@ -68,7 +68,6 @@ export default function Exp() {
                 const currentId = getExpId(exp);
                 const descLength = exp.description?.length || 0;
 
-                // สร้างเงื่อนไขเช็คว่าวันที่ผิดพลาดหรือไม่ สำหรับแต่ละกล่อง
                 const startDateObj = exp.startDate ? new Date(exp.startDate) : null;
                 const endDateObj = exp.endDate ? new Date(exp.endDate) : null;
                 const isDateError = startDateObj && endDateObj && startDateObj > endDateObj;
@@ -158,7 +157,7 @@ export default function Exp() {
                                     >
                                         <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0 w-0 border-b-[6px] border-b-[#e71c1c] border-x-[6px] border-x-transparent" />
                                         Incorrect date, please update.
-                                    </p>
+                            </p>
                                 </div>
                             </div>
                         </div>

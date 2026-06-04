@@ -5,7 +5,7 @@ export default function LeftBox() {
         <>
             {/* เปลี่ยนเป็น hidden xl:flex เพื่อปิดทั้งรูปและข้อความทั้งหมดในเซกชันนี้ บนจอโทรศัพท์, iPad ทุกรุ่น และ Laptop เล็ก */}
             {/* โดยจะยอมให้แสดงผลเฉพาะบนหน้าจอคอมพิวเตอร์ Desktop หรือ Laptop จอใหญ่ (xl) ขึ้นไปเท่านั้น */}
-            <section className="hidden xl:flex flex-col pl-[4%] w-[45%] mt-[7%]">
+            <section className="hidden xl:flex flex-col pl-[6%] w-[45%] mt-[6%]">
                 
                 <div className="relative w-[72%] aspect-4/3">
                     <Image 

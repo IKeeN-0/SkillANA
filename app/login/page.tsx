@@ -5,7 +5,6 @@ import Bg from "../_global_components/background/pageBackground"
 
 export default function Login() {
     return (
-        // เพิ่ม h-screen และ overflow-hidden ตรงนี้
         <div className="relative w-full text-white"> 
             
             <div className="absolute inset-0 -z-10">

@@ -70,41 +70,49 @@ export function Show_badge() {
                 See Your Collection
             </Link>
 
-            <div className="mt-6 md:mt-14 flex flex-col items-start justify-end relative w-full pt-4 md:pt-10">
+            <div className="mt-6 md:mt-14 flex flex-col items-center justify-end relative w-full pt-4 md:pt-10">
                 {!user ? (
                     <div className="text-lg md:text-xl xl:text-[1.5rem] h-25 mx-auto pb-2">Loading...</div>
                 ) : user.badges && user.badges.length > 0 ? (
-                    <div className="flex flex-nowrap justify-between mx-auto mb-[0.1rem] w-[96%]">
+                    
+                    <div className="flex flex-nowrap justify-center gap-2 sm:gap-3 md:gap-2 lg:gap-3 xl:gap-5 2xl:gap-6 mx-auto mb-[0.1rem] w-full px-2 sm:px-4 overflow-hidden">
                         {[...user.badges]
                             .sort((a, b) => new Date(b.earnedAt).getTime() - new Date(a.earnedAt).getTime())
-                            .slice(0, 7)
+                            .slice(0, 8) 
                             .map((badge: any, index: number) => {
                                 
-                                let visibilityClass = "";
-                                if (index >= 3 && index <= 5) {
+                                let visibilityClass = "hidden";
+                                
+                                if (index < 4) {
+                                    visibilityClass = "block";
+                                } else if (index < 5) {
                                     visibilityClass = "hidden md:block";
-                                } else if (index === 6) {
-                                    visibilityClass = "hidden min-[1921px]:block";
+                                } else if (index < 7) {
+                                    visibilityClass = "hidden md:block xl:hidden 2xl:block";
+                                } else if (index === 7) {
+                                    visibilityClass = "hidden md:block xl:hidden";
                                 }
 
                                 return (
                                     <div 
-                                        key={badge.badgeId}
-                                        className={`transition-all duration-300 ease-out hover:-translate-y-2 hover:drop-shadow-[0_0_20px_rgba(56,189,248,0.9)] shrink-0 ${visibilityClass}`}
+                                        key={badge.id || `badge-${index}`}
+                                        className={`drop-shadow-[5px_2px_2px_rgba(0,0,0,0.4)] shrink-0 ${visibilityClass}`}
                                     >
                                         <Image 
                                             src={badge.imgUrl.startsWith('/') || badge.imgUrl.startsWith('http') ? badge.imgUrl : `/${badge.imgUrl}`} 
                                             alt={badge.badgeName} 
                                             width={120}
                                             height={120}
-                                            className="object-contain w-20 h-20 sm:w-24 sm:h-24 md:w-30 md:h-30"
+                                            className="object-contain w-14 h-14 sm:w-16 sm:h-16 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-20 xl:h-20 2xl:w-23 2xl:h-23"
                                         />
                                     </div>
                                 );
                             })}
                     </div>
                 ) : (
-                    <p className="text-base md:text-lg xl:text-[1.2rem] mx-auto pb-2">- You don't have a badge yet -</p>
+                    <p className="text-base md:text-lg xl:text-[1.2rem] mx-auto pb-2 mt-6 sm:mt-8 lg:mt-12 2xl:mt-14 mb-[0.1rem]">
+                        - You don't have a badge yet -
+                    </p>
                 )}
                 
                 <div className="bg-[#4D256E] w-full h-3 rounded-[0.625rem] shadow-[0.312rem_0.187rem_0.312rem_0_rgba(0,0,0,0.4)]"></div>

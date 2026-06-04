@@ -201,7 +201,7 @@ export default function OtpForm(){
             </div>
 
             <button 
-                className="w-[40%] h-[2.2em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[larger] font-bold mt-[1.5em] mx-auto transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
+                className="w-[43%] h-[2.5em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[larger] font-bold mt-[1.5em] mx-auto transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                 onClick={handleSubmit}
                 disabled={isLoading} 
             >

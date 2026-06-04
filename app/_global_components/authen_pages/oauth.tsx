@@ -1,0 +1,104 @@
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface OAuthButtonsProps {
+    mode?: 'login' | 'signup';
+}
+
+declare global {
+    interface Window {
+        google: any;
+    }
+}
+
+export default function OAuthButtons({ mode = 'signup' }: OAuthButtonsProps) {
+    const router = useRouter();
+    const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
+    useEffect(() => {
+        // 1. Load Script
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+            setIsGoogleLoaded(true);
+            // 2. Initialize ทันทีที่โหลดเสร็จ
+            if (window.google) {
+                window.google.accounts.id.initialize({
+                    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+                    callback: handleGoogleResponse,
+                    auto_select: false,
+                    itp_support: true,
+                });
+            }
+        };
+        document.body.appendChild(script);
+
+        return () => {
+            const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+            if (existingScript) document.body.removeChild(existingScript);
+        };
+    }, []);
+
+    const handleGoogleResponse = async (response: any) => {
+        try {
+            const res = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ credential: response.credential }),
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('token', data.token);
+                router.push('/home');
+            } else {
+                const errorData = await res.json();
+                console.error('Google Auth Failed:', errorData.message);
+            }
+        } catch (error) {
+            console.error('Google Auth Error:', error);
+        }
+    };
+
+    const handleSignIn = () => {
+        if (window.google && isGoogleLoaded) {
+            // เรียก prompt เพื่อแสดงหน้าเลือก account ของ Google
+            window.google.accounts.id.prompt();
+        } else {
+            console.error("Google script not loaded yet");
+        }
+    };
+
+    const dividerText = mode === 'login' ? 'Or log in with' : 'Or sign up with';
+
+    return (
+        <div className="w-full mt-6 mb-4">
+            <div className="flex items-center justify-center w-full mb-6">
+                <div className="grow border-t border-gray-600"></div>
+                
+                <div className="px-4 text-gray-400 text-sm whitespace-nowrap">
+                    {dividerText}
+                </div>
+                
+                <div className="grow border-t border-gray-600"></div>
+            </div>
+
+            <button
+                type="button"
+                onClick={handleSignIn}
+                className="flex items-center justify-center w-full py-2.5 px-4 cursor-pointer bg-transparent border border-gray-500 rounded-md hover:bg-gray-800 transition-all duration-200"
+            >
+                <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                <span className="text-white text-[1em] font-semibold">Google</span>
+            </button>
+        </div>
+    );
+}

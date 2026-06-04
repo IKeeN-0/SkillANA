@@ -14,11 +14,11 @@ import { jwtDecode } from "jwt-decode";
 const ProfileHeader = () => {
   const { isEdit, setEditing } = useEditContext();
   return (
-    <div className="flex justify-between my-6 w-[68%] box-border transition-all duration-300 rounded-2xl max-md:flex-col max-md:w-full max-md:my-4 max-md:gap-6 max-md:items-center">
+    /* 🌟 ปล่อยให้ความกว้างเป็น w-full เพื่ออิงตามขอบกล่องแม่ใหญ่ที่ครอบไว้ */
+    <div className="flex justify-between w-full box-border transition-all duration-300 rounded-2xl max-md:flex-col max-md:gap-6 max-md:items-center">
       <ProfileImg />
       
       <div className={`flex justify-center items-center ${isEdit ? "invisible" : "visible"}`}>
-        
         <button 
           className="w-40 py-3 text-[1.2em] font-bold bg-[#5F28CD] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[#3e1394] active:scale-[0.98]" 
           onClick={() => setEditing(true)}
@@ -74,36 +74,43 @@ export default function UseClientPage() {
   return (
       <EditProvider initialData={data}>
         <Navbar />
-        <div className="flex flex-col items-center gap-10">
+        
+        {/* 🌟 คีย์เวิร์ดสำคัญ: ใช้กล่องนี้เป็นกล่องแม่คุมความกว้างและจัดกึ่งกลางหน้าจอ (ขอบซ้าย-ขวา ทุกอย่างจะตรงกันเป๊ะ) */}
+        <div className="w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] max-w-300 mx-auto flex flex-col items-center gap-10 py-6">
+          
+          {/* ข้อมูลหัวโปรไฟล์ */}
           <ProfileHeader />
 
-          <div className="flex gap-6 ml-0 h-fit max-md:flex-col max-md:items-center max-md:w-full">
+          {/* 🌟 ปรับเป็นระบบ Grid คุมให้แบ่ง 2 ฝั่งเท่ากันในคอม และเป็นแถวเดี่ยวบนมือถือ */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             <Contact /> 
             <Education />
           </div>
           
-          <div>
+          {/* ข้อมูล About Me ขยายเต็มกรอบแม่ */}
+          <div className="w-full">
             <AboutMe />
           </div>
           
-          <div>
+          {/* ข้อมูล Experience ขยายเต็มกรอบแม่ */}
+          <div className="w-full">
             <Exp />
           </div>
 
-          <div className="bg-white w-350 h-0.5 max-md:w-[90vw]"></div>
+          {/* ปรับเส้นคั่นให้ยาวเท่าขอบองค์ประกอบพอดี */}
+          <div className="bg-white/20 w-full h-0.5 my-4"></div>
 
           <button 
-            className="my-15 w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
+            className="w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
             onClick={() => {
               localStorage.removeItem("token");
-              window.location.replace('/login');
+              window.location.replace('/');
           }}>
             Log Out
           </button>
         </div>
+        
         <Popup />
-      
     </EditProvider>
-    
   );
 }
