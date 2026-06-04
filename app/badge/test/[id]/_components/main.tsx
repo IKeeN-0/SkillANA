@@ -310,7 +310,7 @@ export default function MainBox({id} : InputProps){
                             disabled={currentQuestionIdx === 0}
                             className={`py-2 px-6 font-semibold text-[1em] rounded-[10px] transition-all duration-200 ${
                                 currentQuestionIdx === 0 
-                                ? "opacity-0 pointer-events-none"
+                                ? "opacity-0 cursor-not-allowed"
                                 : "bg-white/15 text-#FFFFFF hover:bg-white/25 transition-colors cursor-pointer"
                             }`}
                         >
