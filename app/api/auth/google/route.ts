@@ -37,7 +37,7 @@ export async function POST(req: Request) {
                 firstName: given_name || "First",
                 lastName: family_name || "Last",
                 email: email,
-                profileImg: picture || "",
+                profileImg: "/user.png",
                 // password is not required now
             });
         }

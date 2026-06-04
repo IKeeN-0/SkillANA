@@ -136,7 +136,7 @@ const UserSchema = new Schema<IUser>(
       },
   profileImg : {
       type : String,
-      default : "",
+      default : "/user.png",
   }
     ,
     experience: [
