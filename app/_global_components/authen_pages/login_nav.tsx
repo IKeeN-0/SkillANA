@@ -10,7 +10,7 @@ export default function Navbar() {
                 
                 <div className="flex items-center gap-[1em] h-full">
                     
-                    <Link href="/" className="relative w-[9em] h-full cursor-pointer block transition-transform hover:scale-105">
+                    <Link href="/" className="relative w-[7em] md:w-[10em] xl:w-[10em] h-full ">
                         <Image 
                             src="/SkillAna.png" 
                             alt="SkillANA Logo" 

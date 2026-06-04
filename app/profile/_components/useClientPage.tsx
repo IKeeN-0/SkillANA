@@ -104,7 +104,7 @@ export default function UseClientPage() {
             className="w-45 h-12 text-[1em] font-bold bg-[red] text-white border-none rounded-[0.625rem] cursor-pointer transition-all duration-200 hover:bg-[rgb(160,6,6)] active:scale-90" 
             onClick={() => {
               localStorage.removeItem("token");
-              window.location.replace('/login');
+              window.location.replace('/');
           }}>
             Log Out
           </button>
