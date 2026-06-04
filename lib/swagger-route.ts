@@ -434,6 +434,87 @@
  */
 /**
  * @swagger
+ * /api/auth/register:
+ *   get:
+ *     summary: Get authenticated user profile
+ *     description: Returns the full user document for the user identified by the Bearer JWT. No path ID required.
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserFull'
+ *       401:
+ *         description: Unauthorized — missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *   put:
+ *     summary: Update authenticated user profile
+ *     description: Updates the user identified by the Bearer JWT. No path ID required.
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserFull'
+ *     responses:
+ *       200:
+ *         description: Updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserFull'
+ *       401:
+ *         description: Unauthorized — missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Update failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+/**
+ * @swagger
+ * /api/docs:
+ *   get:
+ *     summary: Get OpenAPI specification
+ *     description: Returns the generated OpenAPI JSON document used by Swagger UI.
+ *     tags: [Docs]
+ *     responses:
+ *       200:
+ *         description: OpenAPI specification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ */
+/**
+ * @swagger
  * /api/auth/register/pending-users:
  *   post:
  *     summary: Create pending user
