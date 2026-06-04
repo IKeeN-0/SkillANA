@@ -392,7 +392,7 @@ export default function ResumeExport({id} : {id : number}) {
 
             <section className="flex justify-center items-center w-full h-full py-5 overflow-hidden">
                 {myResumeData ? (
-                    <div className="w-[147mm] h-[207.9mm] relative shrink-0 flex overflow-hidden bg-white shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
+                    <div className="w-[147mm] h-[207.9mm] scale-[0.7] lg:scale-[0.75] 2xl:scale-[0.8] 3xl:scale-[1] lg:-mt-6 xl:-mt-10 origin-center relative shrink-0 flex overflow-hidden bg-white shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-300">
                         {
                             id === 1 ? <Template1 data={myResumeData} size="small" /> :
                             id === 2 ? <Template2 data={myResumeData} size="small" /> :

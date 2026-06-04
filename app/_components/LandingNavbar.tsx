@@ -30,15 +30,12 @@ export function LandingPageNavbar() {
                     <li className={styles.menu_item}>
                         <Link href="#resume" className="h-full flex items-center justify-center w-full font-bold">Resume</Link>
                     </li>
-                    <li className={styles.menu_item}>
-                        <Link href="#" className="h-full flex items-center justify-center w-full font-bold">About Us</Link>
-                    </li>
                 </ul>
 
                 {/* ชุดปุ่มฝั่งขวา: ปรับลดช่องไฟเว้นระยะ (gap-) ให้มีความกระชับและสมดุลเหมาะสมกับสัดส่วนจอ */}
                 <ul className="flex shrink-0 items-center gap-4 md:gap-6 xl:gap-8 whitespace-nowrap list-none p-0 m-0">
                     <li>
-                        <Link href="/create-account" className="font-bold text-sm md:text-base hover:text-gray-300 transition-all duration-300 ease-in-out">
+                        <Link href="/create-account" className="font-bold text-sm md:text-base hover:text-gray-500 transition-all duration-300 ease-in-out">
                             Sign up
                         </Link>
                     </li>

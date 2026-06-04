@@ -4,36 +4,35 @@
     align-items: center;
     width: 90%;
     max-width: 1200px;     /* จำกัดความกว้างสุดบนจอใหญ่ */
-    margin: 2rem auto; 
-    gap: 2rem;
+    margin: 1.5rem auto;   /* 📱 ลดจาก 2rem เพื่อความกระชับบนมือถือ */
+    gap: 1.5rem;           /* 📱 ลดช่องว่างระหว่างข้อความกับรูปบนมือถือ */
 }
 
 .text {
     width: 100%;
-    margin: 2rem 0;
+    margin: 1rem 0;        /* 📱 ลดจาก 2rem เพื่อไม่ให้ห่างเกินไป */
 }
 
 .text h1, .text div {
-    width: 100% !important; /* ปลดล็อกความกว้างตายตัว 25rem ออก */
+    width: 100% !important; 
 }
-
-/* ... ด้านบนคงเดิมจนถึง .show ตัวแรก ... */
 
 .show {
     display: none; 
 }
 
-/* ─── 🖥️ ปรับปรุง Media Query สำหรับ Desktop ─── */
+/* ─── 🖥️ Media Query สำหรับ Tablet / iPad (768px ขึ้นไป) ─── */
 @media (min-width: 768px) {
     .containner {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin: 4rem auto 6% auto;
+        margin: 0.6rem auto 4% auto; /* ┋ 🍏 ปรับลดลงจาก 4rem และ 6% ให้พอดีกับหน้าจอไอแพด */
     }
 
     .text {
         width: 50%;
+        margin: 0;                 /* เคลียร์ margin ออกเมื่อจัดเรียงแบบแนวนอน */
     }
 
     .show {
@@ -41,12 +40,11 @@
         position: relative;
         justify-content: center;
         align-items: center;
-        width: 50%;                 /* แบ่งพื้นที่ฝั่งขวาให้เต็มที่ */
-        height: 600px;              /* ล็อกพื้นที่ความสูงไว้รับกับวงรี */
-        margin-top: 3%;
-        margin-right: 5%;           /* ขยับเข้ามาไม่ให้ชิดขอบจอเกินไป */
+        width: 50%;                 
+        height: 600px;              
+        margin-top: 2%;            /* 🍏 ปรับลดจาก 3% */
+        margin-right: 4%;           /* 🍏 ขยับความชิดขอบลดลงเล็กน้อย */
         
-        /* 🔥 คีย์เวิร์ดสำคัญ: ใช้ย่อขนาดภาพรวมทั้งหมดเมื่อจอเล็กกว่า 1200px */
         transform: scale(0.75);     
         transform-origin: center;
     }
@@ -56,12 +54,11 @@
         z-index: 5;
         border-radius: 5px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        transform: scale(1.5);  /* ขยายขนาดรูป Resume สวนกลับขึ้นมา 33% เพื่อหักล้างกับค่า scale(0.75) ของกล่องนอก */
+        transform: scale(1.5);  
         transform-origin: center;
         height: auto;
     }
 
-    /* กลับมาใช้ขนาดวงรีมาตรฐานของคุณที่ตั้งไว้ได้อย่างสวยงาม */
     .lineWrapperBack, .lineWrapperFront {
         position: absolute;
         top: 50%;
@@ -100,7 +97,6 @@
         animation-delay: var(--delay);
     }
 
-    /* 🟢 กลับมาใช้ค่าเดิมที่วิ่งรอบเรซูเม่อย่างแม่นยำ */
     @keyframes moveX {
         0%, 100% { transform: translateX(325px); } 
         50%      { transform: translateX(-325px); }
@@ -118,17 +114,15 @@
         animation-delay: calc(var(--delay) - (var(--duration) / 4));
     }
 
-    /* 🟢 กลับมาใช้ค่าพิกเซลเดิม */
     @keyframes moveY {
         0%, 100% { transform: translateY(-114px); } 
         50%      { transform: translateY(114px); }  
     }
 
-    /* เพิ่มขนาดของวงกลม Badges ให้ใหญ่ชัดเจนเต็มตาสวยงาม */
     .badgeContent {
         position: absolute;
         top: -40px; left: -40px; 
-        width: 80px;               /* ขนาดของวงรอบไอคอน */
+        width: 80px;               
         height: 80px;
         border-radius: 50%;
         display: flex;
@@ -142,15 +136,18 @@
     }
 }
 
-/* ─── 🖥️ จอขนาดใหญ่ระดับ Desktop เต็มตัว (กว้างกว่า 1200px ขึ้นไป) ─── */
+/* ─── 🖥️ Media Query สำหรับ Desktop จอใหญ่ (1200px ขึ้นไป) ─── */
 @media (min-width: 1200px) {
+    .containner {
+        margin: 0.8rem auto 5% auto; /* 💻 ปรับลดระยะด้านบนลงเหลือ 3rem เพื่อไม่ให้เวิ้งว้างเกินไปบนจอคอม */
+    }
+    
     .show {
-        transform: scale(1);       /* ขยายสเกลกลับมาเป็นขนาดปกติ 100% แบบเต็มตา */
-        margin-right: 12%;
+        transform: scale(1);       
+        margin-right: 3%;          /* 💻 ปรับลดจาก 12% ให้สมดุลกับ margin container ที่ลดลง */
     }
 }
 
-/* คงเดิมสำหรับอนิเมชั่น pulseFade */
 @keyframes pulseFade {
     75%, 84%   { opacity: 0; transform: scale(0.4) rotate(15deg); }
     85%        { opacity: 1; transform: scale(0.5) rotate(15deg); }
