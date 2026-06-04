@@ -99,7 +99,7 @@ export default function ResultMain(){
                             </div>
 
                             {pass ? (
-                                <div className={`absolute -bottom-3.75 -right-3.75 sm:-bottom-5 sm:-right-5 lg:-bottom-6.25 lg:-right-6.25 w-11.25 h-11.25 sm:w-13.75 sm:h-13.75 lg:w-16.25 lg:h-16.25 2xl:w-20 2xl:h-[80px] z-10 transition-all duration-1000 ${showGlow ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
+                                <div className={`absolute -bottom-3.75 -right-3.75 sm:-bottom-5 sm:-right-5 lg:-bottom-6.25 lg:-right-6.25 w-11.25 h-11.25 sm:w-13.75 sm:h-13.75 lg:w-16.25 lg:h-16.25 2xl:w-20 2xl:h-20 z-10 transition-all duration-1000 ${showGlow ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
                                     <div className="relative w-full h-full">
                                         <Image 
                                             src="/badgePass.png" 

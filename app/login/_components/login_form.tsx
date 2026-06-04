@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRef, useState, useEffect } from "react"
 import { useRouter } from "next/navigation";
 import Spinner from "@/app/_global_components/authen_pages/spinner"
+import OAuthButtons from "@/app/_global_components/authen_pages/oauth"
 
 export default function Form(){
     const emailRef = useRef<HTMLInputElement>(null)
@@ -151,6 +152,9 @@ export default function Form(){
                     >
                         {isLoading ? <Spinner /> : "Login"} 
                     </button>
+
+                    <OAuthButtons mode="login" />
+
                     <p className="text-[.9em] text-center sm:text-left"> 
                         Don't have an account? 
                         <Link 
