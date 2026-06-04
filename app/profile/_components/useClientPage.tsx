@@ -76,7 +76,7 @@ export default function UseClientPage() {
         <Navbar />
         
         {/* 🌟 คีย์เวิร์ดสำคัญ: ใช้กล่องนี้เป็นกล่องแม่คุมความกว้างและจัดกึ่งกลางหน้าจอ (ขอบซ้าย-ขวา ทุกอย่างจะตรงกันเป๊ะ) */}
-        <div className="w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] max-w-[1200px] mx-auto flex flex-col items-center gap-10 py-6">
+        <div className="w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] max-w-300 mx-auto flex flex-col items-center gap-10 py-6">
           
           {/* ข้อมูลหัวโปรไฟล์ */}
           <ProfileHeader />
