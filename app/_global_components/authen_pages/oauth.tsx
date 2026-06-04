@@ -1,18 +1,77 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-// เพิ่ม Interface เพื่อรับ Props
 interface OAuthButtonsProps {
     mode?: 'login' | 'signup';
 }
 
-// รับค่า mode เข้ามา (ตั้งค่าเริ่มต้นเป็น 'signup')
+declare global {
+    interface Window {
+        google: any;
+    }
+}
+
 export default function OAuthButtons({ mode = 'signup' }: OAuthButtonsProps) {
-    const handleGoogleLogin = () => {
-        // ใส่ Logic สำหรับเรียก Google OAuth ที่นี่
-        console.log("Login with Google clicked");
+    const router = useRouter();
+    const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
+    useEffect(() => {
+        // 1. Load Script
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+            setIsGoogleLoaded(true);
+            // 2. Initialize ทันทีที่โหลดเสร็จ
+            if (window.google) {
+                window.google.accounts.id.initialize({
+                    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+                    callback: handleGoogleResponse,
+                    auto_select: false,
+                    itp_support: true,
+                });
+            }
+        };
+        document.body.appendChild(script);
+
+        return () => {
+            const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+            if (existingScript) document.body.removeChild(existingScript);
+        };
+    }, []);
+
+    const handleGoogleResponse = async (response: any) => {
+        try {
+            const res = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ credential: response.credential }),
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('token', data.token);
+                router.push('/home');
+            } else {
+                const errorData = await res.json();
+                console.error('Google Auth Failed:', errorData.message);
+            }
+        } catch (error) {
+            console.error('Google Auth Error:', error);
+        }
     };
 
-    // กำหนดข้อความตาม mode
+    const handleSignIn = () => {
+        if (window.google && isGoogleLoaded) {
+            // เรียก prompt เพื่อแสดงหน้าเลือก account ของ Google
+            window.google.accounts.id.prompt();
+        } else {
+            console.error("Google script not loaded yet");
+        }
+    };
+
     const dividerText = mode === 'login' ? 'Or log in with' : 'Or sign up with';
 
     return (
@@ -26,7 +85,7 @@ export default function OAuthButtons({ mode = 'signup' }: OAuthButtonsProps) {
 
             <button
                 type="button"
-                onClick={handleGoogleLogin}
+                onClick={handleSignIn}
                 className="flex items-center justify-center w-full py-2.5 px-4 cursor-pointer bg-transparent border border-gray-500 rounded-md hover:bg-gray-800 transition-all duration-200"
             >
                 <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
