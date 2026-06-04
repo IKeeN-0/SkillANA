@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import InputComponent from "@/app/_global_components/authen_pages/login_input"
+import OAuthButtons from "../../_global_components/authen_pages/oauth";
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation";
 import Spinner from "@/app/_global_components/authen_pages/spinner"
@@ -135,13 +136,13 @@ export default function CreateAccountForm(){
 
     return (
         <>
-            <section className="box-border my-20 lg:my-15 flex h-full flex-col px-20 sm:px-0">
+            <section className="box-border my-10 lg:mt-6 lg:mb-0 flex h-full flex-col px-20 sm:px-0">
                 <div>
                     <h3 className="text-[1.3em] sm:text-[1.8em] font-bold ">Create your account</h3>
                     <p className="text-sm sm:text-large pt-[0.2em] ">Create an account so you can explore the website</p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-[1em] mt-[1.5em] sm:mt-[2em] ">
+                <div className="flex flex-col sm:flex-row gap-[1em] mt-[1em] sm:mt-[1.3em] ">
                     <InputComponent ref={firstNameRef} label="First Name" size="small" placeholder="Somsri" 
                     isError={errors.firstName[0]} message={errors.firstName[1] } onChange={(value: string) => handleOnchange("firstName", value)}
                     />
@@ -168,8 +169,10 @@ export default function CreateAccountForm(){
                     >
                         {isLoading ? <Spinner /> : "Sign up"}
                     </button>
+
+                    <OAuthButtons />
                     
-                    <p className="text-[0.8em] sm:text-[.9em] mt-1.5 text-center sm:text-left">
+                    <p className="text-[0.8em] sm:text-[.9em] mt-0.7 text-center sm:text-left">
                         Already have an account? 
                         <Link 
                             href="/login" 

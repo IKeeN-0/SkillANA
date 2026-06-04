@@ -30,7 +30,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-        <div className="flex flex-col mb-[1.4em] ">
+        <div className="flex flex-col mb-[1.1em] ">
             
             <label className="text-[0.95em] font-normal">{label}</label>
             
