@@ -5,7 +5,7 @@ import Bg from "../_global_components/background/pageBackground"
 
 export default function Login() {
     return (
-        <div className="relative w-full text-white h-[90vh] overflow-hidden"> 
+        <div className="relative w-full text-white"> 
             
             <div className="absolute inset-0 -z-10">
                 <Bg />
@@ -16,10 +16,10 @@ export default function Login() {
                 
                 <section className="flex flex-col w-full xl:w-[50%] h-full items-center justify-center mx-auto px-3 sm:px-0">
 
-                    <div className="flex flex-col justify-center items-center">
-                        <h3 className="text-3xl lg:text-5xl font-bold">Welcome Back!</h3>
+                    <div className="flex flex-col justify-center items-center mt-15">
+                        <h3 className="text-[1.8em] font-bold">Welcome Back!</h3>
                         
-                        <h6 className="text-base lg:text-xl pt-[0.5em] text-center sm:text-left text-gray-300">Login to your account to connect with features</h6>
+                        <h6 className="text-[0.9em] sm:text-large pt-[0.2em] text-center sm:text-left">Login to your account to connect with features</h6>
                     </div>
 
                     <Form></Form>

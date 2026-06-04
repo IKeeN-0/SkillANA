@@ -297,12 +297,12 @@ export default function ResumeExport({id} : {id : number}) {
     if (!mounted) return null;
     return (
         <>
-            <section className="flex flex-col p-8 py-10 shrink-0 w-[30%] min-w-87.5 max-w-112.5 h-full max-h-screen overflow-y-auto bg-[#23103d] border-r border-[#ffffff1a] 
+            <section className="flex flex-col p-7 py-10 shrink-0 w-[30%] min-w-87.5 max-w-112.5 h-full max-h-screen overflow-y-auto bg-[#23103d] border-r border-[#ffffff1a] 
                 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40">
                 
                     <Link 
                         href='/my-resume' 
-                        className="relative inline-block self-start text-[1.1em] mb-4 text-gray-300 hover:text-white transition-all duration-300 
+                        className="relative inline-block self-start text-[.95em] mb-4 text-gray-300 hover:text-white transition-all duration-300 
                                     after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-white 
                                     after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                     >
@@ -314,7 +314,7 @@ export default function ResumeExport({id} : {id : number}) {
                     <p className="text-[1.1em]">Select badges to display in resume {`(${numSelectedBadge}/6)`}</p>
                 </div>
 
-                <div className="w-full mt-[2em]">
+                <div className="w-full mt-[1em]">
                     <ul className="flex gap-5 w-full overflow-x-auto pb-3 touch-pan-x
                         [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:block [&::-webkit-scrollbar-track]:bg-[#e0e0e0] 
                         [&::-webkit-scrollbar-track]:rounded-[10px] [&::-webkit-scrollbar-thumb]:bg-[#7050B3] 
@@ -324,7 +324,7 @@ export default function ResumeExport({id} : {id : number}) {
                             <li
                                 key={cat.name}
                                 onClick={() => setCurrCat(cat.name)}
-                                className={`shrink-0 flex items-center gap-[.5em] py-[.5em] px-[1em] text-[1.3em] rounded-[50px] cursor-pointer 
+                                className={`shrink-0 flex items-center gap-[.5em] py-[.4em] px-[0.7em] text-[1.3em] rounded-[50px] cursor-pointer 
                                     transition-all duration-500 ease-in-out 
                                     ${currCat === cat.name ? "bg-[#300783] text-[#efe0ff]"
                                     : "bg-[#efe0ff] text-[#300783] hover:bg-[#5F28CD] hover:text-white"}`}
@@ -376,7 +376,7 @@ export default function ResumeExport({id} : {id : number}) {
                                             alt={badge.badgeName} 
                                             width={100} 
                                             height={100} 
-                                            className={`w-[70%] h-[70%] object-contain transition-all duration-300 ${selected ? "drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" : ""}`} 
+                                            className={`w-[85%] h-[85%] object-contain transition-all duration-300 ${selected ? "drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" : ""}`} 
                                         />
                                     </div>
                                     

@@ -110,7 +110,9 @@ export function Show_badge() {
                             })}
                     </div>
                 ) : (
-                    <p className="text-base md:text-lg xl:text-[1.2rem] mx-auto pb-2">- You don't have a badge yet -</p>
+                    <p className="text-base md:text-lg xl:text-[1.2rem] mx-auto pb-2 mt-6 sm:mt-8 lg:mt-12 2xl:mt-14 mb-[0.1rem]">
+                        - You don't have a badge yet -
+                    </p>
                 )}
                 
                 <div className="bg-[#4D256E] w-full h-3 rounded-[0.625rem] shadow-[0.312rem_0.187rem_0.312rem_0_rgba(0,0,0,0.4)]"></div>

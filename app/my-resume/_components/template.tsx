@@ -80,7 +80,7 @@ export function Template(){
     };
 
     return(
-        /* 🌟 จุดที่แก้ไขหลัก: เปลี่ยน grid-cols-4 เป็น grid-cols-2 และปรับ gap ให้ยืดหยุ่นตามขนาดหน้าจอ */
+        /* เปลี่ยน grid-cols-4 เป็น grid-cols-2 และปรับ gap ให้ยืดหยุ่นตามขนาดหน้าจอ */
         <div className="w-[90%] bg-[rgba(255,255,255,0.2)] min-h-80 mx-auto mb-40 rounded-[15px] border border-solid border-white grid grid-cols-2 md:grid-cols-4 p-[4%] sm:p-[3%] gap-4 sm:gap-6 md:gap-x-12 md:gap-y-10">
             {templates.map((src: string, index) => (
                 <div 

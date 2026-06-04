@@ -124,34 +124,34 @@ export default function Form(){
     
     return(
         <>
-            <div className="flex flex-col mt-[2.5em] lg:mt-[3em] px-3 sm:px-0">
+            <div className="flex flex-col mt-[2em] px-3 sm:px-0">
                 
                 <InputComponent ref={emailRef} label="Email" placeholder="example@gmail.com" size="medium" isPassword={false}
                     onChange={handleEmailChange} isError={isEmailError} message={emailMessage}
                 />
                 
-                <div className="w-full mt-[0.5em] mb-[1.5em] lg:mb-[2em]">
+                <div className="w-full mt-[0.5em] mb-[1.5em] ">
                     <InputComponent ref={passRef} label="Password" placeholder="••••••••"
                      size="medium" isPassword={true} isError={isPasswordError} message={passMessage}
                      onChange={handlePasswordChange}
                      />
                     <Link 
                         href="#" 
-                        className="block w-fit ml-auto text-gray-300 text-sm lg:text-base mt-[-1em] transition-all duration-200 hover:text-white hover:border-white"
+                        className="block w-fit ml-auto text-gray-300 text-[14px] mt-[-1em] transition-all duration-200 hover:text-white hover:border-white"
                     >
                         Forgot password?
                     </Link>
                 </div>
 
-                <div className="flex flex-col gap-[1em] w-full items-center mt-5">
+                <div className="flex flex-col gap-[.8em] w-full items-center mt-5">
                     <button 
-                        className="w-full h-[3em] lg:h-[3.5em] flex justify-center items-center border-none rounded-[8px] bg-[#5F28CD] text-white cursor-pointer text-lg lg:text-xl font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
+                        className="w-full h-[2.8em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[large] font-bold transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
                         {isLoading ? <Spinner /> : "Login"} 
                     </button>
-                    <p className="text-sm lg:text-base text-center sm:text-left mt-2"> 
+                    <p className="text-[.9em] text-center sm:text-left"> 
                         Don't have an account? 
                         <Link 
                             href="/create-account" 
