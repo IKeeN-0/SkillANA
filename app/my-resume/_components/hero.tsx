@@ -19,17 +19,17 @@ export function Hero(){
     const delayStep = totalCycleTime / BADGES.length;
     return(
         <div className={styles.containner}>
-            {/* ปรับให้ข้อความอยู่ตรงกลางบนมือถือ และชิดซ้ายบนจอใหญ่ */}
             <div className={styles.text}>
-                <h1 className="text-[1.8em] sm:text-[2.2em] md:text-[2.5em] font-bold text-center md:text-left">
+                {/* 📱 จุดที่ปรับปรุง: ลดขนาดฟอนต์มือถือเริ่มต้นลงมาเป็น text-[1.5em] (เดิม 1.8em) ส่วนจอ sm และ md ใหญ่เท่าเดิม */}
+                <h1 className="text-[1.5em] sm:text-[2.2em] md:text-[2.5em] font-bold text-center md:text-left leading-snug">
                     Instant resume, powered by your skills
                 </h1>
-                <p className="w-full md:w-[80%] text-[1em] sm:text-[1.1em] pt-2 text-center md:text-left mx-auto md:mx-0">
+                {/* 📱 จุดที่ปรับปรุง: ลดขนาดคำบรรยายมือถือเริ่มต้นลงมาเป็น text-[0.9em] (เดิม 1em) เพื่อให้ล้อไปกับหัวข้อ */}
+                <p className="w-full md:w-[80%] text-[0.9em] sm:text-[1.1em] pt-2 text-center md:text-left mx-auto md:mx-0 text-white/80">
                     Choose a template below to generate your professional resume.
                 </p>
             </div>
             
-            {/* โซนโชว์เรซูเม่: ซ่อนบนจอเล็ก (hidden) และจะแสดงตั้งแต่จอขนาดกลางขึ้นไป (md:flex) */}
             <div className={styles.show}>
                 <div className={styles.lineWrapperBack}>
                     <div className={styles.orbitLine}></div>

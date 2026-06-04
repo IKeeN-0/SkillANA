@@ -71,11 +71,10 @@ export default function ResultMain(){
         <>
             <div className="w-full flex justify-center items-center py-10 2xl:pt-[2em] 2xl:py-0 2xl:my-auto min-h-[80vh] 2xl:min-h-0">
                 
-                {/* 🌟 1. ปรับ gap สำหรับ iPad (lg) ให้ลดลง (lg:gap-4) และบังคับ items-center เพื่อให้อยู่ตรงกลางพอดีทั้งบนและล่าง */}
                 <main className="w-[90%] md:w-[85%] xl:w-[85%] 2xl:w-[70%] flex flex-col lg:grid lg:grid-cols-2 xl:grid-cols-[3.5fr_6.5fr] 2xl:grid-cols-2 gap-6 lg:gap-4 xl:gap-6 2xl:gap-0 items-center mx-auto">
                     
-                    {/* 🌟 2. ลบ mt ที่เคยดันกล่องรูปภาพออก (ยกเว้น 2xl) เพื่อให้ Grid จัดวางกึ่งกลางเองอัตโนมัติ */}
-                    <aside className={`flex w-full justify-center transform transition-all duration-700 ease-out ${
+                    {/* เพิ่ม lg:self-start เพื่อให้ชิดขอบบนในจอใหญ่ และใส่ lg:mt-10 เพื่อดันระยะลงมา */}
+                    <aside className={`flex w-full justify-center lg:self-start lg:mt-10 xl:mt-12 transform transition-all duration-700 ease-out ${
                         showContent ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
                     }`}>
                         <div className={`bg-white w-[60%] sm:w-[45%] lg:w-[65%] xl:w-[70%] 2xl:w-[65%] h-auto p-6 sm:p-8 lg:p-10 rounded-[10px] flex justify-center items-center relative transition-all duration-1000 ${
@@ -100,7 +99,7 @@ export default function ResultMain(){
                             </div>
 
                             {pass ? (
-                                <div className={`absolute -bottom-3.75 -right-3.75 sm:-bottom-5 sm:-right-5 lg:-bottom-6.25 lg:-right-6.25 w-11.25 h-11.25 sm:w-13.75 sm:h-13.75 lg:w-[65px] lg:h-[65px] 2xl:w-[80px] 2xl:h-[80px] z-10 transition-all duration-1000 ${showGlow ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
+                                <div className={`absolute -bottom-3.75 -right-3.75 sm:-bottom-5 sm:-right-5 lg:-bottom-6.25 lg:-right-6.25 w-11.25 h-11.25 sm:w-13.75 sm:h-13.75 lg:w-16.25 lg:h-16.25 2xl:w-20 2xl:h-[80px] z-10 transition-all duration-1000 ${showGlow ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
                                     <div className="relative w-full h-full">
                                         <Image 
                                             src="/badgePass.png" 
@@ -115,7 +114,7 @@ export default function ResultMain(){
                         </div>
                     </aside>
                     
-                    <article className={`flex flex-col backdrop-blur bg-white/10 border-white/20 border p-5 xl:p-6 2xl:p-5 w-full 2xl:w-[75%] mx-auto rounded-[15px] shadow-2xl transform transition-all duration-700 delay-1500 ease-out ${
+                    <article className={`flex flex-col backdrop-blur bg-white/10 border-white/20 border p-5 xl:p-6 2xl:p-5 w-full 2xl:w-[75%] mx-auto lg:mx-2 xl:mx-2 rounded-[15px] shadow-2xl transform transition-all duration-700 delay-1500 ease-out ${
                         showContent ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
                     }`}>
                         <h2 className="text-2xl lg:text-[1.8em] 2xl:text-[2em] font-bold text-center">{pass ? titlePass : titleNotPass}</h2>

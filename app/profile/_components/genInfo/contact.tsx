@@ -8,10 +8,12 @@ export default function Contact() {
 
   return (
     <>
-      <div id="contact-container" className="text-[1.6em] font-bold max-md:w-[90vw]">    
+      {/* 📱 ลบ max-md:w-[90vw] ออกเพื่อให้ยืดหยุ่นตามกล่องแม่ทั้งหมด */}
+      <div id="contact-container" className="text-[1.6em] font-bold w-full">    
         <h1>Contact</h1> 
         
-        <div id="contact-content" className="block mt-1.5 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-160 transition-all duration-300 rounded-2xl max-md:w-full">
+        {/* 🌟 จุดที่แก้ไข: เปลี่ยน w-160 max-md:w-full เป็น w-full เพื่อไม่ให้ขอบล้น Grid */}
+        <div id="contact-content" className="block mt-1.5 p-5 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] w-full transition-all duration-300 rounded-2xl">
             
             <div id="Email" className="block text-[0.8em] font-semibold mb-3">
                 <h2 className="mb-1">Email</h2>
