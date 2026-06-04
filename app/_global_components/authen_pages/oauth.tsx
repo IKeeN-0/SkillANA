@@ -76,11 +76,14 @@ export default function OAuthButtons({ mode = 'signup' }: OAuthButtonsProps) {
 
     return (
         <div className="w-full mt-6 mb-4">
-            <div className="relative flex items-center justify-center w-full mb-6">
-                <div className="w-full border-t border-gray-600"></div>
-                <div className="absolute px-4 bg-[#0B0A1F] text-gray-400 text-sm">
+            <div className="flex items-center justify-center w-full mb-6">
+                <div className="grow border-t border-gray-600"></div>
+                
+                <div className="px-4 text-gray-400 text-sm whitespace-nowrap">
                     {dividerText}
                 </div>
+                
+                <div className="grow border-t border-gray-600"></div>
             </div>
 
             <button
