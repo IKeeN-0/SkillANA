@@ -4,7 +4,7 @@ import Bg from "../_global_components/background/pageBackground"
 
 export default function Login() {
     return (
-        <div className="relative w-full text-white"> 
+        <div className="relative w-full text-white h-[90vh] overflow-hidden"> 
             
             <div className="absolute inset-0 -z-10">
                 <Bg />

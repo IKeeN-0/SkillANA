@@ -80,11 +80,11 @@ export function Template(){
     };
 
     return(
-        <div className="w-[90%] bg-[rgba(255,255,255,0.2)] min-h-80 mx-auto mb-40 rounded-[15px] border border-solid border-white grid grid-cols-4 p-[3%] gap-x-12 gap-y-10">
+        <div className="w-[90%] bg-[rgba(255,255,255,0.2)] min-h-80 mx-auto mb-40 rounded-[15px] border border-solid border-white grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-[8%] sm:p-[3%] gap-10 sm:gap-x-12 sm:gap-y-10">
             {templates.map((src: string, index) => (
                 <div 
                     key={index} 
-                    className="group relative w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 ease-in-out border-[1.5px] border-transparent hover:border-[rgba(255,255,255,0.8)] hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.4),0_0_5px_2px_rgba(255,255,255,0.2)] hover:-translate-y-1.25" 
+                    className="group relative w-[85%] mx-auto sm:w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 ease-in-out border-[1.5px] border-transparent hover:border-[rgba(255,255,255,0.8)] hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.4),0_0_5px_2px_rgba(255,255,255,0.2)] hover:-translate-y-1.25" 
                     onClick={() => {
                         setSelectedImg(src);
                         setSelectedIdx(index);

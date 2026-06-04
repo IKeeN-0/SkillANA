@@ -25,28 +25,28 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const sizeClasses = {
-        small: "w-full sm:w-[15em] h-[2.0em] sm:h-[2.4em]",
-        medium: "w-full sm:w-[31em] h-[2.0em] sm:h-[2.4em]"
+        small: "w-full sm:w-[15em] h-[2.5em] lg:h-[3em]",
+        medium: "w-full sm:w-[31em] h-[2.5em] lg:h-[3em]"
     };
 
     return (
-        <div className="flex flex-col mb-[1.4em] ">
+        <div className="flex flex-col mb-[0.8em] lg:mb-[1.2em]">
             
-            <label className="text-[0.95em] font-normal">{label}</label>
+            <label className="text-sm lg:text-base font-medium mb-1.5">{label}</label>
             
             <div className={`relative ${sizeClasses[size]}`}>
                 <input 
                     ref={ref}
                     placeholder={placeholder}
                     type={isPassword && !showPassword ? "password" : "text"}
-                    className={`w-full h-full rounded-[5px] bg-white text-black pl-[1.2em] pr-[2.5em] text-[14px] focus:outline-none border-2 transition-all duration-300 ${
+                    className={`w-full h-full rounded-[8px] bg-white text-black pl-[1.2em] pr-[2.5em] text-base lg:text-lg focus:outline-none border-2 transition-all duration-300 ${
                         isError ? "border-2 border-red-500" : "border-transparent"
                     }`}
                     onChange={handleChange}
                 />
                 
                 <p
-                    className={`absolute left-2.5 top-[115%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
+                    className={`absolute left-2.5 top-[115%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-xs lg:text-sm text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
                         isError && message
                         ? "opacity-100 translate-y-0 scale-100 visible" 
                         : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
@@ -59,7 +59,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
                 
                 {isPassword && (
                     <div 
-                        className="w-[1.5em] h-[1.5em] cursor-pointer absolute top-[18%] bottom-[25%] right-[1.2em]"
+                        className="w-[1.5em] h-[1.5em] cursor-pointer absolute top-1/2 -translate-y-1/2 right-[1em]"
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         <Image 

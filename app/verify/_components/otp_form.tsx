@@ -140,8 +140,8 @@ export default function OtpForm(){
     
     return (
         <>
-            <div className="relative flex flex-col mt-[5em] items-center">
-                <section className="flex gap-[1em]">
+            <div className="relative flex flex-col mt-[4em] lg:mt-[5em] items-center">
+                <section className="flex gap-[0.5em] lg:gap-[1em]">
                     {[0, 1, 2, 3, 4, 5].map((index) => (
                         <OtpInput
                             key={index}
@@ -169,7 +169,7 @@ export default function OtpForm(){
                 </section>
                 
                 <p
-                    className={`absolute top-[125%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-[13px] text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
+                    className={`absolute top-[125%] z-50 rounded-sm bg-[#e71c1c] px-3 py-1.5 text-xs lg:text-sm text-white font-medium drop-shadow-md transition-all duration-300 ease-in-out ${
                         isError && errorMsg
                         ? "opacity-100 translate-y-0 scale-100 visible" 
                         : "opacity-0 -translate-y-2 scale-95 invisible pointer-events-none"
@@ -180,11 +180,11 @@ export default function OtpForm(){
                 </p>
             </div>
 
-            <div className="mt-[2.7em]">
-                <p className="text-[0.9em]">
+            <div className="mt-[3em] lg:mt-[4em]">
+                <p className="text-sm lg:text-base text-center">
                     Don’t received the verification codes?
                     <button 
-                        className="relative inline-block self-start mb-[1em] cursor-pointer text-[#dfa8ff] font-semibold ml-[0.7em] hover:text-[#ba44ff] transition-all duration-300 
+                        className="relative inline-block self-start cursor-pointer text-[#dfa8ff] font-semibold ml-[0.7em] hover:text-[#ba44ff] transition-all duration-300 
                                 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-full after:h-px after:bg-[#ba44ff] 
                                 after:opacity-0 after:translate-y-0.5 hover:after:opacity-100 hover:after:translate-y-0 after:transition-all after:duration-300"
                         onClick={resend}
@@ -193,7 +193,7 @@ export default function OtpForm(){
                     </button>
                 </p>
                 
-                <p className={`text-[1em] pt-[0.3em] h-6 text-center font-semibold transition-opacity duration-500 ${
+                <p className={`text-base lg:text-lg pt-[0.3em] h-6 text-center font-semibold transition-opacity duration-500 ${
                     isResendText ? "opacity-100" : "opacity-0"
                 } ${isResendErr ? "text-red-500" : "text-[#dfa8ff]"}`}>
                     {isResendErr ? "Please wait 1 minute before resend OTP." : "Resend OTP successfully!"}
@@ -201,7 +201,7 @@ export default function OtpForm(){
             </div>
 
             <button 
-                className="w-[43%] h-[2.2em] flex justify-center items-center border-none rounded-[5px] bg-[#5F28CD] text-white cursor-pointer text-[larger] font-bold mt-[1.5em] mx-auto transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
+                className="w-full sm:w-[15em] h-[3em] lg:h-[3.5em] flex justify-center items-center border-none rounded-[8px] bg-[#5F28CD] text-white cursor-pointer text-lg lg:text-xl font-bold mt-[2em] mx-auto transition-all duration-300 hover:bg-[#411c8d] hover:text-[rgb(200,199,199)]" 
                 onClick={handleSubmit}
                 disabled={isLoading} 
             >
