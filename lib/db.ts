@@ -12,18 +12,6 @@ declare global {
   var mongoose: MongooseCache | undefined;
 }
 
-const MONGODB_URI = process.env.DBURL;
-
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the DBURL environment variable inside .env.local'
-  );
-}
-
-/**
- * ในการทำงานแบบ Serverless หรือ Development mode ที่มีการ Hot Reload
- * เราจะเก็บ Connection ไว้ใน global variable เพื่อนำกลับมาใช้ใหม่ (Caching)
- */
 let cached = global.mongoose;
 
 if (!cached) {
@@ -31,6 +19,14 @@ if (!cached) {
 }
 
 async function dbConnect(): Promise<typeof mongoose> {
+  const MONGODB_URI = process.env.DBURL;
+
+  if (!MONGODB_URI) {
+    throw new Error(
+      'Please define the DBURL environment variable inside .env.local'
+    );
+  }
+
   if (cached!.conn) {
     return cached!.conn;
   }
@@ -40,7 +36,7 @@ async function dbConnect(): Promise<typeof mongoose> {
       bufferCommands: false,
     };
 
-    cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+    cached!.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }

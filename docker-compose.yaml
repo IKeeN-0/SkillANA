@@ -1,0 +1,29 @@
+services:
+  my-web:
+    image: my-web:1.0.0
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+      
+  mongodb:
+    image: mongo:8.3-noble
+    env_file:
+      - .env.database
+    ports:
+      - "27017:27017"
+    volumes:
+      -  db-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+volumes:
+    db-data:
+      driver: local
+  

@@ -9,6 +9,8 @@ import dbConnect from '@/lib/db';
 import { Badge } from '@/lib/models/schema';
 import FadeUp from "./_components/FadeUp";
 
+export const dynamic = 'force-dynamic';
+
 export default async function LandingPage() {
     await dbConnect();
 
