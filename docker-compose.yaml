@@ -4,10 +4,17 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - my-network
   my-web:
-    image: #web-ecr-image
+    image: 624586968287.dkr.ecr.ap-southeast-7.amazonaws.com/skillana:1.0.1 #image uri or id
     env_file:
       - .env
+    networks:
+      - my-network
+networks:
+  my-network:
+    external: true
 
   
