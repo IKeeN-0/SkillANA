@@ -229,6 +229,14 @@ The project uses Next.js `output: "standalone"` mode, producing a minimal self-c
 
 ---
 
+## Database Schema
+
+The MongoDB schema for all 5 collections (`users`, `badges`, `badgecategories`, `pendinusers`, `otps`) is documented in detail — including field types, constraints, relationships, and which API routes interact with each collection.
+
+→ [docs/DB_SCHEMA.md](./docs/DB_SCHEMA.md)
+
+---
+
 ## API Documentation
 
 Swagger UI is built in and accessible at:
