@@ -7,11 +7,6 @@ services:
       - db-data:/data/db
     env_file:
       - .env.database
-    networks:
-      - my-network
 volumes:
   db-data:
     driver: local
-networks:
-  my-network:
-    external: true
